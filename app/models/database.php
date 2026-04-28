@@ -15,7 +15,7 @@ function connect() {
         
         $conn->set_charset("utf8mb4");
         echo "✓ Connexion OK";
-        console_log("Connexion à la base de données réussie");
+        var_dump($conn);
         return $conn;
         
     } catch (Exception $e) {
