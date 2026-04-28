@@ -1,9 +1,10 @@
 <?php
 // connexion à la base de données
-require_once 'config/config.php';
-require_once 'models/database.php';
-// test de connexion à la base de données
-$conn = connect();
+require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/app/models/database.php';
+//? test de connexion à la base de données
+// $conn = connect();
+
 // inclusion de l'en-tête
 require __DIR__ . '/includes/header.php';
 ?>
