@@ -1,4 +1,3 @@
-// models/database.php
 <?php
 function connect() {
     try {
