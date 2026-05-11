@@ -7,10 +7,10 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item"><a href="index.php?url=home" class="nav-link">Rechercher un jeu</a></li>
-                <li class="nav-item"><a href="/add_game.php" class="nav-link">Ajouter un jeu</a></li>
-                <li class="nav-item"><a href="/profile.php" class="nav-link">Mon profil</a></li>
-                <li class="nav-item"><a href="/signin.php" class="nav-link">Inscription</a></li>
-                <li class="nav-item"><a href="/login.php" class="nav-link">Connexion</a></li>
+                <li class="nav-item"><a href="index.php?url=add-game" class="nav-link">Ajouter un jeu</a></li>
+                <li class="nav-item"><a href="index.php?url=profile" class="nav-link">Mon profil</a></li>
+                <li class="nav-item"><a href="index.php?url=signin" class="nav-link">Inscription</a></li>
+                <li class="nav-item"><a href="index.php?url=login" class="nav-link">Connexion</a></li>
                 <li class="nav-item"><a href="#" class="nav-link" onclick="logout()">Déconnexion</a></li>
                 <li class="nav-item"><a href="index.php?url=back-office" class="nav-link">Back-Office Admin</a></li>
             </ul>

@@ -11,6 +11,10 @@ switch($url) {
     case 'jeu':
         require 'app/controllers/jeuController.php';
         break;
+    case 'signin':
+    case 'login':
+        require 'app/controllers/userController.php';
+        break;
     case 'back-office':
         require 'app/controllers/adminController.php';
         break;
