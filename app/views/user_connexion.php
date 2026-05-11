@@ -33,13 +33,17 @@ require_once __DIR__ . '/../controllers/authController.php';
 
         <div class="tab-pane fade" id="signin-pane" role="tabpanel" aria-labelledby="signin-tab" tabindex="0">
             <form action="index.php?url=signin" method="post" class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="signin-firstname" class="form-label">Prénom</label>
                     <input type="text" class="form-control" id="signin-firstname" name="firstname" required>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="signin-lastname" class="form-label">Nom</label>
                     <input type="text" class="form-control" id="signin-lastname" name="lastname" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="signin-username" class="form-label">Pseudo</label>
+                    <input type="text" class="form-control" id="signin-username" name="username" required>
                 </div>
                 <div class="col-12">
                     <label for="signin-email" class="form-label">Email</label>
