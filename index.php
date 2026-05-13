@@ -3,7 +3,7 @@ require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/app/models/database.php';
 
 $url = $_GET['url'] ?? 'home';
-
+// Routing simple basé sur l'URL
 switch($url) {
     case 'home':
         require 'app/controllers/homeController.php';
@@ -15,7 +15,7 @@ switch($url) {
         break;
     case 'jeu/add':
         require 'app/controllers/jeuController.php';
-        addGame();
+        jeu_add();
         break;
     case 'login':
         require 'app/controllers/authController.php';
