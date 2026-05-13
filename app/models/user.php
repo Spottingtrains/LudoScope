@@ -47,3 +47,9 @@ function deleteUser($conn, $id) {
     $stmt->bind_param("i", $id);
     return $stmt->execute();
 }
+
+function updateDerniereConnexion($conn, $id_utilisateur) {
+    $stmt = $conn->prepare("UPDATE utilisateur SET derniere_connexion = NOW() WHERE id_utilisateur = ?");
+    $stmt->bind_param("i", $id_utilisateur);
+    return $stmt->execute();
+}

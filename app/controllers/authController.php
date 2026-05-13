@@ -18,6 +18,7 @@ function login() {
             $_SESSION['id_role'] = $user['id_role'];
             $_SESSION['pseudo'] = $user['pseudo'];
             $_SESSION['success'] = "Bienvenue " . $user['pseudo'] . " !";
+            updateDerniereConnexion($conn, $user['id_utilisateur']);
             header('Location: index.php');
             exit();
         } else {
