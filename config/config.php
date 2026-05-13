@@ -5,7 +5,8 @@ $envFile = __DIR__ . '/../.env';
 session_start();
 //TODO: DEV ONLY - à supprimer avant livraison
 $_SESSION['id_utilisateur'] = 1;
-$_SESSION['id_role'] = 3; // 3 = admin
+$_SESSION['id_role'] = 3;
+$_SESSION['pseudo'] = 'admin';
 
 // Vérification que le fichier .env a été chargé correctement
 if (!is_readable($envFile)) {
