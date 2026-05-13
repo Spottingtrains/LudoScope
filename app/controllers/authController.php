@@ -6,8 +6,8 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
 
 function login() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['mot_de_passe'] ?? '';
+        $email = trim(htmlspecialchars($_POST['email'] ?? ''));
+        $password = trim(htmlspecialchars($_POST['mot_de_passe'] ?? ''));
 
         $conn = connect();
         $user = getUserByEmail($conn, $email);
