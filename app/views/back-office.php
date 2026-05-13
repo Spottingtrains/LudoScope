@@ -2,7 +2,8 @@
 require __DIR__ . '/nav/header.php';
 require_once __DIR__ . '/../../app/middleware/auth.php';
 
-// checkRole(3);
+// Seule les admins (id_role >= 3) peuvent accéder au back-office
+checkRole(3);
 ?>
 
 <main class="container">
