@@ -17,6 +17,7 @@ function login() {
             $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
             $_SESSION['id_role'] = $user['id_role'];
             $_SESSION['pseudo'] = $user['pseudo'];
+            $_SESSION['success'] = "Bienvenue " . $user['pseudo'] . " !";
             header('Location: index.php');
             exit();
         } else {
@@ -52,6 +53,18 @@ function register() {
             include __DIR__ . '/../../app/views/login.php';
             return;
         }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = "Le format de l'adresse email n'est pas valide.";
+            $activeTab = 'signin';
+            include __DIR__ . '/../../app/views/login.php';
+            return;
+        }
+        if (!preg_match('/^(?=.*[A-Z])(?=.*[0-9]).{8,}$/', $password)) {
+            $error = "Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.";
+            $activeTab = 'signin';
+            include __DIR__ . '/../../app/views/login.php';
+            return;
+        }
         if ($password !== $confirmPassword) {
             $error = "Les mots de passe ne correspondent pas.";
             $activeTab = 'signin';
@@ -81,6 +94,7 @@ function register() {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         if (createUser($conn, $firstname, $lastname, $pseudo, $email, $hashedPassword, $date_inscription)) {
+            $_SESSION['success'] = "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.";
             header('Location: index.php?url=login');
             exit();
         } else {
