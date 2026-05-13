@@ -1,8 +1,7 @@
 <?php
 require __DIR__ . '/nav/header.php';
-require_once __DIR__ . '/../controllers/authController.php';
+require_once __DIR__ . '/../../app/middleware/auth.php';
 
-// TODO: DEV ONLY - à supprimer avant livraison - donne le role admin (id_role = 3) pour tester l'accès au back-office 
 // checkRole(3);
 ?>
 
@@ -11,5 +10,4 @@ require_once __DIR__ . '/../controllers/authController.php';
     <p>Page de back-office - en construction</p>
 </main>
 
-<?php
-require __DIR__ . '/nav/footer.php';
+<?php require __DIR__ . '/nav/footer.php'; ?>

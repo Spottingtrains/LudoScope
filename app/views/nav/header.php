@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <?php require 'nav.php'; ?>
+        <?php require __DIR__ . '/nav.php'; ?>
     </header>
 
     

@@ -1,8 +1,83 @@
 <?php
-// fonction pour vérifier le rôle de l'utilisateur dans les pages qui nécessitent une authentification
-function checkRole($roleMin) {
-    if (!isset($_SESSION['id_role']) || $_SESSION['id_role'] < $roleMin) {
-        header('Location: /index.php?url=home');
-        exit();
+require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../app/models/database.php';
+require_once __DIR__ . '/../../app/models/user.php';
+require_once __DIR__ . '/../../app/middleware/auth.php';
+
+function login() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['mot_de_passe'] ?? '';
+
+        $conn = connect();
+        $user = getUserByEmail($conn, $email);
+
+        if ($user && password_verify($password, $user['mot_de_passe'])) {
+            // Authentification réussie
+            $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
+            $_SESSION['id_role'] = $user['id_role'];
+            $_SESSION['pseudo'] = $user['pseudo'];
+            header('Location: index.php');
+            exit();
+        } else {
+            // Authentification échouée
+            $error = "Email ou mot de passe incorrect.";
+            include __DIR__ . '/../../app/views/login.php';
+        }
+    } else {
+        include __DIR__ . '/../../app/views/login.php';
+    }
+}
+
+function logout() {
+    session_destroy();
+    header('Location: index.php');
+    exit();
+}
+
+function register() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $firstname = $_POST['firstname'] ?? '';
+        $lastname = $_POST['lastname'] ?? '';
+        $pseudo = $_POST['pseudo'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['mot_de_passe'] ?? '';
+        $date_inscription = date('Y-m-d H:i:s');
+
+        // Validation basique
+        if (empty($firstname) || empty($lastname) || empty($pseudo) || empty($email) || empty($password)) {
+            $error = "Tous les champs sont requis.";
+            include __DIR__ . '/../../app/views/login.php';
+            return;
+        }
+
+        $conn = connect();
+        $existingUser = getUserByEmail($conn, $email);
+        $existingPseudo = getUserByPseudo($conn, $pseudo);
+
+        if ($existingUser) {
+            $error = "Un utilisateur avec cet email existe déjà.";
+            include __DIR__ . '/../../app/views/login.php';
+            return;
+        }
+
+        if ($existingPseudo) {
+            $error = "Un utilisateur avec ce pseudo existe déjà.";
+            include __DIR__ . '/../../app/views/login.php';
+            return;
+        }
+
+        // Hash du mot de passe
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        if (createUser($conn, $firstname, $lastname, $pseudo, $email, $hashedPassword, $date_inscription)) {
+            header('Location: index.php?url=login');
+            exit();
+        } else {
+            $error = "Une erreur est survenue lors de l'inscription.";
+            include __DIR__ . '/../../app/views/login.php';
+        }
+    } else {
+        include __DIR__ . '/../../app/views/login.php';
     }
 }
