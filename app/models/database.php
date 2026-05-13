@@ -13,8 +13,9 @@ function connect() {
         }
         
         $conn->set_charset("utf8mb4");
-        echo "✓ Connexion OK";
-        var_dump($conn);
+        // TODO: DEV ONLY - à supprimer avant livraison - affiche un message de succès et les détails de la connexion pour vérifier que tout fonctionne correctement
+        // echo "✓ Connexion OK";
+        // var_dump($conn);
         return $conn;
         
     } catch (Exception $e) {
