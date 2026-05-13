@@ -50,6 +50,8 @@ Contiennent uniquement le HTML. Elles reçoivent les données du contrôleur sou
 | 2 | Compte | Pages utilisateur + publiques |
 | 3 | Admin | Toutes les pages |
 
+Si un utilisateur essaie d'accéder à une page à laquelle il n'est pas censé avoir accès, il est dirigé vers 404 - Page non trouvée
+
 ## Stack technique
 - PHP (MVC)
 - MySQL

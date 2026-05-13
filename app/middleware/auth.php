@@ -5,7 +5,8 @@ function check_role() {
 
 function checkRole($roleMin) {
     if (!isset($_SESSION['id_role']) || $_SESSION['id_role'] < $roleMin) {
-        header('Location: index.php?url=login');
+        http_response_code(403);
+        include __DIR__ . '/../views/404.php';
         exit();
     }
 }
