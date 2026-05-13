@@ -2,6 +2,10 @@
 
 Application web de gestion collaborative de jeux de société.
 
+## Tests et développement
+Le mot de passe pour les utilisateurs tests est: `Azerty123`
+
+
 ## Architecture MVC
 
 Ce projet suit le pattern MVC (Modèle - Vue - Contrôleur).

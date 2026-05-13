@@ -42,11 +42,19 @@ function register() {
         $pseudo = $_POST['pseudo'] ?? '';
         $email = $_POST['email'] ?? '';
         $password = $_POST['mot_de_passe'] ?? '';
+        $confirmPassword = $_POST['mot_de_passe_confirm'] ?? '';
         $date_inscription = date('Y-m-d H:i:s');
 
         // Validation basique
         if (empty($firstname) || empty($lastname) || empty($pseudo) || empty($email) || empty($password)) {
             $error = "Tous les champs sont requis.";
+            $activeTab = 'signin';
+            include __DIR__ . '/../../app/views/login.php';
+            return;
+        }
+        if ($password !== $confirmPassword) {
+            $error = "Les mots de passe ne correspondent pas.";
+            $activeTab = 'signin';
             include __DIR__ . '/../../app/views/login.php';
             return;
         }
@@ -57,12 +65,14 @@ function register() {
 
         if ($existingUser) {
             $error = "Un utilisateur avec cet email existe déjà.";
+            $activeTab = 'signin';
             include __DIR__ . '/../../app/views/login.php';
             return;
         }
 
         if ($existingPseudo) {
             $error = "Un utilisateur avec ce pseudo existe déjà.";
+            $activeTab = 'signin';
             include __DIR__ . '/../../app/views/login.php';
             return;
         }
@@ -75,6 +85,7 @@ function register() {
             exit();
         } else {
             $error = "Une erreur est survenue lors de l'inscription.";
+            $activeTab = 'signin';
             include __DIR__ . '/../../app/views/login.php';
         }
     } else {
