@@ -7,7 +7,7 @@ require __DIR__ . '/nav/header.php';
 ?>
 
 <main>
-    <?php var_dump($_SESSION); /* TODO: à retirer après les tests */ ?>
+    <?php var_dump($_SESSION); /* TODO: DEV ONLY - à retirer après les tests */ ?>
     <!-- message de bienvenue après connexion -->
     <?php if (!empty($_SESSION['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>

@@ -39,12 +39,12 @@ function logout() {
 
 function register() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $firstname = $_POST['firstname'] ?? '';
-        $lastname = $_POST['lastname'] ?? '';
-        $pseudo = $_POST['pseudo'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['mot_de_passe'] ?? '';
-        $confirmPassword = $_POST['mot_de_passe_confirm'] ?? '';
+        $firstname = trim(htmlspecialchars($_POST['firstname'] ?? ''));
+        $lastname = trim(htmlspecialchars($_POST['lastname'] ?? ''));
+        $pseudo = trim(htmlspecialchars($_POST['pseudo'] ?? ''));
+        $email = trim(htmlspecialchars($_POST['email'] ?? ''));
+        $password = trim(htmlspecialchars($_POST['mot_de_passe'] ?? ''));
+        $confirmPassword = trim(htmlspecialchars($_POST['mot_de_passe_confirm'] ?? ''));
         $date_inscription = date('Y-m-d H:i:s');
 
         // Validation basique
