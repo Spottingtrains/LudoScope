@@ -28,7 +28,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                             Découvrez, évaluez et partagez vos jeux de société préférés
                         </h2>
                         <div class="hstack gap-3 justify-content-center">
-                        <a href="#" class="btn btn-primary">
+                        <a href="#catalogue" class="btn btn-primary">
                             Explorer les jeux de notre catalogue
                         </a>
                         <?php
@@ -68,7 +68,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
         </div>
     </section>
     <!-- Section catalogue -->
-    <section>
+    <section id="catalogue">
         <div>
             <h2>Découvrez notre catalogue</h2>
             <p>Explorez notre collection et trouvez le jeu parfait pour votre prochaine soirée entre amis ou en famille.</p>
