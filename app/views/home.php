@@ -52,6 +52,25 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             <p>Nombre d'avis : <?= $stats['nb_avis'] ?></p>
         </div>
     </section>
+    <!-- Section derniers jeux ajoutés -->
+    <section>
+        <div>
+            <h2>Derniers jeux ajoutés</h2>
+            <ul>
+                <?php foreach ($jeux as $jeu): ?>
+                    <li><?= htmlspecialchars($jeu['titre']) ?> - Ajouté le <?= htmlspecialchars($jeu['date_ajout']) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </section>
+    <!-- Section catalogue -->
+    <section>
+        <div>
+            <h2>Découvrez notre catalogue</h2>
+            <p>Explorez notre collection et trouvez le jeu parfait pour votre prochaine soirée entre amis ou en famille.</p>
+            
+        </div>
+    </section>
 </main>
 
 <?php
