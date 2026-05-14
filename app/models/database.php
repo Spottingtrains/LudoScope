@@ -1,4 +1,5 @@
 <?php
+// fonction de connexion à la base de données
 function connect() {
     try {
         $host = $GLOBALS['dotenv']['DB_HOST'];
