@@ -2,7 +2,7 @@
 
 <main>
     <h1>Mon profil</h1>
-    <p>Bienvenue <?php echo $_SESSION['pseudo']; ?></p>
+    <p>Bienvenue <strong><?php echo $_SESSION['pseudo']; ?></strong> !</p>
 </main>
 
 <?php require_once __DIR__ . '/../views/nav/footer.php'; ?>

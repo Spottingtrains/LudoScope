@@ -8,6 +8,7 @@
 
 			<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
 				<h4>Navigation principale</h4>
+				<!-- TODO: fix la navigation pour n'afficher que les éléments appropriés pour l'utilisateur/admin connecté ou non -->
 				<nav>
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="/index.php" class="nav-link">Rechercher un jeu</a></li>
@@ -22,6 +23,7 @@
 			</div>
 			<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
 				<h4>Navigation secondaire</h4>
+				<!-- TODO: créer les pages de navigation secondaire et vérifier les liens -->
 				<nav>
 					<ul class="navbar-nav">
 						<li class="nav-item"><a href="/legal.php" class="nav-link">Mentions légales</a></li>
