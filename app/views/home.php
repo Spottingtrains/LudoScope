@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
     <!-- Section hero et CTA -->
-    <!-- TODO: vérifier les classes Bootstrap -->
+    <!-- TODO: vérifier les classes Bootstrap et l'intérêt des div -->
     <section class="py-24 ">
         <div class="container mw-screen-xl">
             <div class="bg-body rounded shadow-soft-3 border p-5">
