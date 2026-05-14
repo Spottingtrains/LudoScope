@@ -47,9 +47,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
     <section>
         <div>
             <h2>Statistiques du site</h2>
-            <p>Nombre de jeux : <?= $stats['nb_jeux'] ?></p>
-            <p>Nombre d'utilisateurs : <?= $stats['nb_utilisateurs'] ?></p>
-            <p>Nombre d'avis : <?= $stats['nb_avis'] ?></p>
+            <p>Nombre de jeux : <?php echo $stats['nb_jeux'] ?></p>
+            <p>Nombre d'utilisateurs : <?php echo $stats['nb_utilisateurs'] ?></p>
+            <p>Nombre d'avis : <?php echo $stats['nb_avis'] ?></p>
         </div>
     </section>
     <!-- Section derniers jeux ajoutés -->
