@@ -81,12 +81,13 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             <div class="custom-grid">
             <?php if (!empty($jeux)): ?>
             <?php foreach ($jeux as $jeu): ?>
-            <div class="custom-card">
-                <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
-                <div class="card-body">
-                    <div>
-                        <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
-                        <span><?= $jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'Non noté' ?></span>
+            <a href="index.php?url=jeu&id=<?= $jeu['id_jeu'] ?>">
+                <div class="custom-card">
+                    <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                    <div class="card-body">
+                        <div>
+                            <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
+                            <span><?= $jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'Non noté' ?></span>
                     </div>
                     <h4><?= $jeu['annee_edition'] ?? 'N/A' ?> • <?= htmlspecialchars($jeu['nom_editeur'] ?? 'Éditeur inconnu') ?></h4>
                     <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
@@ -95,6 +96,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <a href="index.php?url=jeu&id=<?= $jeu['id_jeu'] ?>" class="btn btn-primary">Lire les avis</a>
                     </div>
                 </div>
+            </a>
             </div>
             <?php endforeach; ?>    
             <?php else: ?>

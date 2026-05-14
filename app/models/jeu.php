@@ -19,12 +19,49 @@ function getAllJeux($conn) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-function getJeuById($conn, $id) {
-    $stmt = $conn->prepare("SELECT * FROM jeu WHERE id_jeu = ?");
-    $stmt->bind_param("i", $id);
+function getJeuById($conn, $id = null) {
+    // 1. Récupérer l'ID depuis l'argument ou l'URL
+    $id = $id ?? (isset($_GET['id']) ? (int)$_GET['id'] : 0);
+    // 2. Récupérer le jeu + éditeur
+    $stmt = $conn->prepare(
+        "SELECT j.*, e.nom_editeur
+        FROM jeu j
+        LEFT JOIN editeur e ON j.id_editeur = e.id_editeur
+        WHERE j.id_jeu = ?"
+    );
+    $stmt->bind_param('i', $id);
     $stmt->execute();
     $result = $stmt->get_result();
-    return $result->fetch_assoc();
+    $jeu = $result->fetch_assoc();
+    // 3. Retourner null si non trouvé (le contrôleur gère le 404)
+    if (!$jeu) {
+        return null;
+    }
+    // 4. Récupérer les catégories du jeu
+    $stmtCat = $conn->prepare(
+        "SELECT c.libelle_categorie AS nom_categorie
+        FROM categorie c
+        JOIN jeu_categorie jc ON c.id_categorie = jc.id_categorie
+        WHERE jc.id_jeu = ?"
+    );
+    $stmtCat->bind_param('i', $id);
+    $stmtCat->execute();
+    $categories = $stmtCat->get_result()->fetch_all(MYSQLI_ASSOC);
+    // 5. Récupérer les avis du jeu
+    $stmtAvis = $conn->prepare(
+        "SELECT a.*, u.pseudo
+        FROM avis a
+        JOIN utilisateur u ON a.id_utilisateur = u.id_utilisateur
+        WHERE a.id_jeu = ?
+        ORDER BY a.date_avis DESC"
+    );
+    $stmtAvis->bind_param('i', $id);
+    $stmtAvis->execute();
+    $avis = $stmtAvis->get_result()->fetch_all(MYSQLI_ASSOC);
+    // 6. Attacher catégories et avis au tableau jeu et retourner
+    $jeu['categories'] = $categories;
+    $jeu['avis'] = $avis;
+    return $jeu;
 }
 
 function createJeu($conn, $id_utilisateur, $data) {
@@ -40,9 +77,9 @@ function getDerniersJeux($conn) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-function getDemandesEnAttente($conn) {
-    $stmt = $conn->prepare("SELECT * FROM demande WHERE statut = 'en_attente' ORDER BY date_demande DESC");
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
-}
+// function getDemandesEnAttente($conn) {
+//     $stmt = $conn->prepare("SELECT * FROM demande WHERE statut = 'en_attente' ORDER BY date_demande DESC");
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+//     return $result->fetch_all(MYSQLI_ASSOC);
+// }

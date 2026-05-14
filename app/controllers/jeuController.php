@@ -12,8 +12,10 @@ function jeu() {
         include 'app/views/404.php';
         return;
     }
-    
-    include 'app/views/jeu.php';
+    // extraire catégories et avis pour la vue
+    $categories = $jeu['categories'] ?? [];
+    $avis = $jeu['avis'] ?? [];
+    include 'app/views/jeu_detail.php';
 }
 // dirige vers la page d'ajout de jeu, accessible uniquement aux utilisateurs connectés ou admin
 function jeuAdd() {

@@ -30,3 +30,8 @@ header {
     border-radius: 0.5rem 0.5rem 0 0;
     object-fit: cover;
 }
+
+.custom-grid a {
+    text-decoration: none;
+    color: inherit;
+}
