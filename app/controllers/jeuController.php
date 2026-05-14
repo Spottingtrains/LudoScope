@@ -5,7 +5,13 @@ require_once __DIR__ . '/../../app/models/jeu.php';
 // dirige vers la page de détail d'un jeu, accessible à tous les utilisateurs
 function jeu() {
     $conn = connect();
-    $jeu = getJeuById($conn, $_GET['id'] ?? null);
+    // prefer slug if provided, else id
+    $slug = isset($_GET['slug']) ? urldecode($_GET['slug']) : null;
+    if ($slug) {
+        $jeu = getJeuBySlug($conn, $slug);
+    } else {
+        $jeu = getJeuById($conn, isset($_GET['id']) ? (int)$_GET['id'] : null);
+    }
     
     if (!$jeu) {
         http_response_code(404);

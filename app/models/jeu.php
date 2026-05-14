@@ -1,4 +1,18 @@
 <?php
+if (!function_exists('slugify')) {
+    function slugify($text) {
+        $text = trim($text);
+        if (function_exists('iconv')) {
+            $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+        }
+        $text = strtolower($text);
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+        $text = preg_replace('~[^-a-z0-9]+~', '', $text);
+        $text = trim($text, '-');
+        $text = preg_replace('~-+~', '-', $text);
+        return $text ?: 'n-a';
+    }
+}
 function getAllJeux($conn) {
     $stmt = $conn->prepare("
         SELECT jeu.*, 
@@ -62,6 +76,54 @@ function getJeuById($conn, $id = null) {
     $jeu['categories'] = $categories;
     $jeu['avis'] = $avis;
     return $jeu;
+}
+
+function getJeuBySlug($conn, $slug) {
+    if (empty($slug)) {
+        return null;
+    }
+
+    // Normalize function for slugs
+    if (!function_exists('slugify')) {
+        function slugify($text) {
+            $text = trim($text);
+            // transliterate
+            if (function_exists('iconv')) {
+                $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+            }
+            $text = strtolower($text);
+            // replace non letters or digits by -
+            $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+            // remove unwanted characters
+            $text = preg_replace('~[^-a-z0-9]+~', '', $text);
+            // trim
+            $text = trim($text, '-');
+            // remove duplicate -
+            $text = preg_replace('~-+~', '-', $text);
+            return $text ?: 'n-a';
+        }
+    }
+
+    $target = $slug;
+
+    // Fetch minimal fields to find matching slug
+    $stmtAll = $conn->prepare("SELECT id_jeu, titre FROM jeu");
+    $stmtAll->execute();
+    $resAll = $stmtAll->get_result()->fetch_all(MYSQLI_ASSOC);
+    $foundId = null;
+    foreach ($resAll as $row) {
+        if (slugify($row['titre']) === $target) {
+            $foundId = (int)$row['id_jeu'];
+            break;
+        }
+    }
+
+    if (!$foundId) {
+        return null;
+    }
+
+    // Delegate to getJeuById to fetch full data
+    return getJeuById($conn, $foundId);
 }
 
 function createJeu($conn, $id_utilisateur, $data) {

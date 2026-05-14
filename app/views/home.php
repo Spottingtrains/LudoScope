@@ -5,6 +5,7 @@
 // inclusion de l'en-tête
 require __DIR__ . '/nav/header.php';
 require_once __DIR__ . '/../../app/middleware/auth.php';
+require_once __DIR__ . '/../../app/models/jeu.php';
 ?>
 
 <main>
@@ -81,7 +82,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             <div class="custom-grid">
             <?php if (!empty($jeux)): ?>
             <?php foreach ($jeux as $jeu): ?>
-            <a href="index.php?url=jeu&id=<?= $jeu['id_jeu'] ?>">
+            <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>">
                 <div class="custom-card">
                     <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
                     <div class="card-body">
@@ -93,7 +94,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                     <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
                     <p><?= $jeu['nb_joueurs_min'] ?>–<?= $jeu['nb_joueurs_max'] ?> joueurs • <?= $jeu['age_min'] ?> ans+</p>
                     <div class="btn-container">
-                        <a href="index.php?url=jeu&id=<?= $jeu['id_jeu'] ?>" class="btn btn-primary">Lire les avis</a>
+                        <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>" class="btn btn-primary">Lire les avis</a>
                     </div>
                 </div>
             </a>
