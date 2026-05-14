@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../app/middleware/auth.php';
 require_once __DIR__ . '/../../app/models/database.php';
 require_once __DIR__ . '/../../app/models/jeu.php';
-
+// dirige vers la page de détail d'un jeu, accessible à tous les utilisateurs
 function jeu() {
     $conn = connect();
     $jeu = getJeuById($conn, $_GET['id'] ?? null);
@@ -15,7 +15,7 @@ function jeu() {
     
     include 'app/views/jeu.php';
 }
-
+// dirige vers la page d'ajout de jeu, accessible uniquement aux utilisateurs connectés ou admin
 function jeuAdd() {
     checkRole(2);
     
