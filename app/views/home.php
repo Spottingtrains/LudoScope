@@ -17,7 +17,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
     <!-- Section hero et CTA -->
     <section class="py-24 ">
         <div class="container mw-screen-xl">
-            <div class="bg-body rounded shadow-soft-3 border p-20">
+            <div class="bg-body rounded shadow-soft-3 border p-5">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-10 col-lg-8 text-center">
                         <h1 class="ls-tight display-6 ">
