@@ -14,6 +14,10 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
         <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
+    <!-- message de déconnexion -->
+    <?php if (isset($_GET['logout'])): ?>
+        <div class="alert alert-success">Vous avez été déconnecté.</div>
+    <?php endif; ?>
     <!-- Section hero et CTA -->
     <!-- TODO: vérifier les classes Bootstrap et l'intérêt des div -->
     <section class="py-24 ">
