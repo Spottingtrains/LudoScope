@@ -47,20 +47,24 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
     <section>
         <div>
             <h2>Statistiques du site</h2>
-            <p>Nombre de jeux : <?php echo $stats['nb_jeux'] ?></p>
-            <p>Nombre d'utilisateurs : <?php echo $stats['nb_utilisateurs'] ?></p>
-            <p>Nombre d'avis : <?php echo $stats['nb_avis'] ?></p>
+            <p>Nombre de jeux : <?php echo $stats['nb_jeux'] ?? 'N/A' ?></p> <!-- Affiche le nombre de jeux ou 'N/A' si la variable n'est pas définie -->
+            <p>Nombre d'utilisateurs : <?php echo $stats['nb_utilisateurs'] ?? 'N/A' ?></p> <!-- Affiche le nombre d'utilisateurs ou 'N/A' si la variable n'est pas définie -->
+            <p>Nombre d'avis : <?php echo $stats['nb_avis'] ?? 'N/A' ?></p> <!-- Affiche le nombre d'avis ou 'N/A' si la variable n'est pas définie -->
         </div>
     </section>
     <!-- Section derniers jeux ajoutés -->
     <section>
         <div>
             <h2>Derniers jeux ajoutés</h2>
-            <ul>
-                <?php foreach ($jeux as $jeu): ?>
-                    <li><?= htmlspecialchars($jeu['titre']) ?> - Ajouté le <?= htmlspecialchars($jeu['date_ajout']) ?></li>
-                <?php endforeach; ?>
-            </ul>
+            <?php if (!empty($jeux)): ?>
+                <ul>
+                    <?php foreach ($jeux as $jeu): ?>
+                        <li><?= htmlspecialchars($jeu['titre']) ?> - Ajouté le <?= htmlspecialchars($jeu['date_ajout']) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>Aucun jeu à afficher.</p>
+            <?php endif; ?>
         </div>
     </section>
     <!-- Section catalogue -->
