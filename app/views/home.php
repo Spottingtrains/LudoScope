@@ -68,11 +68,35 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
         </div>
     </section>
     <!-- Section catalogue -->
+    <!-- TODO: ajouter pagination -->
     <section id="catalogue">
         <div>
             <h2>Découvrez notre catalogue</h2>
             <p>Explorez notre collection et trouvez le jeu parfait pour votre prochaine soirée entre amis ou en famille.</p>
-            
+            <!-- Grille de jeux -->
+            <div class="custom-grid">
+            <?php if (!empty($jeux)): ?>
+            <?php foreach ($jeux as $jeu): ?>
+            <div class="custom-card">
+                <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                <div class="card-body">
+                    <div>
+                        <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
+                        <span><?= $jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'Non noté' ?></span>
+                    </div>
+                    <h4><?= $jeu['annee_edition'] ?? 'N/A' ?> • <?= htmlspecialchars($jeu['nom_editeur'] ?? 'Éditeur inconnu') ?></h4>
+                    <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
+                    <p><?= $jeu['nb_joueurs_min'] ?>–<?= $jeu['nb_joueurs_max'] ?> joueurs • <?= $jeu['age_min'] ?> ans+</p>
+                    <div class="btn-container">
+                        <a href="index.php?url=jeu&id=<?= $jeu['id_jeu'] ?>" class="btn btn-primary">Lire les avis</a>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>    
+            <?php else: ?>
+                <p>Aucun jeu à afficher.</p>
+            <?php endif; ?>
+            </div>
         </div>
     </section>
 </main>

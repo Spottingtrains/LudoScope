@@ -1,6 +1,19 @@
 <?php
 function getAllJeux($conn) {
-    $stmt = $conn->prepare("SELECT * FROM jeu ORDER BY date_ajout DESC");
+    $stmt = $conn->prepare("
+        SELECT jeu.*, 
+            editeur.nom_editeur,
+            ROUND(AVG(avis.note), 1) AS note_moyenne,
+            COUNT(DISTINCT avis.id_avis) AS nb_avis,
+            GROUP_CONCAT(DISTINCT categorie.libelle_categorie SEPARATOR ', ') AS categories
+        FROM jeu
+        LEFT JOIN editeur ON jeu.id_editeur = editeur.id_editeur
+        LEFT JOIN avis ON jeu.id_jeu = avis.id_jeu
+        LEFT JOIN jeu_categorie ON jeu.id_jeu = jeu_categorie.id_jeu
+        LEFT JOIN categorie ON jeu_categorie.id_categorie = categorie.id_categorie
+        GROUP BY jeu.id_jeu
+        ORDER BY jeu.date_ajout DESC
+    ");
     $stmt->execute();
     $result = $stmt->get_result();
     return $result->fetch_all(MYSQLI_ASSOC);
