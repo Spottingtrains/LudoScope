@@ -1,20 +1,8 @@
 <?php
 require __DIR__ . '/nav/header.php';
-
-// Ensure $jeu is defined to avoid undefined variable errors in the view
-$jeu = isset($jeu) && is_array($jeu) ? $jeu : [];
-$jeu = array_merge([
-    'titre' => 'Jeu inconnu',
-    'nom_editeur' => null,
-    'annee_edition' => null,
-    'nb_joueurs_min' => '?',
-    'nb_joueurs_max' => '?',
-    'duree_partie' => '?',
-    'description' => 'Aucune description disponible',
-], $jeu);
 ?>
 <main>
-
+<?php if (isset($jeu)) : ?>
     <h1><?= htmlspecialchars($jeu['titre']) ?></h1>
 
     <p>Éditeur : <?= htmlspecialchars($jeu['nom_editeur'] ?? 'Non renseigné') ?></p>
@@ -48,6 +36,10 @@ $jeu = array_merge([
     <?php endif; ?>
 
     <a href="index.php">← Retour à la liste</a>
+
+<?php else : ?>
+    <p>Jeu introuvable.</p>
+<?php endif; ?>
 
 </main>
 <?php

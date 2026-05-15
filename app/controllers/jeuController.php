@@ -21,6 +21,15 @@ function jeu() {
     // extraire catégories et avis pour la vue
     $categories = $jeu['categories'] ?? [];
     $avis = $jeu['avis'] ?? [];
+    $jeu = array_merge([
+    'titre'          => 'Jeu inconnu',
+    'nom_editeur'    => null,
+    'annee_edition'  => null,
+    'nb_joueurs_min' => '?',
+    'nb_joueurs_max' => '?',
+    'duree_partie'   => '?',
+    'description'    => 'Aucune description disponible',
+], $jeu);
     include 'app/views/jeu_detail.php';
 }
 // dirige vers la page d'ajout de jeu, accessible uniquement aux utilisateurs connectés ou admin

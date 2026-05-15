@@ -15,7 +15,7 @@ switch($url) {
         break;
     case 'jeu/add':
         require 'app/controllers/jeuController.php';
-        jeu_add();
+        jeuAdd();
         break;
     case 'login':
         require 'app/controllers/authController.php';
