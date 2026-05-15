@@ -1,4 +1,6 @@
-<?php require __DIR__ . '/nav/header.php'; ?>
+<?php 
+require __DIR__ . '/nav/header.php'; 
+?>
 
 <main class="container py-5">
     <h1 class="mb-4">Mot de passe oublié</h1>

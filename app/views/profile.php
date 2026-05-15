@@ -1,8 +1,6 @@
 <?php 
 require __DIR__ . '/../views/nav/header.php';
 require_once __DIR__ . '/../../app/middleware/auth.php';
-require_once __DIR__ . '/../../app/models/user.php';
-checkRole(2); // Seuls les utilisateurs avec un rôle >= 2 peuvent accéder au profil
 ?>
 
 <main>
@@ -15,23 +13,23 @@ checkRole(2); // Seuls les utilisateurs avec un rôle >= 2 peuvent accéder au p
         <form action="" class="custom-form">
             <div class="form-group">
                 <label for="firstname">Prénom :</label>
-                <input type="text" id="firstname" name="firstname" value="<?php echo $user['nom']; ?>" disabled>
+                <input type="text" id="firstname" name="firstname" value="<?php echo $user['nom'] ?? ''; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="lastname">Nom :</label>
-                <input type="text" id="lastname" name="lastname" value="<?php echo $user['prenom']; ?>" disabled>
+                <input type="text" id="lastname" name="lastname" value="<?php echo $user['prenom'] ?? ''; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="email">Email :</label>
-                <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" disabled>
+                <input type="email" id="email" name="email" value="<?php echo $user['email'] ?? ''; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="pseudo">Pseudo :</label>
-                <input type="text" id="pseudo" name="pseudo" value="<?php echo $user['pseudo']; ?>" disabled>
+                <input type="text" id="pseudo" name="pseudo" value="<?php echo $user['pseudo'] ?? ''; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" value="<?php echo $user['mot_de_passe']; ?>" disabled>
+                <input type="password" id="password" name="password" value="<?php echo $user['mot_de_passe'] ?? ''; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="new_password">Nouveau mot de passe :</label>
