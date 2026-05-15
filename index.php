@@ -41,7 +41,15 @@ switch($url) {
         require 'app/controllers/adminController.php';
         adminUsers();
         break;
-    default:
+    case 'forgot-password':
+        require 'app/controllers/passwordController.php';
+        forgotPassword();
+        break;
+    case 'reset-password':
+        require 'app/controllers/passwordController.php';
+        resetPassword();
+        break;
+        default:
         http_response_code(404);
         include 'app/views/404.php';
         break;

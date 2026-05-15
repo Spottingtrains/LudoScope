@@ -36,6 +36,7 @@ require __DIR__ . '/nav/header.php';
                     <button type="submit" class="btn btn-dark">Se connecter</button>
                 </div>
             </form>
+            <a href="index.php?url=forgot-password">Mot de passe oublié ?</a>
         </div>
         <div class="tab-pane fade <?= ($activeTab ?? 'login') === 'signin' ? 'show active' : '' ?>" id="signin-pane" role="tabpanel" aria-labelledby="signin-tab" tabindex="0">
             <form action="index.php?url=register" method="post" class="row g-3">

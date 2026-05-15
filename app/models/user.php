@@ -53,3 +53,9 @@ function updateDerniereConnexion($conn, $id_utilisateur) {
     $stmt->bind_param("i", $id_utilisateur);
     return $stmt->execute();
 }
+
+function updatePassword($conn, $id_utilisateur, $hashedPassword) {
+    $stmt = $conn->prepare("UPDATE utilisateur SET mot_de_passe = ? WHERE id_utilisateur = ?");
+    $stmt->bind_param("si", $hashedPassword, $id_utilisateur);
+    return $stmt->execute();
+}
