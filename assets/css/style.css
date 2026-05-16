@@ -15,18 +15,10 @@ header {
     margin-bottom: 100px;
 }
 
-.custom-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 8px;
-    width: 100%;
-}
-
 .custom-card {
     background-color: #fff2dd;
     border: 1px solid #686868;
     border-radius: 0.5rem;
-    grid-column: span 4;
 }
 
 .card-body {
@@ -40,7 +32,7 @@ header {
     object-fit: cover;
 }
 
-.custom-grid a {
+.custom-card a {
     text-decoration: none;
     color: inherit;
 }

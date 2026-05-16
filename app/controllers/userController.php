@@ -9,6 +9,9 @@ function profile() {
     // Récupérer les informations de l'utilisateur connecté
     $conn = connect();
     $user = getUserById($conn, $_SESSION['id_utilisateur']);
+    $favoriteGames = getFavoriteGamesByUser($conn, $_SESSION['id_utilisateur']);
+    $addedGames = getAddedGamesByUser($conn, $_SESSION['id_utilisateur']);
+    $addedReviews = getAddedReviewsByUser($conn, $_SESSION['id_utilisateur']);
 
     include __DIR__ . '/../../app/views/profile.php';
 }

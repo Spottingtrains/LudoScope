@@ -59,3 +59,34 @@ function updatePassword($conn, $id_utilisateur, $hashedPassword) {
     $stmt->bind_param("si", $hashedPassword, $id_utilisateur);
     return $stmt->execute();
 }
+
+function getFavoriteGamesByUser($conn, $id_utilisateur) {
+    $stmt = $conn->prepare("SELECT jeu.id_jeu, jeu.titre FROM jeu JOIN favori ON jeu.id_jeu = favori.id_jeu WHERE favori.id_utilisateur = ?");
+    $stmt->bind_param("i", $id_utilisateur);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getAddedGamesByUser($conn, $id_utilisateur) {
+    $stmt = $conn->prepare(
+        "SELECT j.id_jeu, j.titre, j.date_ajout, COUNT(a.id_avis) AS nb_commentaires
+         FROM jeu j
+         LEFT JOIN avis a ON j.id_jeu = a.id_jeu
+         WHERE j.id_utilisateur = ?
+         GROUP BY j.id_jeu, j.titre, j.date_ajout
+         ORDER BY j.date_ajout DESC"
+    );
+    $stmt->bind_param("i", $id_utilisateur);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getAddedReviewsByUser($conn, $id_utilisateur) {
+    $stmt = $conn->prepare("SELECT avis.id_avis, avis.commentaire, avis.note, avis.date_avis, jeu.titre FROM avis JOIN jeu ON avis.id_jeu = jeu.id_jeu WHERE avis.id_utilisateur = ?");
+    $stmt->bind_param("i", $id_utilisateur);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
