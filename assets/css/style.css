@@ -1,3 +1,12 @@
+html {
+    scroll-behavior: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+}
+
+
 .navbar.nav-custom {
     min-height: 80px;
 }
@@ -34,20 +43,4 @@ header {
 .custom-grid a {
     text-decoration: none;
     color: inherit;
-}
-
-.custom-form .form-group {
-    display: flex;
-    align-items: center; /* Aligne verticalement le label et l'input */
-    margin-bottom: 16px;
-}
-
-.custom-form label {
-  width: 100px; /* Largeur fixe pour que tous les inputs commencent au même endroit */
-  margin-right: 15px; /* Espace entre le label et l'input */
-}
-
-.custom-form input {
-    flex: 1; /* L'input prend le reste de l'espace disponible */
-    padding: 8px;
 }
