@@ -29,34 +29,30 @@ require __DIR__ . '/../views/nav/header.php';
             </div>
             <div class="col-4">
                 <label for="firstname" class="form-label">Prénom :</label>
-                <input type="text" id="firstname" name="firstname" class="form-control" value="<?php echo $user['nom'] ?? ''; ?>" disabled>
+                <input type="text" id="firstname" name="firstname" class="form-control" value="<?php echo $user['nom'] ?? ''; ?>">
             </div>
             <div class="col-4">
                 <label for="lastname" class="form-label">Nom :</label>
-                <input type="text" id="lastname" name="lastname" class="form-control" value="<?php echo $user['prenom'] ?? ''; ?>" disabled>
+                <input type="text" id="lastname" name="lastname" class="form-control" value="<?php echo $user['prenom'] ?? ''; ?>">
             </div>
             <div class="col-4">
                 <label for="pseudo" class="form-label">Pseudo :</label>
-                <input type="text" id="pseudo" name="pseudo" class="form-control" value="<?php echo $user['pseudo'] ?? ''; ?>" disabled>
+                <input type="text" id="pseudo" name="pseudo" class="form-control" value="<?php echo $user['pseudo'] ?? ''; ?>">
             </div>
             <div class="col-12">
                 <label for="email" class="form-label">Email :</label>
-                <input type="email" id="email" name="email" class="form-control" value="<?php echo $user['email'] ?? ''; ?>" disabled>
+                <input type="email" id="email" name="email" class="form-control" value="<?php echo $user['email'] ?? ''; ?>">
             </div>
-            <div class="col-4">
-                <label for="password" class="form-label">Mot de passe actuel :</label>
-                <input type="password" id="password" name="password" class="form-control" value="<?php echo $user['mot_de_passe'] ?? ''; ?>" disabled>
-            </div>
-            <div class="col-4">
+            <div class="col-6">
                 <label for="new_password" class="form-label">Nouveau mot de passe :</label>
                 <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Laissez vide pour ne pas changer">
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <label for="confirm_password" class="form-label">Confirmer le mot de passe :</label>
                 <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Laissez vide pour ne pas changer">
             </div>
-            <button type="submit" class="btn btn-primary">Modifier mes informations</button>
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.php?url=profile'">Annuler les modifications</button>
+            <button type="submit" class="btn btn-primary">Modifier mes informations</button> <!-- TODO:disabled si rien n'est modifié -->
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.php?url=profile'">Annuler les modifications</button> <!-- TODO:disabled si rien n'est modifié -->
         </form>
     </section>
     <!-- Section jeux favoris -->
