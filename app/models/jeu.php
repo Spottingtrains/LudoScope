@@ -29,8 +29,7 @@ function getAllJeux($conn) {
         ORDER BY jeu.date_ajout DESC
     ");
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getJeuById($conn, $id = null) {
@@ -43,10 +42,8 @@ function getJeuById($conn, $id = null) {
         LEFT JOIN editeur e ON j.id_editeur = e.id_editeur
         WHERE j.id_jeu = ?"
     );
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $jeu = $result->fetch_assoc();
+    $stmt->execute([$id]);
+    $jeu = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     // 3. Retourner null si non trouvé (le contrôleur gère le 404)
     if (!$jeu) {
         return null;
@@ -58,9 +55,8 @@ function getJeuById($conn, $id = null) {
         JOIN jeu_categorie jc ON c.id_categorie = jc.id_categorie
         WHERE jc.id_jeu = ?"
     );
-    $stmtCat->bind_param('i', $id);
-    $stmtCat->execute();
-    $categories = $stmtCat->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmtCat->execute([$id]);
+    $categories = $stmtCat->fetchAll(PDO::FETCH_ASSOC);
     // 5. Récupérer les avis du jeu
     $stmtAvis = $conn->prepare(
         "SELECT a.*, u.pseudo
@@ -69,9 +65,8 @@ function getJeuById($conn, $id = null) {
         WHERE a.id_jeu = ?
         ORDER BY a.date_avis DESC"
     );
-    $stmtAvis->bind_param('i', $id);
-    $stmtAvis->execute();
-    $avis = $stmtAvis->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmtAvis->execute([$id]);
+    $avis = $stmtAvis->fetchAll(PDO::FETCH_ASSOC);
     // 6. Attacher catégories et avis au tableau jeu et retourner
     $jeu['categories'] = $categories;
     $jeu['avis'] = $avis;
@@ -109,7 +104,7 @@ function getJeuBySlug($conn, $slug) {
     // Fetch minimal fields to find matching slug
     $stmtAll = $conn->prepare("SELECT id_jeu, titre FROM jeu");
     $stmtAll->execute();
-    $resAll = $stmtAll->get_result()->fetch_all(MYSQLI_ASSOC);
+    $resAll = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
     $foundId = null;
     foreach ($resAll as $row) {
         if (slugify($row['titre']) === $target) {
@@ -128,15 +123,24 @@ function getJeuBySlug($conn, $slug) {
 
 function createJeu($conn, $id_utilisateur, $data) {
     $stmt = $conn->prepare("INSERT INTO jeu (titre, description, nb_joueurs_min, nb_joueurs_max, age_min, age_max, duree_partie, complexite, image, date_ajout, id_utilisateur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)");
-    $stmt->bind_param("ssiiiiiisi", $data['titre'], $data['description'], $data['nb_joueurs_min'], $data['nb_joueurs_max'], $data['age_min'], $data['age_max'], $data['duree_partie'], $data['complexite'], $data['image'], $id_utilisateur);
-    return $stmt->execute();
+    return $stmt->execute([
+        $data['titre'],
+        $data['description'],
+        $data['nb_joueurs_min'],
+        $data['nb_joueurs_max'],
+        $data['age_min'],
+        $data['age_max'],
+        $data['duree_partie'],
+        $data['complexite'],
+        $data['image'],
+        $id_utilisateur
+    ]);
 }
 
 function getDerniersJeux($conn) {
     $stmt = $conn->prepare("SELECT * FROM jeu ORDER BY date_ajout DESC LIMIT 5");
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // function getDemandesEnAttente($conn) {

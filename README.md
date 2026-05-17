@@ -60,6 +60,7 @@ Si un utilisateur essaie d'accéder à une page à laquelle il n'est pas censé 
 
 ## Sécurité
 - Mots de passe hashés avec `password_hash()` (bcrypt)
-- Requêtes SQL préparées (`prepare()` + `bind_param()`) contre les injections SQL
+- Requêtes SQL préparées avec PDO (`prepare()` + `execute()`) contre les injections SQL
+- Nécessite l'extension PHP `pdo` et `pdo_mysql` (activer dans `php.ini`)
 - Vérification des droits via session à chaque page protégée
 - Variables d'environnement dans `.env` (non versionné)

@@ -11,10 +11,11 @@ function connect() {
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
         ];
 
         $pdo = new PDO($dsn, $user, $password, $options);
+        // Important: désactiver l'émulation des requêtes préparées pour une vraie sécurité
+        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         return $pdo;
 
     } catch (Exception $e) {
