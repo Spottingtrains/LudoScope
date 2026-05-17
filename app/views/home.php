@@ -87,9 +87,8 @@ require_once __DIR__ . '/../../app/models/jeu.php';
                                     <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
                                     <span><?= $jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'Non noté' ?></span>
                                 </div>
-                                <h4><?= $jeu['annee_edition'] ?? 'N/A' ?> • <?= htmlspecialchars($jeu['nom_editeur'] ?? 'Éditeur inconnu') ?></h4>
                                 <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
-                                <p><?= $jeu['nb_joueurs_min'] ?>–<?= $jeu['nb_joueurs_max'] ?> joueurs • <?= $jeu['age_min'] ?> ans+</p>
+                                <p><?= htmlspecialchars($jeu['nb_joueurs_min']) ?>–<?= htmlspecialchars($jeu['nb_joueurs_max']) ?> joueurs<?php if (!empty($jeu['age_min'])): ?> • <?= htmlspecialchars($jeu['age_min']) ?> ans+<?php endif; ?></p>
                                 <div class="btn-container">
                                     <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>" class="btn btn-primary">Lire les avis</a>
                                 </div>

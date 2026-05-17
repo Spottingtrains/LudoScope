@@ -14,8 +14,8 @@ if (!function_exists('slugify')) {
     }
 }
 function getAllJeux($conn) {
-    $stmt = $conn->prepare("
-        SELECT jeu.*, 
+    // Select jeu.* (includes auteur/illustrateur columns), plus editor name and aggregated stats/categories
+    $stmt = $conn->prepare("SELECT jeu.*, 
             editeur.nom_editeur,
             ROUND(AVG(avis.note), 1) AS note_moyenne,
             COUNT(DISTINCT avis.id_avis) AS nb_avis,
@@ -26,8 +26,7 @@ function getAllJeux($conn) {
         LEFT JOIN jeu_categorie ON jeu.id_jeu = jeu_categorie.id_jeu
         LEFT JOIN categorie ON jeu_categorie.id_categorie = categorie.id_categorie
         GROUP BY jeu.id_jeu
-        ORDER BY jeu.date_ajout DESC
-    ");
+        ORDER BY jeu.date_ajout DESC");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -36,6 +35,7 @@ function getJeuById($conn, $id = null) {
     // 1. Récupérer l'ID depuis l'argument ou l'URL
     $id = $id ?? (isset($_GET['id']) ? (int)$_GET['id'] : 0);
     // 2. Récupérer le jeu + éditeur
+    // Simple fetch: jeu contains auteur and illustrateur as varchar columns; join editeur for name
     $stmt = $conn->prepare(
         "SELECT j.*, e.nom_editeur
         FROM jeu j
@@ -122,25 +122,72 @@ function getJeuBySlug($conn, $slug) {
 }
 
 function createJeu($conn, $id_utilisateur, $data) {
-    $stmt = $conn->prepare("INSERT INTO jeu (titre, description, nb_joueurs_min, nb_joueurs_max, age_min, age_max, duree_partie, complexite, image, date_ajout, id_utilisateur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)");
-    return $stmt->execute([
+    // Insert using auteur/illustrateur varchar columns present on jeu table
+    $stmt = $conn->prepare("INSERT INTO jeu (titre, description, nb_joueurs_min, nb_joueurs_max, age_min, duree_partie, complexite, image, date_ajout, auteur, illustrateur, annee_edition, id_utilisateur, id_editeur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)");
+    $ok = $stmt->execute([
         $data['titre'],
         $data['description'],
         $data['nb_joueurs_min'],
         $data['nb_joueurs_max'],
-        $data['age_min'],
-        $data['age_max'],
+        $data['age_min'] ?? null,
         $data['duree_partie'],
         $data['complexite'],
         $data['image'],
-        $id_utilisateur
+        $data['auteur'] ?? null,
+        $data['illustrateur'] ?? null,
+        $data['annee_edition'] ?? null,
+        $id_utilisateur,
+        $data['id_editeur'] ?? null,
     ]);
+    if ($ok) {
+        return (int)$conn->lastInsertId();
+    }
+    return false;
 }
 
 function getDerniersJeux($conn) {
     $stmt = $conn->prepare("SELECT * FROM jeu ORDER BY date_ajout DESC LIMIT 5");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getAllEditeurs($conn) {
+    $stmt = $conn->prepare("SELECT id_editeur, nom_editeur FROM editeur ORDER BY nom_editeur ASC");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getOrCreateEditeur($conn, $nomEditeur) {
+    $nomEditeur = trim($nomEditeur);
+    if ($nomEditeur === '') return null;
+
+    $stmt = $conn->prepare('SELECT id_editeur FROM editeur WHERE nom_editeur = ?');
+    $stmt->execute([$nomEditeur]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) return (int)$row['id_editeur'];
+
+    $stmt = $conn->prepare('INSERT INTO editeur (nom_editeur) VALUES (?)');
+    $stmt->execute([$nomEditeur]);
+    return (int)$conn->lastInsertId();
+}
+
+function insertJeuCategories($conn, $jeuId, $selectedCats) {
+    $categoryLabels = [
+        'plateau'    => 'Plateau',
+        'ambiance'   => 'Ambiance',
+        'cartes'     => 'Cartes',
+        'cooperatif' => 'Coopératif',
+        'role'       => 'Rôle',
+        'des'        => 'Dés',
+    ];
+    $selectStmt = $conn->prepare('SELECT id_categorie FROM categorie WHERE libelle_categorie = ?');
+    $insertStmt = $conn->prepare('INSERT INTO jeu_categorie (id_jeu, id_categorie) VALUES (?, ?)');
+    foreach ($selectedCats as $slug) {
+        if (!isset($categoryLabels[$slug])) continue;
+        $selectStmt->execute([$categoryLabels[$slug]]);
+        $row = $selectStmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) $insertStmt->execute([$jeuId, $row['id_categorie']]);
+    }
 }
 
 // function getDemandesEnAttente($conn) {
