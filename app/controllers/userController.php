@@ -120,8 +120,8 @@ function updateProfile() {
             }
 
             // Supprimer l'ancienne image si elle existe et n'est pas l'image par défaut
-            if (!empty($currentUser['image_profil'])) {
-                $oldPath = __DIR__ . '/../../' . ltrim($currentUser['image_profil'], '/');
+            if (!empty($currentUser['photo_profil'])) {
+                $oldPath = __DIR__ . '/../../' . ltrim($currentUser['photo_profil'], '/');
                 if (file_exists($oldPath) && basename($oldPath) !== 'default-profile.webp') {
                     @unlink($oldPath);
                 }

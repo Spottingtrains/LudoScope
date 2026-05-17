@@ -61,7 +61,7 @@ function updatePassword($conn, $id_utilisateur, $hashedPassword) {
 }
 
 function updateProfileImage($conn, $id_utilisateur, $imagePath) {
-    $stmt = $conn->prepare("UPDATE utilisateur SET image_profil = ? WHERE id_utilisateur = ?");
+    $stmt = $conn->prepare("UPDATE utilisateur SET photo_profil = ? WHERE id_utilisateur = ?");
     $stmt->bind_param("si", $imagePath, $id_utilisateur);
     return $stmt->execute();
 }

@@ -37,7 +37,7 @@ require __DIR__ . '/../views/nav/header.php';
                 <div id="client-error" class="alert alert-danger d-none" role="alert" style="display:none;"></div>
             </div>
             <div>
-                <img src="<?php echo $user['image_profil'] ?? '/../uploads/default-profile.webp'; ?>" alt="image de profil" class="img-thumbnail mb-3" style="width: 150px; height: 150px; border-radius: 50%;"> <!-- TODO: retirer les styles inline et les mettre dans le CSS -->
+                <img src="<?php echo $user['photo_profil'] ?? '/uploads/default-profile.webp'; ?>" alt="image de profil" class="img-thumbnail mb-3" style="width: 150px; height: 150px; border-radius: 50%;"> <!-- TODO: retirer les styles inline et les mettre dans le CSS -->
             </div>
             <div class="col-12 mb-3">
                 <label for="image_profil" class="form-label">Modifier l'image de profil :</label>

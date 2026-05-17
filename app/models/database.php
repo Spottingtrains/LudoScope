@@ -7,18 +7,16 @@ function connect() {
         $password = $GLOBALS['dotenv']['DB_PASSWORD'];
         $dbname = $GLOBALS['dotenv']['DB_NAME'];
 
-        $conn = new mysqli($host, $user, $password, $dbname);
-        
-        if ($conn->connect_error) {
-            throw new Exception("Erreur : " . $conn->connect_error);
-        }
-        
-        $conn->set_charset("utf8mb4");
-        // TODO: DEV ONLY - à supprimer avant livraison - affiche un message de succès et les détails de la connexion pour vérifier que tout fonctionne correctement
-        // echo "✓ Connexion OK";
-        // var_dump($conn);
-        return $conn;
-        
+        $dsn = "mysql:host={$host};dbname={$dbname};charset=utf8mb4";
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ];
+
+        $pdo = new PDO($dsn, $user, $password, $options);
+        return $pdo;
+
     } catch (Exception $e) {
         echo "✗ Erreur : " . $e->getMessage();
         exit();
