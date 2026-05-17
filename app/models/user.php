@@ -60,6 +60,12 @@ function updatePassword($conn, $id_utilisateur, $hashedPassword) {
     return $stmt->execute();
 }
 
+function updateProfileImage($conn, $id_utilisateur, $imagePath) {
+    $stmt = $conn->prepare("UPDATE utilisateur SET image_profil = ? WHERE id_utilisateur = ?");
+    $stmt->bind_param("si", $imagePath, $id_utilisateur);
+    return $stmt->execute();
+}
+
 function getFavoriteGamesByUser($conn, $id_utilisateur) {
     $stmt = $conn->prepare("SELECT jeu.id_jeu, jeu.titre FROM jeu JOIN favori ON jeu.id_jeu = favori.id_jeu WHERE favori.id_utilisateur = ?");
     $stmt->bind_param("i", $id_utilisateur);

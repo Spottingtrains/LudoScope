@@ -57,21 +57,23 @@ require __DIR__ . '/nav/header.php';
                 </div>
                 <div class="col-12">
                     <label for="signin-email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="signin-email" name="email" required>
+                    <input type="email" class="form-control" id="signin-email" name="email" required aria-describedby="signinEmailHelp">
+                    <div id="signinEmailHelp" class="form-text">Format attendu : nom@domaine.tld</div>
                     <div class="invalid-feedback">
                     Le format de l'adresse email n'est pas valide.
                     </div>
                 </div>
                 <div class="col-md-6">
                     <label for="signin-password" class="form-label">Mot de passe</label>
-                    <input type="password" class="form-control" id="signin-password" name="mot_de_passe" required>
+                    <input type="password" class="form-control" id="signin-password" name="mot_de_passe" required aria-describedby="signinPasswordHelp">
+                    <div id="signinPasswordHelp" class="form-text">Doit contenir au moins 8 caractères, une majuscule et un chiffre</div>
                     <div class="invalid-feedback">
                         Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.
                     </div>
                 </div>
                 <div class="col-md-6">
                     <label for="signin-password-confirm" class="form-label">Confirmer le mot de passe</label>
-                    <input type="password" class="form-control" id="signin-password-confirm" name="mot_de_passe_confirm" required>
+                    <input type="password" class="form-control" id="signin-password-confirm" name="mot_de_passe_confirm" required aria-describedby="signinPasswordHelp">
                     <div class="invalid-feedback">
                     Les mots de passe ne correspondent pas.
                     </div>

@@ -23,17 +23,33 @@ require __DIR__ . '/../views/nav/header.php';
     <!-- Section pour modifier les informations du profil -->
     <section id="informations">
         <h2>Mes informations</h2>
-        <form action="index.php?url=login" method="post" class="row g-3">
+        <form action="" method="post" enctype="multipart/form-data" class="row g-3">
+            <div>
+                <?php if (!empty($_SESSION['success'])): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
+                <?php unset($_SESSION['success']);
+                endif;
+                if (!empty($_SESSION['error'])): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
+                <?php unset($_SESSION['error']);
+                endif; ?>
+                <!-- Conteneur pour erreurs côté client (JS) -->
+                <div id="client-error" class="alert alert-danger d-none" role="alert" style="display:none;"></div>
+            </div>
             <div>
                 <img src="<?php echo $user['image_profil'] ?? '/../uploads/default-profile.webp'; ?>" alt="image de profil" class="img-thumbnail mb-3" style="width: 150px; height: 150px; border-radius: 50%;"> <!-- TODO: retirer les styles inline et les mettre dans le CSS -->
             </div>
-            <div class="col-4">
-                <label for="firstname" class="form-label">Prénom :</label>
-                <input type="text" id="firstname" name="firstname" class="form-control" value="<?php echo $user['nom'] ?? ''; ?>">
+            <div class="col-12 mb-3">
+                <label for="image_profil" class="form-label">Modifier l'image de profil :</label>
+                <input type="file" id="image_profil" name="image_profil" accept="image/*" class="form-control">
             </div>
             <div class="col-4">
-                <label for="lastname" class="form-label">Nom :</label>
-                <input type="text" id="lastname" name="lastname" class="form-control" value="<?php echo $user['prenom'] ?? ''; ?>">
+                <label for="prenom" class="form-label">Prénom :</label>
+                <input type="text" id="prenom" name="prenom" class="form-control" value="<?php echo $user['prenom'] ?? ''; ?>">
+            </div>
+            <div class="col-4">
+                <label for="nom" class="form-label">Nom :</label>
+                <input type="text" id="nom" name="nom" class="form-control" value="<?php echo $user['nom'] ?? ''; ?>">
             </div>
             <div class="col-4">
                 <label for="pseudo" class="form-label">Pseudo :</label>
@@ -41,20 +57,23 @@ require __DIR__ . '/../views/nav/header.php';
             </div>
             <div class="col-12">
                 <label for="email" class="form-label">Email :</label>
-                <input type="email" id="email" name="email" class="form-control" value="<?php echo $user['email'] ?? ''; ?>">
+                <input type="email" id="email" name="email" class="form-control" value="<?php echo $user['email'] ?? ''; ?>" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">Format attendu : nom@domaine.tld</div>
             </div>
             <div class="col-6">
                 <label for="new_password" class="form-label">Nouveau mot de passe :</label>
-                <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Laissez vide pour ne pas changer">
+                <input type="password" id="new_password" name="new_password" class="form-control" placeholder="Laissez vide pour ne pas changer" aria-describedby="passwordHelp">
+                <div id="passwordHelp" class="form-text">Doit contenir au moins 8 caractères, une majuscule et un chiffre</div>
             </div>
             <div class="col-6">
                 <label for="confirm_password" class="form-label">Confirmer le mot de passe :</label>
-                <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Laissez vide pour ne pas changer">
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Laissez vide pour ne pas changer" aria-describedby="passwordHelp">
             </div>
-            <button type="submit" class="btn btn-primary">Modifier mes informations</button> <!-- TODO:disabled si rien n'est modifié -->
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.php?url=profile'">Annuler les modifications</button> <!-- TODO:disabled si rien n'est modifié -->
+            <button type="submit" id="submitBtn" class="btn btn-primary" disabled>Modifier mes informations</button>
+            <button type="button" id="cancelBtn" class="btn btn-secondary" onclick="window.location.href='index.php?url=profile'" disabled>Annuler les modifications</button>
         </form>
     </section>
+
     <!-- Section jeux favoris -->
     <section id="favoris">
         <h2>Mes jeux favoris</h2>
