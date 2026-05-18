@@ -20,7 +20,7 @@ require __DIR__ . '/nav/header.php';
 
         <div class="col-12">
             <label for="description" class="form-label">Description du jeu</label>
-            <textarea id="description" name="description" class="form-control" rows="4"><?= htmlspecialchars($old['description'] ?? '') ?></textarea>
+            <textarea id="description" name="description" class="form-control" rows="4" required><?= htmlspecialchars($old['description'] ?? '') ?></textarea>
         </div>
 
         <div class="col-md-4">
@@ -57,7 +57,7 @@ require __DIR__ . '/nav/header.php';
 
         <div class="col-md-4">
             <label for="age_min" class="form-label">Âge minimum</label>
-            <input type="number" id="age_min" name="age_min" class="form-control" min="0" value="<?= htmlspecialchars($old['age_min'] ?? '') ?>">
+            <input type="number" id="age_min" name="age_min" class="form-control" min="0" required value="<?= htmlspecialchars($old['age_min'] ?? '') ?>">
         </div>
 
         <!-- COMPLEXITÉ : dropdown -->
@@ -80,7 +80,7 @@ require __DIR__ . '/nav/header.php';
                 foreach ($categories as $valeur => $label):
                 ?>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="cat_<?= $valeur ?>" name="categories[]" value="<?= $valeur ?>" <?= in_array($valeur, $oldCats) ? 'checked' : '' ?>>
+                    <input class="form-check-input" type="checkbox" id="cat_<?= $valeur ?>" name="categories[]" required value="<?= $valeur ?>" <?= in_array($valeur, $oldCats) ? 'checked' : '' ?>>
                     <label class="form-check-label" for="cat_<?= $valeur ?>">
                         <?= $label ?>
                     </label>
@@ -92,11 +92,11 @@ require __DIR__ . '/nav/header.php';
         <!-- NOMBRE DE JOUEURS : deux range -->
         <div class="col-md-3">
             <label for="nb_joueurs_min" class="form-label">Joueurs min</label>
-            <input type="number" id="nb_joueurs_min" name="nb_joueurs_min" class="form-control" min="1" max="20" value="<?= htmlspecialchars($old['nb_joueurs_min'] ?? 2) ?>" required>
+            <input type="number" id="nb_joueurs_min" name="nb_joueurs_min" class="form-control" min="1" max="20" required value="<?= htmlspecialchars($old['nb_joueurs_min'] ?? 2) ?>" required>
         </div>
         <div class="col-md-3">
             <label for="nb_joueurs_max" class="form-label">Joueurs max</label>
-            <input type="number" id="nb_joueurs_max" name="nb_joueurs_max" class="form-control" min="1" max="20" value="<?= htmlspecialchars($old['nb_joueurs_max'] ?? 4) ?>" required>
+            <input type="number" id="nb_joueurs_max" name="nb_joueurs_max" class="form-control" min="1" max="20" required value="<?= htmlspecialchars($old['nb_joueurs_max'] ?? 4) ?>" required>
         </div>
 
         <div class="col-12">
