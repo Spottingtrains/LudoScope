@@ -134,6 +134,8 @@ function jeuAdd() {
             $jeuId = createJeu($conn, $_SESSION['id_utilisateur'], $data);
             if ($jeuId !== false) {
                 insertJeuCategories($conn, $jeuId, $_POST['categories'] ?? []);
+                // message de succès affiché sur la page d'accueil via la session
+                $_SESSION['success'] = 'Jeu ajouté avec succès.';
                 header('Location: index.php?url=home');
                 exit();
             } else {

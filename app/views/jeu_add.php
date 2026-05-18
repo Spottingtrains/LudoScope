@@ -80,7 +80,7 @@ require __DIR__ . '/nav/header.php';
                 foreach ($categories as $valeur => $label):
                 ?>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="cat_<?= $valeur ?>" name="categories[]" required value="<?= $valeur ?>" <?= in_array($valeur, $oldCats) ? 'checked' : '' ?>>
+                    <input class="form-check-input" type="checkbox" id="cat_<?= $valeur ?>" name="categories[]" value="<?= $valeur ?>" <?= in_array($valeur, $oldCats) ? 'checked' : '' ?>>
                     <label class="form-check-label" for="cat_<?= $valeur ?>">
                         <?= $label ?>
                     </label>
