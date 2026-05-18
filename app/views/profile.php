@@ -89,6 +89,7 @@ require __DIR__ . '/../views/nav/header.php';
                     <th>Titre</th>
                     <th>Date d'ajout</th>
                     <th>Nombre de commentaires</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,11 +99,18 @@ require __DIR__ . '/../views/nav/header.php';
                             <td><?php echo htmlspecialchars($game['titre']); ?></td>
                             <td><?php echo htmlspecialchars(date('d/m/Y', strtotime($game['date_ajout']))); ?></td>
                             <td><?php echo (int)$game['nb_commentaires']; ?></td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($game['titre'])); ?>" class="btn btn-sm btn-outline-primary">Voir</a>
+                                    <a href="index.php?url=jeu/edit&id=<?php echo (int)$game['id_jeu']; ?>" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                    <a href="index.php?url=jeu/delete&id=<?php echo (int)$game['id_jeu']; ?>" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                                </div>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="3">Vous n'avez ajouté aucun jeu.</td>
+                        <td colspan="4">Vous n'avez ajouté aucun jeu.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -111,33 +119,42 @@ require __DIR__ . '/../views/nav/header.php';
     <!-- Section avis laissés -->
     <section id="avis">
         <h2>Mes avis laissés</h2>
-        <p>Liste de vos avis laissés - en construction</p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Titre du jeu</th>
-                    <th>Note</th>
-                    <th>Date de l'avis</th>
-                    <th>Commentaire</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($addedReviews)): ?>
-                    <?php foreach ($addedReviews as $review): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($review['titre']); ?></td>
-                            <td><?php echo htmlspecialchars($review['note']); ?> / 10</td>
-                            <td><?php echo htmlspecialchars(date('d/m/Y', strtotime($review['date_avis']))); ?></td>
-                            <td><?php echo htmlspecialchars($review['commentaire']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4">Vous n'avez ajouté aucun avis.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+        <p>Retrouvez ici vos derniers avis publiés sur les jeux du catalogue.</p>
+        <?php if (!empty($addedReviews)): ?>
+            <div class="row row-cols-1 row-cols-lg-2 g-4">
+                <?php foreach ($addedReviews as $review): ?>
+                    <div class="col">
+                        <article class="card h-100 shadow-sm">
+                            <div class="card-body d-flex flex-column gap-3">
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div>
+                                        <h3 class="h5 mb-1"><?php echo htmlspecialchars($review['titre']); ?></h3>
+                                        <small class="text-muted">
+                                            Publié le <?php echo htmlspecialchars(date('d/m/Y', strtotime($review['date_avis']))); ?>
+                                        </small>
+                                    </div>
+                                    <span class="badge bg-primary fs-6">
+                                        <?php echo htmlspecialchars($review['note']); ?>/10
+                                    </span>
+                                </div>
+                                <p class="mb-0">
+                                    <?php echo htmlspecialchars($review['commentaire']); ?>
+                                </p>
+                                <div class="d-flex flex-wrap gap-2 mt-auto">
+                                    <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($review['titre'])); ?>" class="btn btn-sm btn-outline-primary">Voir le jeu</a>
+                                    <a href="index.php?url=avis/edit&id=<?php echo (int)$review['id_avis']; ?>" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                    <a href="index.php?url=avis/delete&id=<?php echo (int)$review['id_avis']; ?>" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-secondary mb-0">
+                Vous n'avez ajouté aucun avis.
+            </div>
+        <?php endif; ?>
     </section>
 </main>
 

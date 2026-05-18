@@ -71,9 +71,3 @@ function getAddedGamesByUser($conn, $id_utilisateur) {
     $stmt->execute([$id_utilisateur]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-function getAddedReviewsByUser($conn, $id_utilisateur) {
-    $stmt = $conn->prepare("SELECT avis.id_avis, avis.commentaire, avis.note, avis.date_avis, jeu.titre FROM avis JOIN jeu ON avis.id_jeu = jeu.id_jeu WHERE avis.id_utilisateur = ?");
-    $stmt->execute([$id_utilisateur]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
