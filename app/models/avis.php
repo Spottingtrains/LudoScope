@@ -5,6 +5,12 @@ function getAvisByUser($conn, $id_utilisateur) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function hasAvisFromUser($conn, $id_utilisateur, $id_jeu) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM avis WHERE id_utilisateur = ? AND id_jeu = ?");
+    $stmt->execute([$id_utilisateur, $id_jeu]);
+    return $stmt->fetchColumn() > 0;
+}
+
 function createAvis($conn, $id_utilisateur, $id_jeu, $commentaire, $note) {
     $stmt = $conn->prepare("INSERT INTO avis (commentaire, note, date_avis, id_utilisateur, id_jeu) VALUES (?, ?, NOW(), ?, ?)");
     return $stmt->execute([$commentaire, $note, $id_utilisateur, $id_jeu]);

@@ -2,36 +2,61 @@
 require_once __DIR__ . '/../../app/middleware/auth.php';
 require_once __DIR__ . '/../../app/models/database.php';
 require_once __DIR__ . '/../../app/models/jeu.php';
+require_once __DIR__ . '/../../app/models/avis.php';
+
 // dirige vers la page de détail d'un jeu, accessible à tous les utilisateurs
 function jeu() {
     $conn = connect();
-    // prefer slug if provided, else id
+
     $slug = isset($_GET['slug']) ? urldecode($_GET['slug']) : null;
     if ($slug) {
         $jeu = getJeuBySlug($conn, $slug);
     } else {
         $jeu = getJeuById($conn, isset($_GET['id']) ? (int)$_GET['id'] : null);
     }
-    
+
     if (!$jeu) {
         http_response_code(404);
         include 'app/views/404.php';
         return;
     }
-    // extraire catégories et avis pour la vue
+
+    // Traitement du formulaire d'avis
+    $avisError = null;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id_utilisateur'])) {
+        $commentaire = trim($_POST['commentaire'] ?? '');
+        $note = isset($_POST['note']) ? (int)$_POST['note'] : 0;
+        $id_jeu = (int)$jeu['id_jeu'];
+        $id_utilisateur = (int)$_SESSION['id_utilisateur'];
+
+        if ($commentaire === '') {
+            $avisError = 'Le commentaire est requis.';
+        } elseif ($note < 1 || $note > 10) {
+            $avisError = 'La note doit être comprise entre 1 et 10.';
+        } elseif (hasAvisFromUser($conn, $id_utilisateur, $id_jeu)) {
+            $avisError = 'Vous avez déjà posté un avis pour ce jeu.';
+        } else {
+            createAvis($conn, $id_utilisateur, $id_jeu, $commentaire, $note);
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            exit();
+        }
+    }
+
     $categories = $jeu['categories'] ?? [];
     $avis = $jeu['avis'] ?? [];
     $jeu = array_merge([
-    'titre'          => 'Jeu inconnu',
-    'nom_editeur'    => null,
-    'annee_edition'  => null,
-    'nb_joueurs_min' => '?',
-    'nb_joueurs_max' => '?',
-    'duree_partie'   => '?',
-    'description'    => 'Aucune description disponible',
-], $jeu);
+        'titre'          => 'Jeu inconnu',
+        'nom_editeur'    => null,
+        'annee_edition'  => null,
+        'nb_joueurs_min' => '?',
+        'nb_joueurs_max' => '?',
+        'duree_partie'   => '?',
+        'description'    => 'Aucune description disponible',
+    ], $jeu);
+
     include 'app/views/jeu_detail.php';
 }
+
 // dirige vers la page d'ajout de jeu, accessible uniquement aux utilisateurs connectés ou admin
 function jeuAdd() {
     checkRole(2);
