@@ -23,7 +23,7 @@ require __DIR__ . '/../views/nav/header.php';
     <!-- Section pour modifier les informations du profil -->
     <section id="informations">
         <h2>Mes informations</h2>
-        <form action="" method="post" enctype="multipart/form-data" class="row g-3">
+        <form id="profile-form" action="" method="post" enctype="multipart/form-data" class="row g-3">
             <div>
                 <?php if (!empty($_SESSION['success'])): ?>
                 <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>

@@ -6,7 +6,7 @@ require __DIR__ . '/nav/header.php';
     <?php if (!empty($error)): ?>
         <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
-    <form method="POST" action="index.php?url=jeu/add" class="row g-3" enctype="multipart/form-data">
+    <form id="jeu-add-form" method="POST" action="index.php?url=jeu/add" class="row g-3" enctype="multipart/form-data">
 
         <div class="col-12">
             <label for="image" class="form-label">Image de couverture</label>

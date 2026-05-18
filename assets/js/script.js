@@ -1,4 +1,4 @@
-// Structure uniforme: helpers partagés + deux handlers encapsulés dans DOMContentLoaded
+// Structure uniforme: helpers partagés + trois handlers encapsulés dans DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
     // Helpers partagés
     const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/; // >=8 chars, 1 uppercase, 1 digit
@@ -26,19 +26,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const pw = document.getElementById('signin-password');
         const pwConfirm = document.getElementById('signin-password-confirm');
         const email = document.getElementById('signin-email');
-        if (!pw && !pwConfirm && !email) return; // pas de formulaire signup ici
+        if (!pw && !pwConfirm && !email) return;
 
-        // Complexité du mot de passe
         pw?.addEventListener('input', function () {
             isPasswordStrong(pw.value) ? setValid(pw) : setInvalid(pw);
         });
 
-        // Confirmation du mot de passe
         pwConfirm?.addEventListener('input', function () {
             pwConfirm.value === pw.value ? setValid(pwConfirm) : setInvalid(pwConfirm);
         });
 
-        // Email simple (utilise le helper commun)
         email?.addEventListener('input', function () {
             isEmailValid(email.value) ? setValid(email) : setInvalid(email);
         });
@@ -46,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handler 2: profile form (détection de modification, validation mot de passe, affichage d'erreur inline)
     (function profileHandler(){
-        const form = document.querySelector('form[enctype="multipart/form-data"]');
+        const form = document.getElementById('profile-form'); // ← corrigé
         if (!form) return;
 
         const submitBtn = document.getElementById('submitBtn');
@@ -125,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
             clearClientError();
             checkChanged();
             validatePasswords();
-            // vérifier email côté client et empêcher la soumission si invalide
             if (email) {
                 if (!isEmailValid(email.value)) {
                     setInvalid(email);
@@ -151,5 +147,69 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         checkChanged();
+    })();
+
+    // Handler 3: autosave du formulaire d'ajout de jeu (localStorage)
+    (function jeuAutosaveHandler() {
+        const form = document.getElementById('jeu-add-form'); // ← corrigé
+        if (!form) return;
+
+        const STORAGE_KEY = 'adb_jeu_add_draft';
+        let debounceTimer;
+
+        function getFormData() {
+            return {
+                titre:            document.getElementById('titre')?.value || '',
+                description:      document.getElementById('description')?.value || '',
+                nom_editeur:      document.getElementById('nom_editeur')?.value || '',
+                nom_auteur:       document.getElementById('nom_auteur')?.value || '',
+                nom_illustrateur: document.getElementById('nom_illustrateur')?.value || '',
+                annee_edition:    document.getElementById('annee_edition')?.value || '',
+                duree_partie:     document.getElementById('duree_partie')?.value || '',
+                age_min:          document.getElementById('age_min')?.value || '',
+                complexite:       document.getElementById('complexite')?.value || '',
+                nb_joueurs_min:   document.getElementById('nb_joueurs_min')?.value || '',
+                nb_joueurs_max:   document.getElementById('nb_joueurs_max')?.value || '',
+                categories: Array.from(
+                    form.querySelectorAll('input[name="categories[]"]:checked')
+                ).map(cb => cb.value)
+            };
+        }
+
+        function saveDraft() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+        }
+
+        function restoreDraft() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+
+            ['titre','description','nom_editeur','nom_auteur','nom_illustrateur',
+             'annee_edition','duree_partie','age_min','complexite','nb_joueurs_min','nb_joueurs_max'
+            ].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && data[id]) el.value = data[id];
+            });
+
+            if (data.categories) {
+                form.querySelectorAll('input[name="categories[]"]').forEach(cb => {
+                    cb.checked = data.categories.includes(cb.value);
+                });
+            }
+        }
+
+        form.addEventListener('focusout', saveDraft);
+
+        form.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(saveDraft, 3000);
+        });
+
+        form.addEventListener('submit', function () {
+            localStorage.removeItem(STORAGE_KEY);
+        });
+
+        restoreDraft();
     })();
 });
