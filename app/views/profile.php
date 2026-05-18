@@ -5,7 +5,7 @@ require __DIR__ . '/../views/nav/header.php';
 <main class="container py-5">
     <h1>Mon profil</h1>
     <p>Bienvenue <strong><?php echo $_SESSION['pseudo']; ?></strong> !</p>
-    <p>Vous n'êtes pas <?php echo $_SESSION['pseudo']; ?> ? <a href="" onclick="logout()">Me déconnecter</a></p>
+    <p>Vous n'êtes pas <?php echo $_SESSION['pseudo']; ?> ? <a href="index.php?url=logout">Me déconnecter</a></p>
     <ul class="nav nav-tabs" id="authTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link" href="#informations">Mes informations</a>
