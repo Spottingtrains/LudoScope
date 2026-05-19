@@ -41,6 +41,31 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     })();
 
+    // Handler 4 : efface les brouillons d'ajout de jeu (clés commençant par 'jeu_add') lors de la déconnexion
+    (function logoutClearHandler(){
+        function clearJeuDraftKeys() {
+            try {
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (!key) continue;
+                    if (key.indexOf('jeu_add') === 0) localStorage.removeItem(key);
+                }
+            } catch (e) {
+                // Ignorer les erreurs (ex. localStorage non accessible en navigation privée)
+            }
+        }
+
+        // Attache le nettoyeur aux liens de déconnexion (tous les <a> dont l'attribut href contient 'logout')
+        document.querySelectorAll('a[href*="logout"]').forEach(a => {
+            a.addEventListener('click', clearJeuDraftKeys);
+        });
+
+        // Si la page a été chargée suite à une redirection de déconnexion (ex. ?logout=1), on efface immédiatement
+        if (location.search && location.search.indexOf('logout') !== -1) {
+            clearJeuDraftKeys();
+        }
+    })();
+
     // Handler 2: profile form (détection de modification, validation mot de passe, affichage d'erreur inline)
     (function profileHandler(){
         const form = document.getElementById('profile-form'); // ← corrigé
@@ -154,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('jeu-add-form'); // ← corrigé
         if (!form) return;
 
-        const STORAGE_KEY = 'adb_jeu_add_draft';
+        const STORAGE_KEY = 'jeu_add_draft';
         let debounceTimer;
 
         function getFormData() {
