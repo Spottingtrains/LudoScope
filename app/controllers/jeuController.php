@@ -227,6 +227,13 @@ function jeuEdit() {
         return;
     }
 
+    $pendingDemande = hasPendingDemande($conn, $idJeu);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $pendingDemande) {
+        $_SESSION['error'] = 'Une demande est déjà en cours pour ce jeu.';
+        header('Location: index.php?url=profile');
+        exit();
+    }
+
     $categories = [
         'plateau'    => 'Plateau',
         'ambiance'   => 'Ambiance',

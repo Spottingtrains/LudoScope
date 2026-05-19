@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/nav/header.php';
-$editeurs = $editeurs ?? [];
+$editeurs   = $editeurs   ?? [];
 $categories = $categories ?? [];
 ?>
 <main class="container py-4">
@@ -10,7 +10,13 @@ $categories = $categories ?? [];
         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
-    <?php if (!empty($jeu)): ?>
+    <?php if ($pendingDemande ?? false): ?>
+        <div class="alert alert-warning">
+            Une demande de modification est déjà en cours pour ce jeu. Vous pourrez soumettre une nouvelle modification une fois qu'elle aura été traitée par un administrateur.
+        </div>
+        <a href="index.php?url=profile" class="btn btn-outline-secondary">Retour au profil</a>
+
+    <?php elseif (!empty($jeu)): ?>
         <form id="jeu-edit-form" method="POST" action="index.php?url=jeu/edit&id=<?= (int)$jeu['id_jeu'] ?>" class="row g-3" enctype="multipart/form-data">
             <div class="col-12">
                 <div class="alert alert-secondary mb-0">
@@ -70,16 +76,16 @@ $categories = $categories ?? [];
 
             <div class="col-md-4">
                 <label for="age_min" class="form-label">Âge minimum</label>
-                <input type="number" id="age_min" name="age_min" class="form-control" min="0" required value="<?= htmlspecialchars($old['age_min'] ?? '') ?>">
+                <input type="number" id="age_min" name="age_min" class="form-control" min="0" value="<?= htmlspecialchars($old['age_min'] ?? '') ?>">
             </div>
 
             <div class="col-md-6">
                 <label for="complexite" class="form-label">Complexité</label>
                 <select id="complexite" name="complexite" class="form-select" required>
                     <option value="" disabled <?= empty($old['complexite']) ? 'selected' : '' ?>>-- Choisir --</option>
-                    <option value="facile" <?= (isset($old['complexite']) && $old['complexite'] === 'facile') ? 'selected' : '' ?>>Facile</option>
-                    <option value="intermediaire" <?= (isset($old['complexite']) && $old['complexite'] === 'intermediaire') ? 'selected' : '' ?>>Intermédiaire</option>
-                    <option value="expert" <?= (isset($old['complexite']) && $old['complexite'] === 'expert') ? 'selected' : '' ?>>Expert</option>
+                    <option value="facile"         <?= ($old['complexite'] ?? '') === 'facile'         ? 'selected' : '' ?>>Facile</option>
+                    <option value="intermédiaire"  <?= ($old['complexite'] ?? '') === 'intermédiaire'  ? 'selected' : '' ?>>Intermédiaire</option>
+                    <option value="expert"         <?= ($old['complexite'] ?? '') === 'expert'         ? 'selected' : '' ?>>Expert</option>
                 </select>
             </div>
 
@@ -100,6 +106,7 @@ $categories = $categories ?? [];
                 <label for="nb_joueurs_min" class="form-label">Joueurs min</label>
                 <input type="number" id="nb_joueurs_min" name="nb_joueurs_min" class="form-control" min="1" max="20" required value="<?= htmlspecialchars($old['nb_joueurs_min'] ?? 2) ?>">
             </div>
+
             <div class="col-md-3">
                 <label for="nb_joueurs_max" class="form-label">Joueurs max</label>
                 <input type="number" id="nb_joueurs_max" name="nb_joueurs_max" class="form-control" min="1" max="20" required value="<?= htmlspecialchars($old['nb_joueurs_max'] ?? 4) ?>">

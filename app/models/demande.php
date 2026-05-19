@@ -42,3 +42,11 @@ function updateDemandeStatut($conn, $id_demande, $statut, $reponseAdmin = null) 
     $stmt = $conn->prepare("UPDATE demande SET statut = ?, reponse_admin = ? WHERE id_demande = ?");
     return $stmt->execute([$statut, $reponseAdmin, (int)$id_demande]);
 }
+
+function hasPendingDemande($conn, $id_jeu) {
+    $stmt = $conn->prepare(
+        "SELECT COUNT(*) FROM demande WHERE id_jeu = ? AND statut = 'en_attente'"
+    );
+    $stmt->execute([$id_jeu]);
+    return (int)$stmt->fetchColumn() > 0;
+}

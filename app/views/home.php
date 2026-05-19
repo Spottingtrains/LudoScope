@@ -38,9 +38,9 @@ require_once __DIR__ . '/../../app/models/jeu.php';
                         </a>
                         <?php
                         if (check_role() >= 2) { // Si l'utilisateur est connecté ou admin
-                            echo '<a href="/jeu/add" class="btn btn-secondary">Contribuer à notre catalogue</a>';
+                            echo '<a href="/jeu/add" class="btn btn-secondary">Contribuer à notre catalogue</a>'; // TODO: ajuster le lien vers la page d'ajout de jeu
                         } else { // Si l'utilisateur n'est pas connecté
-                            echo '<a href="/login" class="btn btn-secondary">Rejoindre la communauté</a>';
+                            echo '<a href="/login" class="btn btn-secondary">Rejoindre la communauté</a>'; // TODO: ajuster le lien vers la page de connexion/inscription
                         } ?>
                         </div>
                     </div>
