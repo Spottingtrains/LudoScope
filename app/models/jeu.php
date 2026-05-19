@@ -59,9 +59,9 @@ function getJeuById($conn, $id = null) {
     $categories = $stmtCat->fetchAll(PDO::FETCH_ASSOC);
     // 5. Récupérer les avis du jeu
     $stmtAvis = $conn->prepare(
-        "SELECT a.*, u.pseudo
+        "SELECT a.*, u.pseudo, u.photo_profil
         FROM avis a
-        JOIN utilisateur u ON a.id_utilisateur = u.id_utilisateur
+        LEFT JOIN utilisateur u ON a.id_utilisateur = u.id_utilisateur
         WHERE a.id_jeu = ?
         ORDER BY a.date_avis DESC"
     );
@@ -70,6 +70,12 @@ function getJeuById($conn, $id = null) {
     // 6. Attacher catégories et avis au tableau jeu et retourner
     $jeu['categories'] = $categories;
     $jeu['avis'] = $avis;
+    // 7. Calculer la note moyenne et le nombre d'avis pour ce jeu
+    $stmtStats = $conn->prepare("SELECT ROUND(AVG(note), 1) AS note_moyenne, COUNT(*) AS nb_avis FROM avis WHERE id_jeu = ?");
+    $stmtStats->execute([$id]);
+    $stats = $stmtStats->fetch(PDO::FETCH_ASSOC);
+    $jeu['note_moyenne'] = $stats && $stats['note_moyenne'] !== null ? $stats['note_moyenne'] : null;
+    $jeu['nb_avis'] = isset($stats['nb_avis']) ? (int)$stats['nb_avis'] : 0;
     return $jeu;
 }
 
