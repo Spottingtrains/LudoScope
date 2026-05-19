@@ -33,10 +33,10 @@ function updateProfile() {
         $currentUser = getUserById($conn, $userId);
 
         $data = [
-            'prenom' => trim(htmlspecialchars($_POST['prenom'] ?? '')),
-            'nom' => trim(htmlspecialchars($_POST['nom'] ?? '')),
-            'pseudo' => trim(htmlspecialchars($_POST['pseudo'] ?? '')),
-            'email' => trim(htmlspecialchars($_POST['email'] ?? '')),
+            'prenom' => trim($_POST['prenom'] ?? ''),
+            'nom' => trim($_POST['nom'] ?? ''),
+            'pseudo' => trim($_POST['pseudo'] ?? ''),
+            'email' => trim($_POST['email'] ?? ''),
         ];
 
         $newPassword = trim($_POST['new_password'] ?? '');

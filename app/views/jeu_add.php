@@ -4,7 +4,7 @@ require __DIR__ . '/nav/header.php';
 <main class="container py-4">
     <h1>Ajouter un jeu</h1>
     <?php if (!empty($error)): ?>
-        <div class="alert alert-danger"><?= $error ?></div>
+        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
     <form id="jeu-add-form" method="POST" action="index.php?url=jeu/add" class="row g-3" enctype="multipart/form-data">
 

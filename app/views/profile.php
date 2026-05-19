@@ -4,8 +4,8 @@ require __DIR__ . '/../views/nav/header.php';
 
 <main class="container py-5">
     <h1>Mon profil</h1>
-    <p>Bienvenue <strong><?php echo $_SESSION['pseudo']; ?></strong> !</p>
-    <p>Vous n'êtes pas <?php echo $_SESSION['pseudo']; ?> ? <a href="index.php?url=logout">Me déconnecter</a></p>
+    <p>Bienvenue <strong><?php echo htmlspecialchars($_SESSION['pseudo'] ?? ''); ?></strong> !</p>
+    <p>Vous n'êtes pas <?php echo htmlspecialchars($_SESSION['pseudo'] ?? ''); ?> ? <a href="index.php?url=logout">Me déconnecter</a></p>
     <ul class="nav nav-tabs" id="authTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link" href="#informations">Mes informations</a>
@@ -37,7 +37,7 @@ require __DIR__ . '/../views/nav/header.php';
                 <div id="client-error" class="alert alert-danger d-none" role="alert" style="display:none;"></div>
             </div>
             <div>
-                <img src="<?php echo $user['photo_profil'] ?? '/uploads/default-profile.webp'; ?>" alt="image de profil" class="img-thumbnail mb-3" style="width: 150px; height: 150px; border-radius: 50%;"> <!-- TODO: retirer les styles inline et les mettre dans le CSS -->
+                <img src="<?php echo htmlspecialchars($user['photo_profil'] ?? '/uploads/default-profile.webp'); ?>" alt="image de profil" class="img-thumbnail mb-3" style="width: 150px; height: 150px; border-radius: 50%;"> <!-- TODO: retirer les styles inline et les mettre dans le CSS -->
             </div>
             <div class="col-12 mb-3">
                 <label for="image_profil" class="form-label">Modifier l'image de profil :</label>
@@ -45,19 +45,19 @@ require __DIR__ . '/../views/nav/header.php';
             </div>
             <div class="col-4">
                 <label for="prenom" class="form-label">Prénom :</label>
-                <input type="text" id="prenom" name="prenom" class="form-control" value="<?php echo $user['prenom'] ?? ''; ?>">
+                <input type="text" id="prenom" name="prenom" class="form-control" value="<?php echo htmlspecialchars($user['prenom'] ?? ''); ?>">
             </div>
             <div class="col-4">
                 <label for="nom" class="form-label">Nom :</label>
-                <input type="text" id="nom" name="nom" class="form-control" value="<?php echo $user['nom'] ?? ''; ?>">
+                <input type="text" id="nom" name="nom" class="form-control" value="<?php echo htmlspecialchars($user['nom'] ?? ''); ?>">
             </div>
             <div class="col-4">
                 <label for="pseudo" class="form-label">Pseudo :</label>
-                <input type="text" id="pseudo" name="pseudo" class="form-control" value="<?php echo $user['pseudo'] ?? ''; ?>">
+                <input type="text" id="pseudo" name="pseudo" class="form-control" value="<?php echo htmlspecialchars($user['pseudo'] ?? ''); ?>">
             </div>
             <div class="col-12">
                 <label for="email" class="form-label">Email :</label>
-                <input type="email" id="email" name="email" class="form-control" value="<?php echo $user['email'] ?? ''; ?>" aria-describedby="emailHelp">
+                <input type="email" id="email" name="email" class="form-control" value="<?php echo htmlspecialchars($user['email'] ?? ''); ?>" aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">Format attendu : nom@domaine.tld</div>
             </div>
             <div class="col-6">

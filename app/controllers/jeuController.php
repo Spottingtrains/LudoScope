@@ -67,7 +67,7 @@ function jeuAdd() {
 
         $titre = trim($_POST['titre'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $complexite = $_POST['complexite'] ?? '';
+        $complexite = trim($_POST['complexite'] ?? '');
         $nb_joueurs_min = isset($_POST['nb_joueurs_min']) && $_POST['nb_joueurs_min'] !== '' ? (int)$_POST['nb_joueurs_min'] : null;
         $nb_joueurs_max = isset($_POST['nb_joueurs_max']) && $_POST['nb_joueurs_max'] !== '' ? (int)$_POST['nb_joueurs_max'] : null;
         $duree_partie   = isset($_POST['duree_partie'])   && $_POST['duree_partie']   !== '' ? (int)$_POST['duree_partie']   : null;

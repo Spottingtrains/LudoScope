@@ -52,9 +52,9 @@ require_once __DIR__ . '/../../app/models/jeu.php';
     <section>
         <div>
             <h2>Statistiques du site</h2>
-            <p>Nombre de jeux : <?php echo $stats['nb_jeux'] ?? 'N/A' ?></p> <!-- Affiche le nombre de jeux ou 'N/A' si la variable n'est pas définie -->
-            <p>Nombre d'utilisateurs : <?php echo $stats['nb_utilisateurs'] ?? 'N/A' ?></p> <!-- Affiche le nombre d'utilisateurs ou 'N/A' si la variable n'est pas définie -->
-            <p>Nombre d'avis : <?php echo $stats['nb_avis'] ?? 'N/A' ?></p> <!-- Affiche le nombre d'avis ou 'N/A' si la variable n'est pas définie -->
+            <p>Nombre de jeux : <?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></p> <!-- Affiche le nombre de jeux ou 'N/A' si la variable n'est pas définie -->
+            <p>Nombre d'utilisateurs : <?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></p> <!-- Affiche le nombre d'utilisateurs ou 'N/A' si la variable n'est pas définie -->
+            <p>Nombre d'avis : <?= htmlspecialchars($stats['nb_avis'] ?? 'N/A') ?></p> <!-- Affiche le nombre d'avis ou 'N/A' si la variable n'est pas définie -->
         </div>
     </section>
     <!-- Section derniers jeux ajoutés -->
@@ -85,7 +85,7 @@ require_once __DIR__ . '/../../app/models/jeu.php';
                             <div class="card-body">
                                 <div>
                                     <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
-                                    <span><?= $jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'Non noté' ?></span>
+                                    <span><?= htmlspecialchars($jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'Non noté') ?></span>
                                 </div>
                                 <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
                                 <p><?= htmlspecialchars($jeu['nb_joueurs_min']) ?>–<?= htmlspecialchars($jeu['nb_joueurs_max']) ?> joueurs<?php if (!empty($jeu['age_min'])): ?> • <?= htmlspecialchars($jeu['age_min']) ?> ans+<?php endif; ?></p>
