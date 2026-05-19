@@ -177,6 +177,36 @@ function getOrCreateEditeur($conn, $nomEditeur) {
     return (int)$conn->lastInsertId();
 }
 
+function updateJeu($conn, $id_jeu, $id_utilisateur, $data) {
+    $stmt = $conn->prepare(
+        "UPDATE jeu
+        SET titre = ?, description = ?, nb_joueurs_min = ?, nb_joueurs_max = ?, age_min = ?, duree_partie = ?, complexite = ?, image = ?, auteur = ?, illustrateur = ?, annee_edition = ?, id_editeur = ?
+        WHERE id_jeu = ? AND id_utilisateur = ?"
+    );
+
+    return $stmt->execute([
+        $data['titre'],
+        $data['description'],
+        $data['nb_joueurs_min'],
+        $data['nb_joueurs_max'],
+        $data['age_min'],
+        $data['duree_partie'],
+        $data['complexite'],
+        $data['image'],
+        $data['auteur'] ?? null,
+        $data['illustrateur'] ?? null,
+        $data['annee_edition'] ?? null,
+        $data['id_editeur'] ?? null,
+        $id_jeu,
+        $id_utilisateur,
+    ]);
+}
+
+function deleteJeuCategories($conn, $jeuId) {
+    $stmt = $conn->prepare('DELETE FROM jeu_categorie WHERE id_jeu = ?');
+    return $stmt->execute([$jeuId]);
+}
+
 function insertJeuCategories($conn, $jeuId, $selectedCats) {
     $categoryLabels = [
         'plateau'    => 'Plateau',
