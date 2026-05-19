@@ -94,7 +94,7 @@ require __DIR__ . '/nav/header.php';
     <?php if (!empty($avis)) : ?>
     <div class="avis-list">
         <?php foreach ($avis as $a) : ?>
-        <div class="custom-card avis-card">
+        <div class="avis-card">
             <div class="card-body">
                 <div class="avis-header">
                     <img
