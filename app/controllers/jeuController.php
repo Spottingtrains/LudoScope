@@ -271,7 +271,7 @@ function jeuEdit() {
         'nom_illustrateur'        => $jeu['illustrateur'] ?? '',
         'annee_edition'           => $jeu['annee_edition'] ?? '',
         'categories'              => $selectedCategories,
-        'modification_explanation' => '',
+        'motif' => '',
     ];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -285,12 +285,12 @@ function jeuEdit() {
         $duree_partie   = isset($_POST['duree_partie'])   && $_POST['duree_partie']   !== '' ? (int)$_POST['duree_partie']   : null;
         $age_min        = isset($_POST['age_min'])        && $_POST['age_min']        !== '' ? (int)$_POST['age_min']        : null;
         $annee_edition  = isset($_POST['annee_edition'])  && $_POST['annee_edition']  !== '' ? (int)$_POST['annee_edition']  : null;
-        $modification_explanation = trim($_POST['modification_explanation'] ?? '');
+        $motif = trim($_POST['motif'] ?? '');
 
         if ($titre === '')       $errors[] = 'Le titre est requis.';
         if ($description === '') $errors[] = 'La description est requise.';
         if ($complexite === '')  $errors[] = 'La complexité est requise.';
-        if ($modification_explanation === '') $errors[] = 'Merci d’expliquer les modifications apportées.';
+        if ($motif === '') $errors[] = 'Merci d’expliquer les modifications apportées.';
 
         if ($nb_joueurs_min === null || $nb_joueurs_max === null) {
             $errors[] = 'Le nombre minimum et maximum de joueurs est requis.';
@@ -349,12 +349,12 @@ function jeuEdit() {
             'nom_illustrateur'        => trim($_POST['nom_illustrateur'] ?? ''),
             'annee_edition'           => $annee_edition,
             'categories'              => $_POST['categories'] ?? [],
-            'modification_explanation' => $modification_explanation,
+            'motif' => $motif,
         ];
 
         if (count($errors) === 0) {
             $payload = [
-                'explanation' => $modification_explanation,
+                'motif' => $motif,
                 'proposed_changes' => [
                     'titre'          => $titre,
                     'description'    => $description,
@@ -380,7 +380,7 @@ function jeuEdit() {
             ]);
 
             if ($demandeCreated) {
-                $_SESSION['success'] = 'Votre demande de modification a été envoyée au back-office.';
+                $_SESSION['success'] = 'Votre demande de modification a été envoyée aux administrateurs.';
                 header('Location: index.php?url=profile');
                 exit();
             }

@@ -113,8 +113,8 @@ $categories = $categories ?? [];
             </div>
 
             <div class="col-12">
-                <label for="modification_explanation" class="form-label">Expliquer les modifications</label>
-                <textarea id="modification_explanation" name="modification_explanation" class="form-control" rows="5" required placeholder="Décrivez ce que vous avez changé et pourquoi."><?= htmlspecialchars($old['modification_explanation'] ?? '') ?></textarea>
+                <label for="motif" class="form-label">Expliquer les modifications</label>
+                <textarea id="motif" name="motif" class="form-control" rows="5" required placeholder="Décrivez ce que vous avez changé et pourquoi."><?= htmlspecialchars($old['motif'] ?? '') ?></textarea>
             </div>
 
             <div class="col-12 d-flex flex-wrap gap-2">
