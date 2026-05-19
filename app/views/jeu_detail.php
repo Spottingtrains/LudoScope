@@ -125,6 +125,7 @@ require __DIR__ . '/nav/header.php';
 
     <!-- section "ces jeux pourraient vous plaire" -->
     <!-- TODO: Implémenter la section "ces jeux pourraient vous plaire" -->
+    <h2>Ces jeux pourraient vous plaire</h2>
 
 </main>
 <?php
