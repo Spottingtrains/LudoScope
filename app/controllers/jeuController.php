@@ -91,7 +91,7 @@ function jeuAdd() {
         if ($duree_partie !== null && $duree_partie < 1) $errors[] = 'La durée doit être supérieure à 0.';
         if ($age_min      !== null && $age_min      < 0) $errors[] = 'L\'âge minimum est invalide.';
 
-        if ($annee_edition !== null && ($annee_edition < 1900 || $annee_edition > (int)date('Y')))
+        if ($annee_edition !== null && ($annee_edition < 1901 || $annee_edition > (int)date('Y')))
             $errors[] = 'L\'année d\'édition est invalide.';
 
         // au moins une catégorie requise
@@ -303,7 +303,7 @@ function jeuEdit() {
         if ($duree_partie !== null && $duree_partie < 1) $errors[] = 'La durée doit être supérieure à 0.';
         if ($age_min !== null && $age_min < 0) $errors[] = 'L\'âge minimum est invalide.';
 
-        if ($annee_edition !== null && ($annee_edition < 1900 || $annee_edition > (int)date('Y'))) {
+        if ($annee_edition !== null && ($annee_edition < 1901 || $annee_edition > (int)date('Y'))) {
             $errors[] = 'L\'année d\'édition est invalide.';
         }
 

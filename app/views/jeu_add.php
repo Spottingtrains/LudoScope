@@ -47,7 +47,7 @@ require __DIR__ . '/nav/header.php';
 
         <div class="col-md-4">
             <label for="annee_edition" class="form-label">Année d'édition</label>
-            <input type="number" id="annee_edition" name="annee_edition" class="form-control" min="1900" max="<?= date('Y') ?>" value="<?= htmlspecialchars($old['annee_edition'] ?? '') ?>">
+            <input type="number" id="annee_edition" name="annee_edition" class="form-control" min="1901" max="<?= date('Y') ?>" value="<?= htmlspecialchars($old['annee_edition'] ?? '') ?>">
         </div>
 
         <div class="col-md-4">
