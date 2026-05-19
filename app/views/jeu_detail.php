@@ -92,9 +92,9 @@ require __DIR__ . '/nav/header.php';
     <p><a href="index.php?url=login">Connectez-vous</a> pour laisser un avis.</p>
     <?php endif; ?>
     <?php if (!empty($avis)) : ?>
-    <section class="avis-list">
+    <div class="avis-list">
         <?php foreach ($avis as $a) : ?>
-        <article class="custom-card avis-card">
+        <div class="custom-card avis-card">
             <div class="card-body">
                 <div class="avis-header">
                     <img
@@ -109,9 +109,9 @@ require __DIR__ . '/nav/header.php';
                 </div>
                 <p><?= htmlspecialchars($a['commentaire']) ?></p>
             </div>
-        </article>
+        </div>
         <?php endforeach; ?>
-    </section>
+    </div>
     <?php else : ?>
     <p>Aucun avis pour ce jeu.</p>
     <?php endif; ?>
@@ -119,9 +119,12 @@ require __DIR__ . '/nav/header.php';
 
     <a href="index.php">← Retour à la liste</a>
 
-<?php else : ?>
+    <?php else : ?>
     <p>Jeu introuvable.</p>
-<?php endif; ?>
+    <?php endif; ?>
+
+    <!-- section "ces jeux pourraient vous plaire" -->
+    <!-- TODO: Implémenter la section "ces jeux pourraient vous plaire" -->
 
 </main>
 <?php
