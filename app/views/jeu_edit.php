@@ -112,7 +112,7 @@ $categories = $categories ?? [];
 
             <div class="col-12 d-flex flex-wrap gap-2">
                 <button type="submit" class="btn btn-dark">Soumettre les modifications</button>
-                <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>" class="btn btn-outline-secondary">Annuler</a>
+                <a href="index.php?url=profile" class="btn btn-outline-secondary">Annuler</a>
             </div>
         </form>
     <?php endif; ?>

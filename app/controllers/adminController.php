@@ -17,7 +17,7 @@ function dashboard() {
         $decision = $_POST['decision'];
         $demande = getDemandeById($conn, $idDemande);
 
-        if ($demande && $demande['statut'] === 'en_attente' && $demande['type_demande'] === 'modification_jeu') {
+        if ($demande && $demande['statut'] === 'en_attente' && $demande['type_demande'] === 'modification') {
             $payload = json_decode($demande['message'], true);
             $response = trim($_POST['reponse_admin'] ?? '');
 

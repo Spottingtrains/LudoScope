@@ -235,12 +235,19 @@ function jeuEdit() {
         'role'       => 'Rôle',
         'des'        => 'Dés',
     ];
-    $labelToSlug = array_flip($categories);
+    $dbValueToSlug = [
+    'plateau'    => 'plateau',
+    'ambiance'   => 'ambiance',
+    'cartes'     => 'cartes',
+    'coopératif' => 'cooperatif',
+    'rôle'       => 'role',
+    'dés'        => 'des',
+    ];
     $selectedCategories = [];
     foreach ($jeu['categories'] ?? [] as $category) {
-        $label = $category['nom_categorie'] ?? '';
-        if ($label !== '' && isset($labelToSlug[$label])) {
-            $selectedCategories[] = $labelToSlug[$label];
+        $dbValue = $category['nom_categorie'] ?? '';
+        if (isset($dbValueToSlug[$dbValue])) {
+            $selectedCategories[] = $dbValueToSlug[$dbValue];
         }
     }
 
@@ -359,7 +366,7 @@ function jeuEdit() {
             ];
 
             $demandeCreated = createDemande($conn, [
-                'type_demande'   => 'modification_jeu',
+                'type_demande'   => 'modification',
                 'message'        => json_encode($payload, JSON_UNESCAPED_UNICODE),
                 'id_jeu'         => $idJeu,
                 'id_utilisateur' => (int)$_SESSION['id_utilisateur'],
