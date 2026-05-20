@@ -8,8 +8,91 @@ require_once __DIR__ . '/../../app/models/jeu.php';
 function profile() {
     checkRole(2); // Seuls les utilisateurs avec un rôle d'au moins 2 peuvent accéder à cette page
 
-    // Si le formulaire est soumis, déléguer au handler de mise à jour
+    // Si le formulaire est soumis, traiter les actions d'avis (édition / suppression) ou la mise à jour du profil
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $conn = connect();
+
+        // détection requête AJAX
+        $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
+        // Edition d'un avis depuis le profil
+        if (isset($_POST['action']) && $_POST['action'] === 'edit_review') {
+            $id = (int)($_POST['id'] ?? 0);
+            $commentaire = trim($_POST['commentaire'] ?? '');
+            $note = isset($_POST['note']) ? (int)$_POST['note'] : 0;
+
+            if (!$id || $commentaire === '' || $note < 1 || $note > 10) {
+                $_SESSION['error'] = 'Données invalides pour la modification de l\'avis.';
+                header('Location: index.php?url=profile');
+                exit();
+            }
+
+            $avis = getAvisById($conn, $id);
+            if (!$avis || $avis['id_utilisateur'] !== $_SESSION['id_utilisateur']) {
+                $_SESSION['error'] = 'Action non autorisée.';
+                header('Location: index.php?url=profile');
+                exit();
+            }
+
+            if (updateAvis($conn, $id, $commentaire, $note)) {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true, 'message' => 'Votre avis a été modifié.', 'note' => $note, 'commentaire' => $commentaire]);
+                    exit();
+                }
+                $_SESSION['success'] = 'Votre avis a été modifié.';
+            } else {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'Impossible de modifier l\'avis.']);
+                    exit();
+                }
+                $_SESSION['error'] = 'Impossible de modifier l\'avis.';
+            }
+
+            header('Location: index.php?url=profile');
+            exit();
+        }
+
+        // Suppression d'un avis depuis le profil
+        if (isset($_POST['action']) && $_POST['action'] === 'delete_review') {
+            $id = (int)($_POST['id'] ?? 0);
+            $confirm = isset($_POST['confirm_delete']) && $_POST['confirm_delete'] === '1';
+
+            if (!$id || !$confirm) {
+                $_SESSION['error'] = 'Suppression annulée ou données manquantes.';
+                header('Location: index.php?url=profile');
+                exit();
+            }
+
+            $avis = getAvisById($conn, $id);
+            if (!$avis || $avis['id_utilisateur'] !== $_SESSION['id_utilisateur']) {
+                $_SESSION['error'] = 'Action non autorisée.';
+                header('Location: index.php?url=profile');
+                exit();
+            }
+
+            if (deleteAvis($conn, $id)) {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => true, 'message' => 'Votre avis a été supprimé.']);
+                    exit();
+                }
+                $_SESSION['success'] = 'Votre avis a été supprimé.';
+            } else {
+                if ($isAjax) {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'Impossible de supprimer l\'avis.']);
+                    exit();
+                }
+                $_SESSION['error'] = 'Impossible de supprimer l\'avis.';
+            }
+
+            header('Location: index.php?url=profile');
+            exit();
+        }
+
+        // Sinon, c'est le formulaire de mise à jour du profil existant
         updateProfile();
         return;
     }

@@ -120,11 +120,11 @@ require __DIR__ . '/../views/nav/header.php';
     <section id="avis">
         <h2>Mes avis laissés</h2>
         <p>Retrouvez ici vos derniers avis publiés sur les jeux du catalogue.</p>
-        <?php if (!empty($addedReviews)): ?>
+                <?php if (!empty($addedReviews)): ?>
             <div class="row row-cols-1 row-cols-lg-2 g-4">
                 <?php foreach ($addedReviews as $review): ?>
                     <div class="col">
-                        <article class="card h-100 shadow-sm">
+                        <article class="card h-100 shadow-sm review-card" data-review-id="<?php echo (int)$review['id_avis']; ?>">
                             <div class="card-body d-flex flex-column gap-3">
                                 <div class="d-flex justify-content-between align-items-start gap-3">
                                     <div>
@@ -133,17 +133,53 @@ require __DIR__ . '/../views/nav/header.php';
                                             Publié le <?php echo htmlspecialchars(date('d/m/Y', strtotime($review['date_avis']))); ?>
                                         </small>
                                     </div>
-                                    <span class="badge bg-primary fs-6">
+                                    <span class="badge bg-primary fs-6 review-note">
                                         <?php echo htmlspecialchars($review['note']); ?>/10
                                     </span>
                                 </div>
-                                <p class="mb-0">
-                                    <?php echo htmlspecialchars($review['commentaire']); ?>
-                                </p>
-                                <div class="d-flex flex-wrap gap-2 mt-auto">
-                                    <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($review['titre'])); ?>" class="btn btn-sm btn-outline-primary">Voir le jeu</a>
-                                    <a href="index.php?url=avis/edit&id=<?php echo (int)$review['id_avis']; ?>" class="btn btn-sm btn-outline-secondary">Modifier</a>
-                                    <a href="index.php?url=avis/delete&id=<?php echo (int)$review['id_avis']; ?>" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                                <form class="review-edit-form w-100" action="index.php?url=profile" method="post">
+                                    <input type="hidden" name="action" value="edit_review">
+                                    <input type="hidden" name="id" value="<?php echo (int)$review['id_avis']; ?>">
+                                    <textarea name="commentaire" class="form-control review-textarea mb-2" rows="4" disabled><?php echo htmlspecialchars($review['commentaire']); ?></textarea>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <select name="note" class="form-select form-select-sm review-note-select w-auto" disabled>
+                                            <?php for ($i = 1; $i <= 10; $i++): ?>
+                                                <option value="<?php echo $i; ?>" <?php if ((int)$review['note'] === $i) echo 'selected'; ?>><?php echo $i; ?>/10</option>
+                                            <?php endfor; ?>
+                                        </select>
+                                        <div class="ms-auto d-flex gap-2">
+                                            <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($review['titre'])); ?>" class="btn btn-sm btn-outline-primary">Voir le jeu</a>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-edit-review">Modifier</button>
+                                            <button type="submit" class="btn btn-sm btn-primary btn-save-review d-none">Enregistrer</button>
+                                            <button type="button" class="btn btn-sm btn-secondary btn-cancel-edit d-none">Annuler</button>
+                                            <!-- Bouton ouverture modal suppression -->
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteReviewModal<?php echo (int)$review['id_avis']; ?>">Supprimer</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- Modal de confirmation (Bootstrap) -->
+                                <div class="modal fade" id="deleteReviewModal<?php echo (int)$review['id_avis']; ?>" tabindex="-1" aria-labelledby="deleteReviewModalLabel<?php echo (int)$review['id_avis']; ?>" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteReviewModalLabel<?php echo (int)$review['id_avis']; ?>">Confirmer la suppression</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        Voulez-vous vraiment supprimer cet avis publié le <?php echo htmlspecialchars(date('d/m/Y', strtotime($review['date_avis']))); ?> ? Cette action est définitive.
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Annuler</button>
+                                        <form action="index.php?url=profile" method="post" class="m-0">
+                                            <input type="hidden" name="action" value="delete_review">
+                                            <input type="hidden" name="id" value="<?php echo (int)$review['id_avis']; ?>">
+                                            <input type="hidden" name="confirm_delete" value="1">
+                                            <button type="submit" class="btn btn-danger btn-sm">Confirmer</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
                         </article>
@@ -159,3 +195,36 @@ require __DIR__ . '/../views/nav/header.php';
 </main>
 
 <?php require_once __DIR__ . '/../views/nav/footer.php'; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.review-card').forEach(card => {
+        const editBtn = card.querySelector('.btn-edit-review');
+        const saveBtn = card.querySelector('.btn-save-review');
+        const cancelBtn = card.querySelector('.btn-cancel-edit');
+        const textarea = card.querySelector('.review-textarea');
+        const noteSelect = card.querySelector('.review-note-select');
+
+        editBtn.addEventListener('click', function () {
+            textarea.disabled = false;
+            noteSelect.disabled = false;
+            editBtn.classList.add('d-none');
+            saveBtn.classList.remove('d-none');
+            cancelBtn.classList.remove('d-none');
+            textarea.focus();
+        });
+
+        cancelBtn.addEventListener('click', function () {
+            // revert values to original by reloading the page (simpler) or disable inputs
+            textarea.disabled = true;
+            noteSelect.disabled = true;
+            editBtn.classList.remove('d-none');
+            saveBtn.classList.add('d-none');
+            cancelBtn.classList.add('d-none');
+            // restore original values from dataset if available
+            // (we keep it simple and don't change textarea value here)
+        });
+        // saveBtn is a normal submit button inside the form; no JS required to submit
+    });
+});
+</script>

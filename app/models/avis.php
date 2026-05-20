@@ -31,3 +31,9 @@ function getDerniersAvis($conn) {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function getAvisById($conn, $id_avis) {
+    $stmt = $conn->prepare("SELECT * FROM avis WHERE id_avis = ?");
+    $stmt->execute([(int)$id_avis]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
