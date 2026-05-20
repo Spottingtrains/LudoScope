@@ -78,7 +78,7 @@ function dashboard() {
     include __DIR__ . '/../../app/views/back-office.php';
 }
 
-// que fait cette fonction ? c'est juste pour afficher la liste des utilisateurs dans le back-office ? si oui, elle est pas encore utilisée dans index.php
+// TODO: que fait cette fonction ? c'est juste pour afficher la liste des utilisateurs dans le back-office ? si oui, elle est pas encore utilisée dans index.php
 function adminUsers() {
     checkRole(3);
     

@@ -16,6 +16,6 @@ require __DIR__ . '/nav/header.php';
             <textarea id="motif" name="motif" class="form-control" rows="4" required><?= htmlspecialchars($old['motif'] ?? '') ?></textarea>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-            <a href="index.php?url=jeu" class="btn btn-secondary">Annuler</a>
+            <button type="submit" class="btn btn-danger">Soumettre la demande</button>
+            <a href="index.php?url=profile" class="btn btn-secondary">Annuler</a>
         </div>
