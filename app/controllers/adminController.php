@@ -17,11 +17,11 @@ function dashboard() {
         $decision = $_POST['decision'];
         $demande = getDemandeById($conn, $idDemande);
 
-        if ($demande && $demande['statut'] === 'en_attente' && $demande['type_demande'] === 'modification') {
+        if ($demande && $demande['statut'] === 'en_attente') {
             $payload = json_decode($demande['message'], true);
             $response = trim($_POST['reponse_admin'] ?? '');
 
-            if ($decision === 'accepter' && is_array($payload) && !empty($payload['proposed_changes'])) {
+            if ($demande['type_demande'] === 'modification' && $decision === 'accepter' && is_array($payload) && !empty($payload['proposed_changes'])) {
                 $changes = $payload['proposed_changes'];
                 $data = [
                     'titre'          => $changes['titre'] ?? '',
@@ -46,9 +46,23 @@ function dashboard() {
                 } else {
                     $_SESSION['error'] = 'Impossible d\'appliquer les modifications du jeu.';
                 }
-            } elseif ($decision === 'refuser') {
+            } elseif ($demande['type_demande'] === 'modification' && $decision === 'refuser') {
                 updateDemandeStatut($conn, $idDemande, 'refuse', $response !== '' ? $response : 'Demande refusée par l\'administration.');
                 $_SESSION['success'] = 'La demande de modification a été refusée.';
+            } elseif ($demande['type_demande'] === 'suppression' && $decision === 'accepter') {
+                $confirmAdminDelete = isset($_POST['confirm_admin_delete']) && $_POST['confirm_admin_delete'] === '1';
+
+                if (!$confirmAdminDelete) {
+                    $_SESSION['error'] = 'Veuillez confirmer la suppression définitive avant de valider.';
+                } elseif (deleteJeu($conn, (int)$demande['id_jeu'])) {
+                    updateDemandeStatut($conn, $idDemande, 'traite', $response !== '' ? $response : 'Suppression appliquée.');
+                    $_SESSION['success'] = 'La demande de suppression a été acceptée.';
+                } else {
+                    $_SESSION['error'] = 'Impossible de supprimer le jeu.';
+                }
+            } elseif ($demande['type_demande'] === 'suppression' && $decision === 'refuser') {
+                updateDemandeStatut($conn, $idDemande, 'refuse', $response !== '' ? $response : 'Demande refusée par l\'administration.');
+                $_SESSION['success'] = 'La demande de suppression a été refusée.';
             }
 
             header('Location: index.php?url=back-office');
@@ -64,6 +78,7 @@ function dashboard() {
     include __DIR__ . '/../../app/views/back-office.php';
 }
 
+// que fait cette fonction ? c'est juste pour afficher la liste des utilisateurs dans le back-office ? si oui, elle est pas encore utilisée dans index.php
 function adminUsers() {
     checkRole(3);
     

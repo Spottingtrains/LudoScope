@@ -58,3 +58,21 @@ header {
     border: 2px solid #686868;
     flex: 0 0 56px;
 }
+
+.request-card {
+    overflow: hidden;
+}
+
+.request-card-bar {
+    height: 8px;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.request-card-bar--modification {
+    background-color: var(--bs-primary);
+}
+
+.request-card-bar--suppression {
+    background-color: var(--bs-danger);
+}

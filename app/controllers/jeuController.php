@@ -203,7 +203,7 @@ function jeuAdd() {
 }
 
 // dirige vers la page de modification d'un jeu, accessible uniquement à son auteur
-function jeuEdit() {
+function jeuEditRequest() {
     checkRole(2);
     $conn = connect();
 
@@ -393,4 +393,65 @@ function jeuEdit() {
 
     $editeurs = getAllEditeurs($conn);
     include 'app/views/jeu_edit.php';
+}
+
+// demande de suppression d'un jeu par l'auteur
+function jeuDeleteRequest() {
+    checkRole(2);
+    $conn = connect();
+
+    $idJeu = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    if ($idJeu <= 0) {
+        http_response_code(404);
+        include 'app/views/404.php';
+        return;
+    }
+
+    $jeu = getJeuById($conn, $idJeu);
+    if (!$jeu) {
+        http_response_code(404);
+        include 'app/views/404.php';
+        return;
+    }
+
+    if ((int)$jeu['id_utilisateur'] !== (int)$_SESSION['id_utilisateur']) {
+        http_response_code(403);
+        include 'app/views/404.php';
+        return;
+    }
+
+    $pendingDemande = hasPendingDemande($conn, $idJeu);
+
+    $error = null;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($pendingDemande) {
+            $_SESSION['error'] = 'Une demande est déjà en cours pour ce jeu.';
+            header('Location: index.php?url=profile');
+            exit();
+        }
+
+        $motif = trim($_POST['motif'] ?? '');
+
+        if ($motif === '') {
+            $error = 'Veuillez expliquer pourquoi vous demandez la suppression.';
+        } else {
+            $payload = ['motif' => $motif];
+            $demandeCreated = createDemande($conn, [
+                'type_demande'   => 'suppression',
+                'message'        => json_encode($payload, JSON_UNESCAPED_UNICODE),
+                'id_jeu'         => $idJeu,
+                'id_utilisateur' => (int)$_SESSION['id_utilisateur'],
+            ]);
+
+            if ($demandeCreated) {
+                $_SESSION['success'] = 'Votre demande de suppression a été envoyée aux administrateurs.';
+                header('Location: index.php?url=profile');
+                exit();
+            }
+
+            $error = 'Impossible d\'envoyer la demande de suppression.';
+        }
+    }
+
+    include 'app/views/jeu_delete.php';
 }

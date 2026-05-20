@@ -207,6 +207,32 @@ function deleteJeuCategories($conn, $jeuId) {
     return $stmt->execute([$jeuId]);
 }
 
+function deleteJeu($conn, $jeuId) {
+    $stmt = $conn->prepare('SELECT image FROM jeu WHERE id_jeu = ?');
+    $stmt->execute([(int)$jeuId]);
+    $jeu = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$jeu) {
+        return false;
+    }
+
+    $stmt = $conn->prepare('DELETE FROM jeu WHERE id_jeu = ?');
+    $deleted = $stmt->execute([(int)$jeuId]);
+
+    if (!$deleted) {
+        return false;
+    }
+
+    if (!empty($jeu['image'])) {
+        $imagePath = __DIR__ . '/../../uploads/' . $jeu['image'];
+        if (is_file($imagePath)) {
+            @unlink($imagePath);
+        }
+    }
+
+    return true;
+}
+
 function insertJeuCategories($conn, $jeuId, $selectedCats) {
     $categoryLabels = [
         'plateau'    => 'Plateau',
