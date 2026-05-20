@@ -9,7 +9,6 @@ require_once __DIR__ . '/../../app/models/jeu.php';
 ?>
 
 <main>
-    <?php var_dump($_SESSION); /* TODO: DEV ONLY - à retirer après les tests */ ?>
     <!-- message de bienvenue après connexion -->
     <?php if (!empty($_SESSION['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
@@ -74,13 +73,72 @@ require_once __DIR__ . '/../../app/models/jeu.php';
     </section>
     <!-- Section catalogue -->
     <!-- TODO: ajouter pagination -->
+    <div class="mb-4">
+        <div class="input-group">
+            <input id="catalog-search" type="search" class="form-control" placeholder="Entrez le nom du jeu, un mot-clé..." aria-label="Recherche jeux">
+            <button id="catalog-search-btn" type="button" class="btn btn-primary">Rechercher</button>
+        </div>
+    </div>
+    <div class="mb-4 p-3 border rounded bg-body-tertiary" id="catalog-filters">
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-3">
+                <label for="filter-players-min" class="form-label">Joueurs min</label>
+                <input type="number" id="filter-players-min" class="form-control" min="1" placeholder="Ex. 2">
+            </div>
+            <div class="col-12 col-md-3">
+                <label for="filter-players-max" class="form-label">Joueurs max</label>
+                <input type="number" id="filter-players-max" class="form-control" min="1" placeholder="Ex. 6">
+            </div>
+            <div class="col-12 col-md-3">
+                <label for="filter-duration" class="form-label">Durée</label>
+                <select id="filter-duration" class="form-select">
+                    <option value="">Toutes</option>
+                    <option value="quick">Rapide - moins de 30 min</option>
+                    <option value="medium">Moyen - 30 à 60 min</option>
+                    <option value="long">Long - plus de 60 min</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3">
+                <label for="filter-complexity" class="form-label">Complexité</label>
+                <select id="filter-complexity" class="form-select">
+                    <option value="">Toutes</option>
+                    <option value="facile">Facile</option>
+                    <option value="intermediaire">Intermédiaire</option>
+                    <option value="expert">Expert</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <span class="form-label d-block mb-2">Catégories</span>
+                <div class="d-flex flex-wrap gap-3">
+                    <?php foreach ($categories ?? [] as $categorie): ?>
+                        <?php $categorieId = 'cat-filter-' . slugify($categorie); ?>
+                        <div class="form-check form-check-inline m-0">
+                            <input class="form-check-input filter-category" type="checkbox" id="<?= htmlspecialchars($categorieId) ?>" value="<?= htmlspecialchars($categorie) ?>">
+                            <label class="form-check-label" for="<?= htmlspecialchars($categorieId) ?>"><?= htmlspecialchars($categorie) ?></label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="col-12 d-flex flex-wrap gap-2 justify-content-end">
+                <button id="apply-filters-btn" type="button" class="btn btn-primary">Appliquer les filtres</button>
+                <button id="reset-filters-btn" type="button" class="btn btn-outline-secondary">Réinitialiser les filtres</button>
+            </div>
+        </div>
+    </div>
     <section id="catalogue">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div id="catalogue-list" class="row row-cols-1 row-cols-md-3 g-4">
             <?php if (!empty($jeux)): ?>
             <?php foreach ($jeux as $jeu): ?>
                 <div class="col">
                     <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>">
-                        <div class="custom-card">
+                        <div class="custom-card"
+                            data-titre="<?= htmlspecialchars(mb_strtolower($jeu['titre'] ?? '')) ?>"
+                            data-description="<?= htmlspecialchars(mb_strtolower($jeu['description'] ?? '')) ?>"
+                            data-players-min="<?= htmlspecialchars((string)($jeu['nb_joueurs_min'] ?? '')) ?>"
+                            data-players-max="<?= htmlspecialchars((string)($jeu['nb_joueurs_max'] ?? '')) ?>"
+                            data-duration="<?= htmlspecialchars((string)($jeu['duree_partie'] ?? '')) ?>"
+                            data-complexity="<?= htmlspecialchars(mb_strtolower($jeu['complexite'] ?? '')) ?>"
+                            data-categories="<?= htmlspecialchars(mb_strtolower($jeu['categories'] ?? '')) ?>">
                             <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
                             <div class="card-body">
                                 <div>

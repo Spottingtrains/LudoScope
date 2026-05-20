@@ -57,6 +57,10 @@ switch($url) {
         require 'app/controllers/passwordController.php';
         resetPassword();
         break;
+    case 'jeu/search':
+        require 'app/controllers/jeuController.php';
+        jeuSearch();
+        break;
         default:
         http_response_code(404);
         include 'app/views/404.php';

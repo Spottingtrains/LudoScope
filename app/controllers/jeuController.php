@@ -58,6 +58,35 @@ function jeu() {
     include 'app/views/jeu_detail.php';
 }
 
+// endpoint JSON pour la recherche AJAX
+function jeuSearch() {
+    header('Content-Type: application/json; charset=utf-8');
+    $q = trim($_GET['q'] ?? '');
+    if ($q === '') {
+        echo json_encode([]);
+        exit();
+    }
+    $conn = connect();
+    require_once __DIR__ . '/../../app/models/jeu.php';
+    $res = searchJeux($conn, $q, 50);
+    $payload = array_map(function($j){
+        return [
+            'id' => (int)($j['id_jeu'] ?? 0),
+            'titre' => $j['titre'] ?? '',
+            'image' => !empty($j['image']) ? $j['image'] : 'default.jpg',
+            'note_moyenne' => $j['note_moyenne'] !== null ? (float)$j['note_moyenne'] : null,
+            'slug' => slugify($j['titre'] ?? ''),
+            'complexite' => $j['complexite'] ?? '',
+            'duree_partie' => $j['duree_partie'] ?? null,
+            'nb_joueurs_min' => $j['nb_joueurs_min'] ?? null,
+            'nb_joueurs_max' => $j['nb_joueurs_max'] ?? null,
+            'age_min' => $j['age_min'] ?? null,
+        ];
+    }, $res);
+    echo json_encode($payload);
+    exit();
+}
+
 // dirige vers la page d'ajout de jeu, accessible uniquement aux utilisateurs connectés ou admin
 function jeuAdd() {
     checkRole(2);

@@ -8,5 +8,6 @@ function home() {
     $conn = connect();
     $jeux = getAllJeux($conn);
     $stats = getStats($conn);
+    $categories = getAllCategories($conn);
     include 'app/views/home.php';
 }

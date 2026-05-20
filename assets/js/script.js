@@ -41,6 +41,160 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     })();
 
+    // Handler 5: AJAX search for catalogue + filtres
+    (function catalogueSearchHandler(){
+        const input = document.getElementById('catalog-search');
+        const searchButton = document.getElementById('catalog-search-btn');
+        const list = document.getElementById('catalogue-list');
+        const applyFiltersButton = document.getElementById('apply-filters-btn');
+        const resetFiltersButton = document.getElementById('reset-filters-btn');
+        const playersMin = document.getElementById('filter-players-min');
+        const playersMax = document.getElementById('filter-players-max');
+        const duration = document.getElementById('filter-duration');
+        const complexity = document.getElementById('filter-complexity');
+        const categoryCheckboxes = Array.from(document.querySelectorAll('.filter-category'));
+        if (!input || !list) return;
+
+        const initialHTML = list.innerHTML;
+        let timer = null;
+
+        function escapeHtml(str){
+            return String(str || '').replace(/[&<>"']/g, function(m){
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+            });
+        }
+
+        function getSelectedCategories() {
+            return categoryCheckboxes.filter(cb => cb.checked).map(cb => cb.value.toLowerCase());
+        }
+
+        function durationMatches(value, selected) {
+            if (!selected) return true;
+            if (!Number.isFinite(value)) return false;
+            if (selected === 'quick') return value < 30;
+            if (selected === 'medium') return value >= 30 && value <= 60;
+            if (selected === 'long') return value > 60;
+            return true;
+        }
+
+        function cardMatches(cardEl) {
+            if (!cardEl) return false;
+
+            const minChoice = playersMin && playersMin.value !== '' ? parseInt(playersMin.value, 10) : null;
+            const maxChoice = playersMax && playersMax.value !== '' ? parseInt(playersMax.value, 10) : null;
+            const selectedDuration = duration ? duration.value : '';
+            const selectedComplexity = complexity ? complexity.value.toLowerCase() : '';
+            const selectedCategories = getSelectedCategories();
+
+            const cardMin = parseInt(cardEl.dataset.playersMin || '', 10);
+            const cardMax = parseInt(cardEl.dataset.playersMax || '', 10);
+            const cardDuration = parseInt(cardEl.dataset.duration || '', 10);
+            const cardComplexity = (cardEl.dataset.complexity || '').toLowerCase();
+            const cardCategories = (cardEl.dataset.categories || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+
+            if (minChoice !== null && Number.isFinite(cardMax) && cardMax < minChoice) return false;
+            if (maxChoice !== null && Number.isFinite(cardMin) && cardMin > maxChoice) return false;
+            if (!durationMatches(cardDuration, selectedDuration)) return false;
+            if (selectedComplexity && cardComplexity !== selectedComplexity) return false;
+            if (selectedCategories.length > 0 && !selectedCategories.some(cat => cardCategories.includes(cat))) return false;
+
+            return true;
+        }
+
+        function applyFilters() {
+            const cards = Array.from(list.querySelectorAll('.col'));
+            let visibleCount = 0;
+
+            cards.forEach(col => {
+                const cardEl = col.querySelector('.custom-card');
+                const visible = cardMatches(cardEl);
+                col.style.display = visible ? '' : 'none';
+                if (visible) visibleCount++;
+            });
+
+            let empty = list.querySelector('[data-filter-empty]');
+            if (visibleCount === 0) {
+                if (!empty) {
+                    empty = document.createElement('p');
+                    empty.setAttribute('data-filter-empty', 'true');
+                    empty.className = 'w-100';
+                    empty.textContent = 'Aucun jeu ne correspond à ces filtres.';
+                    list.appendChild(empty);
+                }
+            } else if (empty) {
+                empty.remove();
+            }
+        }
+
+        function render(items){
+            if (!items || items.length === 0) {
+                list.innerHTML = '<p>Aucun jeu trouvé.</p>';
+                return;
+            }
+            const html = items.map(j => `
+                <div class="col">
+                    <a href="index.php?url=jeu&slug=${encodeURIComponent(j.slug)}">
+                        <div class="custom-card"
+                            data-titre="${escapeHtml((j.titre || '').toLowerCase())}"
+                            data-description="${escapeHtml((j.description || '').toLowerCase())}"
+                            data-players-min="${escapeHtml(j.nb_joueurs_min || '')}"
+                            data-players-max="${escapeHtml(j.nb_joueurs_max || '')}"
+                            data-duration="${escapeHtml(j.duree_partie || '')}"
+                            data-complexity="${escapeHtml((j.complexite || '').toLowerCase())}"
+                            data-categories="${escapeHtml((j.categories || '').toLowerCase())}">
+                            <img src="/uploads/${escapeHtml(j.image || 'default.jpg')}" alt="${escapeHtml(j.titre)}">
+                            <div class="card-body">
+                                <div>
+                                    <h3>${escapeHtml(j.titre)}</h3>
+                                    <span>${j.note_moyenne ? j.note_moyenne + '/10' : 'Non noté'}</span>
+                                </div>
+                                <p>${escapeHtml(j.complexite || '')} • ${escapeHtml(j.duree_partie || '')} min</p>
+                                <p>${escapeHtml(j.nb_joueurs_min || '')}–${escapeHtml(j.nb_joueurs_max || '')} joueurs${j.age_min ? ` • ${escapeHtml(j.age_min)} ans+` : ''}</p>
+                                <div class="btn-container">
+                                    <a href="index.php?url=jeu&slug=${encodeURIComponent(j.slug)}" class="btn btn-primary">Lire les avis</a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+            list.innerHTML = html;
+            applyFilters();
+        }
+
+        function refreshCatalog() {
+            clearTimeout(timer);
+            const q = input.value.trim();
+            timer = setTimeout(function(){
+                if (q === '') {
+                    list.innerHTML = initialHTML;
+                    applyFilters();
+                    return;
+                }
+                fetch('index.php?url=jeu/search&q=' + encodeURIComponent(q))
+                    .then(r => r.json())
+                    .then(render)
+                    .catch(err => console.error('Search error', err));
+            }, 300);
+        }
+
+        input.addEventListener('input', refreshCatalog);
+        searchButton?.addEventListener('click', refreshCatalog);
+        applyFiltersButton?.addEventListener('click', applyFilters);
+        resetFiltersButton?.addEventListener('click', function () {
+            if (playersMin) playersMin.value = '';
+            if (playersMax) playersMax.value = '';
+            if (duration) duration.value = '';
+            if (complexity) complexity.value = '';
+            categoryCheckboxes.forEach(cb => {
+                cb.checked = false;
+            });
+            applyFilters();
+        });
+
+        applyFilters();
+    })();
+
     // Handler 4 : efface les brouillons d'ajout de jeu (clés commençant par 'jeu_add') lors de la déconnexion
     (function logoutClearHandler(){
         function clearJeuDraftKeys() {
