@@ -17,7 +17,14 @@
                 <li class="nav-item"><a href="index.php?url=logout" class="nav-link">Déconnexion</a></li>
 
                 <?php if ($_SESSION['id_role'] >= 3): ?>
-                <li class="nav-item"><a href="index.php?url=back-office" class="nav-link">Back-Office Admin</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Back-Office</a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="adminDropdown">
+                        <li><a class="dropdown-item" href="index.php?url=back-office">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="index.php?url=admin_users">Gestion utilisateurs</a></li>
+                        <li><a class="dropdown-item" href="index.php?url=admin_content">Gestion contenu</a></li>
+                    </ul>
+                </li>
                 <?php endif; ?>
                 <?php endif; ?>
             </ul>

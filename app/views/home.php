@@ -5,7 +5,6 @@
 // inclusion de l'en-tête
 require __DIR__ . '/nav/header.php';
 require_once __DIR__ . '/../../app/middleware/auth.php';
-require_once __DIR__ . '/../../app/models/jeu.php';
 ?>
 
 <main>

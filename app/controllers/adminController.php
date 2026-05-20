@@ -78,12 +78,76 @@ function dashboard() {
     include __DIR__ . '/../../app/views/back-office.php';
 }
 
-// TODO: que fait cette fonction ? c'est juste pour afficher la liste des utilisateurs dans le back-office ? si oui, elle est pas encore utilisée dans index.php
 function adminUsers() {
     checkRole(3);
     
     $conn = connect();
     $users = getAllUsers($conn);
-    
-    include __DIR__ . '/../../app/views/admin/users.php';
+    // Récupérer l'ID de l'utilisateur connecté pour la vue
+    $currentId = isset($_SESSION['id_utilisateur']) ? (int)$_SESSION['id_utilisateur'] : null;
+
+    include __DIR__ . '/../../app/views/admin_users.php';
+}
+
+function adminContent() {
+    checkRole(3);
+    $conn = connect();
+    // TODO: récupérer/afficher les ressources de contenu lorsque nécessaire
+    include __DIR__ . '/../../app/views/admin_content.php';
+}
+
+function adminUserEdit() {
+    checkRole(3);
+    $conn = connect();
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    $user = getUserById($conn, $id);
+    if (!$user) {
+        http_response_code(404);
+        include __DIR__ . '/../../app/views/404.php';
+        return;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $data = [
+            'nom'    => trim($_POST['nom'] ?? $user['nom']),
+            'prenom' => trim($_POST['prenom'] ?? $user['prenom']),
+            'pseudo' => trim($_POST['pseudo'] ?? $user['pseudo']),
+            'email'  => trim($_POST['email'] ?? $user['email']),
+        ];
+
+        if (updateUser($conn, $id, $data)) {
+            $_SESSION['success'] = 'Utilisateur mis à jour.';
+            header('Location: index.php?url=admin_users');
+            exit();
+        } else {
+            $_SESSION['error'] = 'Impossible de mettre à jour l\'utilisateur.';
+        }
+    }
+
+    include __DIR__ . '/../../app/views/admin_user_edit.php';
+}
+
+function adminUserDelete() {
+    checkRole(3);
+    $conn = connect();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+
+        // Récupérer l'ID de l'utilisateur connecté (clé canonique 'id_utilisateur')
+        $currentId = isset($_SESSION['id_utilisateur']) ? (int)$_SESSION['id_utilisateur'] : null;
+
+        if ($currentId !== null && $currentId === $id) {
+            $_SESSION['error'] = 'Vous ne pouvez pas supprimer votre propre compte administrateur.';
+        } else {
+            if ($id && deleteUser($conn, $id)) {
+                $_SESSION['success'] = 'Utilisateur supprimé.';
+            } else {
+                $_SESSION['error'] = 'Impossible de supprimer l\'utilisateur.';
+            }
+        }
+    } else {
+        $_SESSION['error'] = 'Méthode non autorisée.';
+    }
+    header('Location: index.php?url=admin_users');
+    exit();
 }

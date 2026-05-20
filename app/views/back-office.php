@@ -1,10 +1,15 @@
 <?php
 require __DIR__ . '/nav/header.php';
-require_once __DIR__ . '/../../app/middleware/auth.php';
 ?>
 
 <main class="container">
-    <h1>Back-Office</h1>
+        <h1>Back-Office</h1>
+        <nav class="nav nav-pills mb-4">
+            <?php $cur = $_GET['url'] ?? ''; ?>
+            <a class="nav-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
+            <a class="nav-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
+            <a class="nav-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
+        </nav>
     <?php if (!empty($_SESSION['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
         <?php unset($_SESSION['success']); ?>
@@ -86,6 +91,72 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             </div>
         <?php else: ?>
             <div class="alert alert-secondary mb-0">Aucune demande en attente.</div>
+        <?php endif; ?>
+    </section>
+    <section>
+        <h2>Statistiques</h2>
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title
+                            mb-2"><?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></h3>
+                        <p class="card-text text-muted">Jeux ajoutés</p>
+                    </div>
+                </div>
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title
+                            mb-2"><?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></h3>
+                        <p class="card-text text-muted">Utilisateurs enregistrés</p>
+                    </div>
+                </div>
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title
+                            mb-2"><?= htmlspecialchars($stats['nb_avis'] ?? 'N/A') ?></h3>
+                        <p class="card-text text-muted">Avis déposés</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2>Derniers jeux ajoutés</h2>
+        <?php if (!empty($derniers_jeux)): ?>
+            <div class="list-group">
+                <?php foreach ($derniers_jeux as $jeu): ?>
+                    <a href="/jeu/<?= (int)$jeu['id_jeu'] ?>" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1"><?= htmlspecialchars($jeu['titre']) ?></h5>
+                            <small class="text-muted">Ajouté le <?= htmlspecialchars(date('d/m/Y', strtotime($jeu['date_ajout']))) ?></small>
+                        </div>
+                        <p class="mb-1"><?= htmlspecialchars($jeu['pseudo']) ?></p>
+                    </a>    
+                <?php endforeach; ?>
+            </div>
+            <?php else: ?>
+            <div class="alert alert-secondary mb-0">Aucun jeu à afficher.</div>
+        <?php endif; ?>
+    </section>
+    <section class="mt-5">
+        <h2>Derniers avis déposés</h2>
+        <?php if (!empty($derniers_avis)): ?>
+            <div class="list-group">
+                <?php foreach ($derniers_avis as $avis): ?>
+                    <a href="/jeu/<?= (int)$avis['id_jeu'] ?>" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1"><?= htmlspecialchars($avis['titre']) ?></h5>
+                            <small class="text-muted">Déposé le <?= htmlspecialchars(date('d/m/Y', strtotime($avis['date_avis']))) ?></small>
+                        </div>
+                        <p class="mb-1">Note : <?= htmlspecialchars($avis['note']) ?>/10</p>
+                        <p class="mb-1"><?= htmlspecialchars($avis['commentaire']) ?></p>
+                        <small class="mb-1"><?= htmlspecialchars($avis['pseudo']) ?></small>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-secondary mb-0">Aucun avis à afficher.</div>
         <?php endif; ?>
     </section>
 </main>

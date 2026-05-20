@@ -46,14 +46,14 @@ function searchJeux($conn, $q, $limit = 50) {
     $stmt = $conn->prepare(
         "SELECT j.*, ROUND(AVG(a.note), 1) AS note_moyenne,
                 GROUP_CONCAT(DISTINCT c.libelle_categorie SEPARATOR ', ') AS categories
-         FROM jeu j
-         LEFT JOIN avis a ON j.id_jeu = a.id_jeu
-         LEFT JOIN jeu_categorie jc ON j.id_jeu = jc.id_jeu
-         LEFT JOIN categorie c ON jc.id_categorie = c.id_categorie
-         WHERE j.titre LIKE ? OR j.description LIKE ?
-         GROUP BY j.id_jeu
-         ORDER BY j.date_ajout DESC
-         LIMIT ?"
+        FROM jeu j
+        LEFT JOIN avis a ON j.id_jeu = a.id_jeu
+        LEFT JOIN jeu_categorie jc ON j.id_jeu = jc.id_jeu
+        LEFT JOIN categorie c ON jc.id_categorie = c.id_categorie
+        WHERE j.titre LIKE ? OR j.description LIKE ?
+        GROUP BY j.id_jeu
+        ORDER BY j.date_ajout DESC
+        LIMIT ?"
     );
     $stmt->bindParam(1, $like, PDO::PARAM_STR);
     $stmt->bindParam(2, $like, PDO::PARAM_STR);
@@ -183,7 +183,13 @@ function createJeu($conn, $id_utilisateur, $data) {
 }
 
 function getDerniersJeux($conn) {
-    $stmt = $conn->prepare("SELECT * FROM jeu ORDER BY date_ajout DESC LIMIT 5");
+    $stmt = $conn->prepare(
+        "SELECT jeu.*, u.pseudo
+        FROM jeu
+        LEFT JOIN utilisateur u ON jeu.id_utilisateur = u.id_utilisateur
+        ORDER BY jeu.date_ajout DESC
+        LIMIT 5"
+    );
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
