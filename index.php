@@ -57,6 +57,10 @@ switch($url) {
         require 'app/controllers/adminController.php';
         adminContent();
         break;
+    case 'admin_content/edit_game':
+        require 'app/controllers/adminController.php';
+        adminEditGame();
+        break;
     case 'admin_content_update_game':
         require 'app/controllers/adminController.php';
         adminUpdateGame();

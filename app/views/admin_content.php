@@ -46,7 +46,7 @@
                         <th>ID</th>
                         <th>Titre</th>
                         <th>Auteur</th>
-                        <th>Date</th>
+                        <th>Date ajout</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -54,19 +54,14 @@
                     <?php foreach ($jeux as $jeu): ?>
                     <tr>
                         <td><?= (int)$jeu['id_jeu'] ?></td>
-                        <td>
-                            <form method="post" action="index.php?url=admin_content_update_game" class="d-flex gap-2 align-items-center">
-                                <input type="hidden" name="id_jeu" value="<?= (int)$jeu['id_jeu'] ?>">
-                                <input type="text" name="titre" class="form-control form-control-sm" value="<?= htmlspecialchars($jeu['titre']) ?>">
-                        </td>
-                        <td><input type="text" name="auteur" class="form-control form-control-sm" value="<?= htmlspecialchars($jeu['auteur'] ?? '') ?>"></td>
+                        <td><?= htmlspecialchars($jeu['titre']) ?></td>
+                        <td><?= htmlspecialchars($jeu['auteur'] ?? '') ?></td>
                         <td><?= htmlspecialchars(date('d/m/Y', strtotime($jeu['date_ajout'] ?? $jeu['date'] ?? 'now'))) ?></td>
                         <td>
-                                <button type="submit" class="btn btn-sm btn-success">Enregistrer</button>
-                            </form>
+                            <a href="index.php?url=admin_content/edit_game&id=<?= (int)$jeu['id_jeu'] ?>" class="btn btn-sm btn-primary">Modifier</a>
                             <form method="post" action="index.php?url=admin_content_delete_game" class="d-inline ms-2 admin-delete-form" data-item-type="jeu">
                                 <input type="hidden" name="id" value="<?= (int)$jeu['id_jeu'] ?>">
-                                <button type="submit" class="btn btn-sm btn-danger ms-2">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                             </form>
                         </td>
                     </tr>

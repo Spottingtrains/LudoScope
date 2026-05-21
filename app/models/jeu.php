@@ -13,6 +13,50 @@ if (!function_exists('slugify')) {
         return $text ?: 'n-a';
     }
 }
+
+function getJeuCategoryOptions() {
+    return [
+        'plateau'    => 'Plateau',
+        'ambiance'   => 'Ambiance',
+        'cartes'     => 'Cartes',
+        'cooperatif' => 'Coopératif',
+        'role'       => 'Rôle',
+        'des'        => 'Dés',
+    ];
+}
+
+/**
+ * Normalise un libellé de catégorie en slug stable pour comparer les valeurs.
+ */
+function normalizeJeuCategoryLabel($label) {
+    $label = trim((string)$label);
+    if (function_exists('iconv')) {
+        $label = iconv('UTF-8', 'ASCII//TRANSLIT', $label);
+    }
+
+    $label = strtolower($label);
+    $label = preg_replace('~[^a-z0-9]+~', '', $label);
+    return $label;
+}
+
+/**
+ * Extrait les slugs de catégories à cocher à partir des catégories chargées en base.
+ */
+function getSelectedJeuCategorySlugs(array $jeuCategories) {
+    $categoryOptions = getJeuCategoryOptions();
+    $selectedCategories = [];
+
+    foreach ($jeuCategories as $category) {
+        $dbValue = $category['nom_categorie'] ?? '';
+        $slug = normalizeJeuCategoryLabel($dbValue);
+        if ($slug !== '' && isset($categoryOptions[$slug])) {
+            $selectedCategories[] = $slug;
+        }
+    }
+
+    return array_values(array_unique($selectedCategories));
+}
+
 function getAllJeux($conn) {
     // Select jeu.* (includes auteur/illustrateur columns), plus editor name and aggregated stats/categories
     $stmt = $conn->prepare("SELECT jeu.*, 

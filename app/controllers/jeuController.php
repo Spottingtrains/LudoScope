@@ -219,14 +219,7 @@ function jeuAdd() {
         ];
     }
 
-    $categories = [
-        'plateau'    => 'Plateau',
-        'ambiance'   => 'Ambiance',
-        'cartes'     => 'Cartes',
-        'cooperatif' => 'Coopératif',
-        'role'       => 'Rôle',
-        'des'        => 'Dés',
-    ];
+    $categories = getJeuCategoryOptions();
     $editeurs = getAllEditeurs($conn);
     include 'app/views/jeu_add.php';
 }
@@ -263,29 +256,8 @@ function jeuEditRequest() {
         exit();
     }
 
-    $categories = [
-        'plateau'    => 'Plateau',
-        'ambiance'   => 'Ambiance',
-        'cartes'     => 'Cartes',
-        'cooperatif' => 'Coopératif',
-        'role'       => 'Rôle',
-        'des'        => 'Dés',
-    ];
-    $dbValueToSlug = [
-    'plateau'    => 'plateau',
-    'ambiance'   => 'ambiance',
-    'cartes'     => 'cartes',
-    'coopératif' => 'cooperatif',
-    'rôle'       => 'role',
-    'dés'        => 'des',
-    ];
-    $selectedCategories = [];
-    foreach ($jeu['categories'] ?? [] as $category) {
-        $dbValue = $category['nom_categorie'] ?? '';
-        if (isset($dbValueToSlug[$dbValue])) {
-            $selectedCategories[] = $dbValueToSlug[$dbValue];
-        }
-    }
+    $categories = getJeuCategoryOptions();
+    $selectedCategories = getSelectedJeuCategorySlugs($jeu['categories'] ?? []);
 
     $old = [
         'titre'                   => $jeu['titre'] ?? '',
