@@ -41,6 +41,36 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     })();
 
+    // Handler 6: admin deletion via Bootstrap modal (forms marked .admin-delete-form)
+    (function adminDeleteHandler(){
+        const modalEl = document.getElementById('adminConfirmModal');
+        if (!modalEl) return;
+        const bsModal = new bootstrap.Modal(modalEl);
+        const modalBody = modalEl.querySelector('#adminConfirmModalBody');
+        const confirmBtn = modalEl.querySelector('#adminConfirmModalConfirm');
+        let pendingForm = null;
+
+        document.querySelectorAll('form.admin-delete-form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                pendingForm = form;
+                const itemType = form.dataset.itemType || 'élément';
+                const idInput = form.querySelector('input[name="id"]');
+                const id = idInput ? idInput.value : '';
+                modalBody.textContent = `Êtes-vous sûr de vouloir supprimer ce ${itemType} ${id ? '(ID ' + id + ')' : ''} ? Cette action est définitive.`;
+                bsModal.show();
+            });
+        });
+
+        confirmBtn.addEventListener('click', function () {
+            if (!pendingForm) return;
+            // submit the stored form
+            pendingForm.submit();
+            pendingForm = null;
+            bsModal.hide();
+        });
+    })();
+
     // Handler 5: AJAX search for catalogue + filtres
     (function catalogueSearchHandler(){
         const input = document.getElementById('catalog-search');

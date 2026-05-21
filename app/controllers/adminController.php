@@ -54,11 +54,31 @@ function dashboard() {
 
                 if (!$confirmAdminDelete) {
                     $_SESSION['error'] = 'Veuillez confirmer la suppression définitive avant de valider.';
-                } elseif (deleteJeu($conn, (int)$demande['id_jeu'])) {
-                    updateDemandeStatut($conn, $idDemande, 'traite', $response !== '' ? $response : 'Suppression appliquée.');
-                    $_SESSION['success'] = 'La demande de suppression a été acceptée.';
                 } else {
-                    $_SESSION['error'] = 'Impossible de supprimer le jeu.';
+                    try {
+                        $conn->beginTransaction();
+                        $jeuId = (int)$demande['id_jeu'];
+                        if (!deleteJeuCategories($conn, $jeuId)) {
+                            throw new Exception('Erreur suppression catégories.');
+                        }
+                        $imageName = deleteJeuAndGetImage($conn, $jeuId);
+                        if ($imageName === false) {
+                            throw new Exception('Impossible de supprimer le jeu en base.');
+                        }
+                        $conn->commit();
+
+                        if (!empty($imageName)) {
+                            $imagePath = __DIR__ . '/../../uploads/' . $imageName;
+                            if (is_file($imagePath)) @unlink($imagePath);
+                        }
+
+                        updateDemandeStatut($conn, $idDemande, 'traite', $response !== '' ? $response : 'Suppression appliquée.');
+                        $_SESSION['success'] = 'La demande de suppression a été acceptée.';
+                    } catch (Exception $e) {
+                        if ($conn->inTransaction()) $conn->rollBack();
+                        error_log('admin dashboard suppression error: ' . $e->getMessage());
+                        $_SESSION['error'] = 'Impossible de supprimer le jeu.';
+                    }
                 }
             } elseif ($demande['type_demande'] === 'suppression' && $decision === 'refuser') {
                 updateDemandeStatut($conn, $idDemande, 'refuse', $response !== '' ? $response : 'Demande refusée par l\'administration.');
@@ -92,8 +112,137 @@ function adminUsers() {
 function adminContent() {
     checkRole(3);
     $conn = connect();
-    // TODO: récupérer/afficher les ressources de contenu lorsque nécessaire
+    $jeux = getAllJeux($conn);
+    $avis = getAllAvis($conn);
     include __DIR__ . '/../../app/views/admin_content.php';
+}
+
+function adminUpdateGame() {
+    checkRole(3);
+    $conn = connect();
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $_SESSION['error'] = 'Méthode non autorisée.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+
+    $id = isset($_POST['id_jeu']) ? (int)$_POST['id_jeu'] : 0;
+    if (!$id) {
+        $_SESSION['error'] = 'Jeu invalide.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+
+    $data = [
+        'titre' => trim($_POST['titre'] ?? ''),
+        'description' => trim($_POST['description'] ?? ''),
+        'nb_joueurs_min' => isset($_POST['nb_joueurs_min']) && $_POST['nb_joueurs_min'] !== '' ? (int)$_POST['nb_joueurs_min'] : null,
+        'nb_joueurs_max' => isset($_POST['nb_joueurs_max']) && $_POST['nb_joueurs_max'] !== '' ? (int)$_POST['nb_joueurs_max'] : null,
+        'age_min' => isset($_POST['age_min']) && $_POST['age_min'] !== '' ? (int)$_POST['age_min'] : null,
+        'duree_partie' => isset($_POST['duree_partie']) && $_POST['duree_partie'] !== '' ? (int)$_POST['duree_partie'] : null,
+        'complexite' => $_POST['complexite'] ?? '',
+        'image' => $_POST['image'] ?? null,
+        'auteur' => $_POST['auteur'] ?? null,
+        'illustrateur' => $_POST['illustrateur'] ?? null,
+        'annee_edition' => isset($_POST['annee_edition']) && $_POST['annee_edition'] !== '' ? (int)$_POST['annee_edition'] : null,
+        'id_editeur' => isset($_POST['id_editeur']) && $_POST['id_editeur'] !== '' ? (int)$_POST['id_editeur'] : null,
+    ];
+
+    if (updateJeuAdmin($conn, $id, $data)) {
+        $_SESSION['success'] = 'Jeu mis à jour.';
+    } else {
+        $_SESSION['error'] = 'Impossible de mettre à jour le jeu.';
+    }
+    header('Location: index.php?url=admin_content');
+    exit();
+}
+
+function adminDeleteGame() {
+    checkRole(3);
+    $conn = connect();
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $_SESSION['error'] = 'Méthode non autorisée.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+    if (!$id) {
+        $_SESSION['error'] = 'Jeu invalide.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+    try {
+        $conn->beginTransaction();
+        if (!deleteJeuCategories($conn, $id)) {
+            throw new Exception('Erreur suppression catégories.');
+        }
+        $imageName = deleteJeuAndGetImage($conn, $id);
+        if ($imageName === false) {
+            throw new Exception('Impossible de supprimer le jeu en base.');
+        }
+        $conn->commit();
+
+        if (!empty($imageName)) {
+            $imagePath = __DIR__ . '/../../uploads/' . $imageName;
+            if (is_file($imagePath)) @unlink($imagePath);
+        }
+
+        $_SESSION['success'] = 'Jeu supprimé définitivement.';
+    } catch (Exception $e) {
+        if ($conn->inTransaction()) $conn->rollBack();
+        error_log('adminDeleteGame error: ' . $e->getMessage());
+        $_SESSION['error'] = 'Impossible de supprimer le jeu.';
+    }
+    header('Location: index.php?url=admin_content');
+    exit();
+}
+
+function adminUpdateAvis() {
+    checkRole(3);
+    $conn = connect();
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $_SESSION['error'] = 'Méthode non autorisée.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+    $id = isset($_POST['id_avis']) ? (int)$_POST['id_avis'] : 0;
+    if (!$id) {
+        $_SESSION['error'] = 'Avis invalide.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+    $commentaire = trim($_POST['commentaire'] ?? '');
+    $note = isset($_POST['note']) && $_POST['note'] !== '' ? (int)$_POST['note'] : null;
+    if (updateAvis($conn, $id, $commentaire, $note)) {
+        $_SESSION['success'] = 'Avis mis à jour.';
+    } else {
+        $_SESSION['error'] = 'Impossible de mettre à jour l\'avis.';
+    }
+    header('Location: index.php?url=admin_content');
+    exit();
+}
+
+function adminDeleteAvis() {
+    checkRole(3);
+    $conn = connect();
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $_SESSION['error'] = 'Méthode non autorisée.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+    $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+    if (!$id) {
+        $_SESSION['error'] = 'Avis invalide.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+    if (deleteAvis($conn, $id)) {
+        $_SESSION['success'] = 'Avis supprimé définitivement.';
+    } else {
+        $_SESSION['error'] = 'Impossible de supprimer l\'avis.';
+    }
+    header('Location: index.php?url=admin_content');
+    exit();
 }
 
 function adminUserEdit() {

@@ -37,3 +37,9 @@ function getAvisById($conn, $id_avis) {
     $stmt->execute([(int)$id_avis]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+function getAllAvis($conn) {
+    $stmt = $conn->prepare("SELECT avis.*, utilisateur.pseudo, jeu.titre FROM avis LEFT JOIN utilisateur ON avis.id_utilisateur = utilisateur.id_utilisateur JOIN jeu ON avis.id_jeu = jeu.id_jeu ORDER BY avis.date_avis DESC");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

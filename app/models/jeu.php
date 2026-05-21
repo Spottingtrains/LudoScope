@@ -239,12 +239,48 @@ function updateJeu($conn, $id_jeu, $id_utilisateur, $data) {
     ]);
 }
 
+// Admin update: allows administrators to update a jeu without owner restriction
+function updateJeuAdmin($conn, $id_jeu, $data) {
+    $stmt = $conn->prepare(
+        "UPDATE jeu
+        SET titre = ?, description = ?, nb_joueurs_min = ?, nb_joueurs_max = ?, age_min = ?, duree_partie = ?, complexite = ?, image = ?, auteur = ?, illustrateur = ?, annee_edition = ?, id_editeur = ?
+        WHERE id_jeu = ?"
+    );
+
+    return $stmt->execute([
+        $data['titre'],
+        $data['description'],
+        $data['nb_joueurs_min'],
+        $data['nb_joueurs_max'],
+        $data['age_min'],
+        $data['duree_partie'],
+        $data['complexite'],
+        $data['image'],
+        $data['auteur'] ?? null,
+        $data['illustrateur'] ?? null,
+        $data['annee_edition'] ?? null,
+        $data['id_editeur'] ?? null,
+        $id_jeu,
+    ]);
+}
+
 function deleteJeuCategories($conn, $jeuId) {
     $stmt = $conn->prepare('DELETE FROM jeu_categorie WHERE id_jeu = ?');
     return $stmt->execute([$jeuId]);
 }
 
 function deleteJeu($conn, $jeuId) {
+    // Delete only the DB row. File deletion is handled by controllers to avoid double-unlink.
+    $stmt = $conn->prepare('DELETE FROM jeu WHERE id_jeu = ?');
+    return $stmt->execute([(int)$jeuId]);
+}
+
+/**
+ * Supprime la ligne `jeu` en base et retourne le nom du fichier image associé (ou null).
+ * Ne supprime PAS le fichier sur le système de fichiers — le contrôleur décide quand le faire.
+ * Retourne le nom de l'image (string) ou null si aucun, ou false en cas d'erreur / jeu introuvable.
+ */
+function deleteJeuAndGetImage($conn, $jeuId) {
     $stmt = $conn->prepare('SELECT image FROM jeu WHERE id_jeu = ?');
     $stmt->execute([(int)$jeuId]);
     $jeu = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -260,14 +296,7 @@ function deleteJeu($conn, $jeuId) {
         return false;
     }
 
-    if (!empty($jeu['image'])) {
-        $imagePath = __DIR__ . '/../../uploads/' . $jeu['image'];
-        if (is_file($imagePath)) {
-            @unlink($imagePath);
-        }
-    }
-
-    return true;
+    return $jeu['image'] ?? null;
 }
 
 function insertJeuCategories($conn, $jeuId, $selectedCats) {
