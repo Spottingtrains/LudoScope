@@ -497,7 +497,7 @@ function adminUserDelete() {
         if ($currentId !== null && $currentId === $id) {
             $_SESSION['error'] = 'Vous ne pouvez pas supprimer votre propre compte administrateur.';
         } else {
-            if ($id && deleteUser($conn, $id)) {
+            if ($id && deleteUser($conn, $id, $currentId)) {
                 $_SESSION['success'] = 'Utilisateur supprimé.';
             } else {
                 $_SESSION['error'] = 'Impossible de supprimer l\'utilisateur.';

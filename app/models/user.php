@@ -33,7 +33,14 @@ function updateUser($conn, $id, $data) {
     return $stmt->execute([$data['nom'], $data['prenom'], $data['pseudo'], $data['email'], $id]);
 }
 
-function deleteUser($conn, $id) {
+function deleteUser($conn, $id, $adminId) {
+    // 1. Réassigner les jeux de l'utilisateur supprimé à l'admin
+    $stmt = $conn->prepare("UPDATE jeu SET id_utilisateur = ? WHERE id_utilisateur = ?");
+    $stmt->execute([$adminId, $id]);
+
+    // 2. Supprimer l'utilisateur
+    // → MySQL passe automatiquement avis.id_utilisateur à NULL (ON DELETE SET NULL)
+    // → Les favoris et tokens sont supprimés automatiquement (ON DELETE CASCADE)
     $stmt = $conn->prepare("DELETE FROM utilisateur WHERE id_utilisateur = ?");
     return $stmt->execute([$id]);
 }

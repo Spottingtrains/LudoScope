@@ -126,12 +126,12 @@ require __DIR__ . '/nav/header.php';
         <?php if (!empty($derniers_jeux)): ?>
             <div class="list-group">
                 <?php foreach ($derniers_jeux as $jeu): ?>
-                    <a href="/jeu/<?= (int)$jeu['id_jeu'] ?>" class="list-group-item list-group-item-action">
+                    <a href="index.php?url=jeu&id=<?= (int)$jeu['id_jeu'] ?>" class="list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1"><?= htmlspecialchars($jeu['titre']) ?></h5>
                             <small class="text-muted">Ajouté le <?= htmlspecialchars(date('d/m/Y', strtotime($jeu['date_ajout']))) ?></small>
                         </div>
-                        <p class="mb-1"><?= htmlspecialchars($jeu['pseudo']) ?></p>
+                        <p class="mb-1"><?= htmlspecialchars($jeu['pseudo'] ?? 'Utilisateur supprimé') ?></p>
                     </a>    
                 <?php endforeach; ?>
             </div>
@@ -144,14 +144,14 @@ require __DIR__ . '/nav/header.php';
         <?php if (!empty($derniers_avis)): ?>
             <div class="list-group">
                 <?php foreach ($derniers_avis as $avis): ?>
-                    <a href="/jeu/<?= (int)$avis['id_jeu'] ?>" class="list-group-item list-group-item-action">
+                    <a href="index.php?url=jeu&id=<?= (int)$avis['id_jeu'] ?>" class="list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1"><?= htmlspecialchars($avis['titre']) ?></h5>
                             <small class="text-muted">Déposé le <?= htmlspecialchars(date('d/m/Y', strtotime($avis['date_avis']))) ?></small>
                         </div>
                         <p class="mb-1">Note : <?= htmlspecialchars($avis['note']) ?>/10</p>
                         <p class="mb-1"><?= htmlspecialchars($avis['commentaire']) ?></p>
-                        <small class="mb-1"><?= htmlspecialchars($avis['pseudo']) ?></small>
+                        <small class="mb-1"><?= htmlspecialchars($avis['pseudo'] ?? 'Utilisateur supprimé') ?></small>
                     </a>
                 <?php endforeach; ?>
             </div>
