@@ -3,11 +3,19 @@ require __DIR__ . '/nav/header.php';
 ?>
 <main class="container my-5">
     <nav class="nav nav-pills mb-4">
-      <?php $cur = $_GET['url'] ?? ''; ?>
-      <a class="nav-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
-      <a class="nav-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
-      <a class="nav-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
+        <?php $cur = $_GET['url'] ?? ''; ?>
+        <a class="nav-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
+        <a class="nav-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
+        <a class="nav-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
     </nav>
+    <?php if (!empty($_SESSION['success'])): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+    <?php if (!empty($_SESSION['error'])): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
     <section>
         <h1>Gestion des utilisateurs</h1>
     </section>
@@ -35,7 +43,7 @@ require __DIR__ . '/nav/header.php';
                             <td>
                                     <input type="email" name="email" class="form-control form-control-sm" value="<?= htmlspecialchars($user['email']) ?>">
                             </td>
-                            <td><?= htmlspecialchars(($user['id_role'] ?? $user['role']) == 2 ? 'Utilisateur' : 'Administrateur') ?></td>
+                                <td><?= htmlspecialchars(($user['id_role'] ?? $user['role']) == 3 ? 'Administrateur' : (($user['id_role'] ?? $user['role']) == 2 ? 'Compte' : 'Visiteur')) ?></td>
                             <td>
                                     <button type="submit" class="btn btn-sm btn-success">Enregistrer</button>
                                 </form>
@@ -55,6 +63,28 @@ require __DIR__ . '/nav/header.php';
         <?php else: ?>
             <div class="alert alert-secondary mb-0">Aucun utilisateur à afficher.</div>
         <?php endif; ?>
+        <form method="post" action="index.php?url=admin/users/create" class="mt-4">
+            <h3>Ajouter un nouvel utilisateur</h3>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <select name="role" id="role" class="form-select" required>
+                        <option value="" disabled selected>-- Rôle --</option>
+                        <option value="2">Compte</option>
+                        <option value="3">Administrateur</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="pseudo" class="form-control" placeholder="Pseudo" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Créer l'utilisateur</button>
+        </form>
     </section>
 </main>
 

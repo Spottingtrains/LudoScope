@@ -17,9 +17,9 @@ function getUserById($conn, $id) {
     return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 }
 
-function createUser($conn, $firstname, $lastname, $pseudo, $email, $hashedPassword, $date_inscription) {
-    $stmt = $conn->prepare("INSERT INTO utilisateur (prenom, nom, pseudo, email, mot_de_passe, id_role, date_inscription) VALUES (?, ?, ?, ?, ?, 2, ?)");
-    return $stmt->execute([$firstname, $lastname, $pseudo, $email, $hashedPassword, $date_inscription]);
+function createUser($conn, $firstname, $lastname, $pseudo, $email, $hashedPassword, $date_inscription, $id_role = 2) {
+    $stmt = $conn->prepare("INSERT INTO utilisateur (prenom, nom, pseudo, email, mot_de_passe, id_role, date_inscription) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    return $stmt->execute([$firstname, $lastname, $pseudo, $email, $hashedPassword, $id_role, $date_inscription]);
 }
 
 function getAllUsers($conn) {

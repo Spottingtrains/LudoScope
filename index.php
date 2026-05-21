@@ -49,6 +49,10 @@ switch($url) {
         require 'app/controllers/adminController.php';
         adminUsers();
         break;
+    case 'admin/users/create':
+        require 'app/controllers/adminController.php';
+        adminUserCreate();
+        break;
     case 'admin_content':
         require 'app/controllers/adminController.php';
         adminContent();

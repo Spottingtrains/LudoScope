@@ -109,6 +109,70 @@ function adminUsers() {
     include __DIR__ . '/../../app/views/admin_users.php';
 }
 
+function adminUserCreate() {
+    checkRole(3);
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        $_SESSION['error'] = 'Méthode non autorisée.';
+        header('Location: index.php?url=admin_users');
+        exit();
+    }
+
+    $conn = connect();
+    $role = isset($_POST['role']) ? (int)$_POST['role'] : 0;
+    $pseudo = trim($_POST['pseudo'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    if (!in_array($role, [2, 3], true)) {
+        $_SESSION['error'] = 'Veuillez choisir un rôle valide.';
+        header('Location: index.php?url=admin_users');
+        exit();
+    }
+
+    if ($pseudo === '' || $email === '' || $password === '') {
+        $_SESSION['error'] = 'Tous les champs sont requis.';
+        header('Location: index.php?url=admin_users');
+        exit();
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = 'Le format de l\'adresse email n\'est pas valide.';
+        header('Location: index.php?url=admin_users');
+        exit();
+    }
+
+    if (!preg_match('/^(?=.*[A-Z])(?=.*[0-9]).{8,}$/', $password)) {
+        $_SESSION['error'] = 'Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.';
+        header('Location: index.php?url=admin_users');
+        exit();
+    }
+
+    if (getUserByEmail($conn, $email)) {
+        $_SESSION['error'] = 'Un utilisateur avec cet email existe déjà.';
+        header('Location: index.php?url=admin_users');
+        exit();
+    }
+
+    if (getUserByPseudo($conn, $pseudo)) {
+        $_SESSION['error'] = 'Un utilisateur avec ce pseudo existe déjà.';
+        header('Location: index.php?url=admin_users');
+        exit();
+    }
+
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $dateInscription = date('Y-m-d H:i:s');
+
+    if (createUser($conn, '', '', $pseudo, $email, $hashedPassword, $dateInscription, $role)) {
+        $_SESSION['success'] = 'Utilisateur créé avec succès.';
+    } else {
+        $_SESSION['error'] = 'Impossible de créer l\'utilisateur.';
+    }
+
+    header('Location: index.php?url=admin_users');
+    exit();
+}
+
 function adminContent() {
     checkRole(3);
     $conn = connect();
