@@ -175,6 +175,9 @@ main section {
 /** __________Spécifique__________*/
 /** Home */
 /* Carrousel hero */
+#heroSection {
+    margin: 0 calc(-1 * var(--spacing-2xl)) 0 calc(-1 * var(--spacing-2xl));
+}
 #heroCarousel h1, #heroCarousel h2, #heroCarousel p {
     color: var(--color-white) !important;
 }
@@ -256,14 +259,15 @@ main section {
     flex-direction: row;
     justify-content: space-between;
     gap: var(--spacing-sm);
-    height: 100px;
+    min-height: 90px;
 
 }
 .jeu-title {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     gap: var(--spacing-xs);
+    margin: var(--spacing-sm) 0 0 var(--spacing-lg);
 }
 .jeu-title h1 {
     margin: 0 !important;
@@ -272,13 +276,16 @@ main section {
     background-color: var(--color-accent-500);
     color: var(--color-white);
     padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--spacing-2xl) var(--spacing-2xl) 0 0;
+    border-radius: 0 var(--spacing-2xl) 0 0;
     font-weight: 700;
-    width: 100px;
-    height: 100%;
+    min-width: 100px;
+    min-height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.note-moyenne span {
+    font-size: 1.25rem;
 }
 .jeu-header, #jeuDetail img {
     margin-left: calc(-1 * var(--spacing-lg));
