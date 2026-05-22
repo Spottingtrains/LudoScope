@@ -75,6 +75,27 @@ function getAllJeux($conn) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getBestJeux($conn, $limit = 3) {
+    $stmt = $conn->prepare(
+        "SELECT jeu.*, 
+            editeur.nom_editeur,
+            ROUND(AVG(avis.note), 1) AS note_moyenne,
+            COUNT(DISTINCT avis.id_avis) AS nb_avis,
+            GROUP_CONCAT(DISTINCT categorie.libelle_categorie SEPARATOR ', ') AS categories
+        FROM jeu
+        LEFT JOIN editeur ON jeu.id_editeur = editeur.id_editeur
+        LEFT JOIN avis ON jeu.id_jeu = avis.id_jeu
+        LEFT JOIN jeu_categorie ON jeu.id_jeu = jeu_categorie.id_jeu
+        LEFT JOIN categorie ON jeu_categorie.id_categorie = categorie.id_categorie
+        GROUP BY jeu.id_jeu
+        HAVING COUNT(DISTINCT avis.id_avis) > 0
+        ORDER BY note_moyenne DESC, nb_avis DESC, jeu.date_ajout DESC
+        LIMIT " . (int)$limit
+    );
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 function getAllCategories($conn) {
     $stmt = $conn->prepare("SELECT libelle_categorie FROM categorie ORDER BY libelle_categorie ASC");
     $stmt->execute();
@@ -159,26 +180,7 @@ function getJeuBySlug($conn, $slug) {
         return null;
     }
 
-    // Normalize function for slugs
-    if (!function_exists('slugify')) {
-        function slugify($text) {
-            $text = trim($text);
-            // transliterate
-            if (function_exists('iconv')) {
-                $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
-            }
-            $text = strtolower($text);
-            // replace non letters or digits by -
-            $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-            // remove unwanted characters
-            $text = preg_replace('~[^-a-z0-9]+~', '', $text);
-            // trim
-            $text = trim($text, '-');
-            // remove duplicate -
-            $text = preg_replace('~-+~', '-', $text);
-            return $text ?: 'n-a';
-        }
-    }
+    // `slugify` is already defined above in this file; use it here.
 
     $target = $slug;
 

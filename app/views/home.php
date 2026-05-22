@@ -51,7 +51,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
                         <p class="hero-stat"><?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></p>
-                        <h2 class="fw-bold">jeux de société dans notre catalogue</h2>
+                        <h2 class="fw-bold">jeux dans notre catalogue</h2>
                         <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
                             <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
                             <?php if (check_role() >= 2): ?>
@@ -67,7 +67,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
                         <p class="hero-stat"><?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></p>
-                        <h2 class="fw-bold">joueurs nous ont rejoints</h2>
+                        <h2 class="fw-bold">joueurs nous ont déjà rejoints</h2>
                         <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
                             <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
                             <?php if (check_role() >= 2): ?>
@@ -108,16 +108,22 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
 
         </div>
     </section>
-    <!-- Section derniers jeux ajoutés -->
-    <section class="orange-bg small-padding">
+    <!-- Section jeux les mieux notés -->
+    <section id="bestNote" class="small-padding">
         <div>
-            <h2>Derniers jeux ajoutés</h2>
-            <?php if (!empty($jeux)): ?>
-                <ul>
-                    <?php foreach ($jeux as $jeu): ?>
-                        <li><?= htmlspecialchars($jeu['titre']) ?> - Ajouté le <?= htmlspecialchars($jeu['date_ajout']) ?></li>
+            <h2>Les mieux notés</h2>
+            <?php if (!empty($bestJeux)): ?>
+                <div class="row g-4">
+                    <?php foreach ($bestJeux as $jeu): ?>
+                        <div class="col-12 col-md-6 col-lg-4 best-card">
+                            <div class="img-wrapper">
+                                <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                                <span class="card-note"><?= htmlspecialchars((int)($jeu['note_moyenne'] ?? '0') . ' / 10') ?></span>
+                            </div>
+                            <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
+                        </div>
                     <?php endforeach; ?>
-                </ul>
+                </div>
             <?php else: ?>
                 <p>Aucun jeu à afficher.</p>
             <?php endif; ?>
@@ -126,7 +132,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
     <!-- Section catalogue -->
     <!-- TODO: ajouter pagination -->
     <section id="catalogue" class="orange-bg small-padding">
-        <h2>Catalogue de jeux</h2>
+        <h2>Notre catalogue</h2>
         <!-- Barre de recherche -->
         <div class="mb-4">
             <div class="input-group">
