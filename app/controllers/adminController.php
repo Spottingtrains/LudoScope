@@ -421,8 +421,12 @@ function adminUpdateAvis() {
         exit();
     }
     $commentaire = trim($_POST['commentaire'] ?? '');
-    $note = isset($_POST['note']) && $_POST['note'] !== '' ? (int)$_POST['note'] : null;
-    if (updateAvis($conn, $id, $commentaire, $note)) {
+    if ($commentaire === '') {
+        $_SESSION['error'] = 'Le commentaire ne peut pas être vide.';
+        header('Location: index.php?url=admin_content');
+        exit();
+    }
+    if (updateAvisCommentaire($conn, $id, $commentaire)) {
         $_SESSION['success'] = 'Avis mis à jour.';
     } else {
         $_SESSION['error'] = 'Impossible de mettre à jour l\'avis.';

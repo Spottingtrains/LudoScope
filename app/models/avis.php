@@ -21,6 +21,11 @@ function updateAvis($conn, $id_avis, $commentaire, $note) {
     return $stmt->execute([$commentaire, $note, $id_avis]);
 }
 
+function updateAvisCommentaire($conn, $id_avis, $commentaire) {
+    $stmt = $conn->prepare("UPDATE avis SET commentaire = ?, date_modification = NOW() WHERE id_avis = ?");
+    return $stmt->execute([$commentaire, $id_avis]);
+}
+
 function deleteAvis($conn, $id_avis) {
     $stmt = $conn->prepare("DELETE FROM avis WHERE id_avis = ?");
     return $stmt->execute([$id_avis]);
