@@ -118,7 +118,15 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <div class="col-12 col-md-6 col-lg-4 best-card">
                             <div class="img-wrapper">
                                 <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
-                                <span class="card-note"><?= htmlspecialchars((int)($jeu['note_moyenne'] ?? '0') . ' / 10') ?></span>
+                                <div class="card-note">
+                                    <span><?= htmlspecialchars((int)($jeu['note_moyenne'] ?? '0') . ' / 10') ?></span>
+                                    <p>
+                                        <?php if (!empty($jeu['commentaire_admin'])): ?>
+                                            <em>" <?= htmlspecialchars($jeu['commentaire_admin']) ?> "</em>
+                                        <?php endif; ?>
+                                    </p>
+                                </div>
+                                <p class="card-desc"><?= htmlspecialchars(mb_substr($jeu['description'] ?? '', 0, 120)) ?>…</p>
                             </div>
                             <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
                         </div>

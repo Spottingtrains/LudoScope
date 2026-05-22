@@ -76,22 +76,22 @@ function getAllJeux($conn) {
 }
 
 function getBestJeux($conn, $limit = 3) {
-    $stmt = $conn->prepare(
-        "SELECT jeu.*, 
-            editeur.nom_editeur,
-            ROUND(AVG(avis.note), 1) AS note_moyenne,
-            COUNT(DISTINCT avis.id_avis) AS nb_avis,
-            GROUP_CONCAT(DISTINCT categorie.libelle_categorie SEPARATOR ', ') AS categories
-        FROM jeu
-        LEFT JOIN editeur ON jeu.id_editeur = editeur.id_editeur
-        LEFT JOIN avis ON jeu.id_jeu = avis.id_jeu
-        LEFT JOIN jeu_categorie ON jeu.id_jeu = jeu_categorie.id_jeu
-        LEFT JOIN categorie ON jeu_categorie.id_categorie = categorie.id_categorie
-        GROUP BY jeu.id_jeu
-        HAVING COUNT(DISTINCT avis.id_avis) > 0
-        ORDER BY note_moyenne DESC, nb_avis DESC, jeu.date_ajout DESC
-        LIMIT " . (int)$limit
-    );
+    $stmt = $conn->prepare("
+        SELECT j.*,
+            ROUND(AVG(a.note), 1) AS note_moyenne,
+            (SELECT a2.commentaire
+             FROM avis a2
+             JOIN utilisateur u2 ON a2.id_utilisateur = u2.id_utilisateur
+             WHERE a2.id_jeu = j.id_jeu AND u2.id_role = 3
+             LIMIT 1) AS commentaire_admin
+        FROM jeu j
+        LEFT JOIN avis a ON j.id_jeu = a.id_jeu
+        GROUP BY j.id_jeu
+        HAVING note_moyenne IS NOT NULL
+        ORDER BY note_moyenne DESC
+        LIMIT ?
+    ");
+    $stmt->bindValue(1, $limit, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
