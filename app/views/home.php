@@ -203,9 +203,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                             data-categories="<?= htmlspecialchars(mb_strtolower($jeu['categories'] ?? '')) ?>">
                             <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
                             <div class="card-body">
-                                <div>
+                                <div class="card-header">
                                     <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
-                                    <span><?= htmlspecialchars($jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'Non noté') ?></span>
+                                    <span><?= htmlspecialchars($jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'N/A') ?></span>
                                 </div>
                                 <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
                                 <p><?= htmlspecialchars($jeu['nb_joueurs_min']) ?>–<?= htmlspecialchars($jeu['nb_joueurs_max']) ?> joueurs<?php if (!empty($jeu['age_min'])): ?> • <?= htmlspecialchars($jeu['age_min']) ?> ans+<?php endif; ?></p>
