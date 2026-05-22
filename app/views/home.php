@@ -19,44 +19,97 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
     <?php endif; ?>
     <!-- Section hero et CTA -->
     <!-- TODO: vérifier les classes Bootstrap et l'intérêt des div -->
-    <section class="py-24 ">
-        <div class="container mw-screen-xl">
-            <div class="bg-body rounded shadow-soft-3 border p-5">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-10 col-lg-8 text-center">
-                        <h1 class="ls-tight display-6 ">
-                            Votre prochaine partie commence ici !
-                        </h1>
-                        <h2>
-                            Découvrez, évaluez et partagez vos jeux de société préférés
-                        </h2>
-                        <div class="hstack gap-3 justify-content-center">
-                        <a href="#catalogue" class="btn btn-primary">
-                            Explorer les jeux de notre catalogue
-                        </a>
-                        <?php
-                        if (check_role() >= 2) { // Si l'utilisateur est connecté ou admin
-                            echo '<a href="/jeu/add" class="btn btn-secondary">Contribuer à notre catalogue</a>'; // TODO: ajuster le lien vers la page d'ajout de jeu
-                        } else { // Si l'utilisateur n'est pas connecté
-                            echo '<a href="/login" class="btn btn-secondary">Rejoindre la communauté</a>'; // TODO: ajuster le lien vers la page de connexion/inscription
-                        } ?>
+    <section>
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+            </div>
+
+            <div class="carousel-inner">
+
+                <div class="carousel-item active hero-slide" style="background-image: url('/uploads/hero-1.jpg');">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content text-center text-white">
+                        <h1 class="display-4 fw-bold">Votre prochaine partie commence ici !</h1>
+                        <p class="fs-4 mt-3">Découvrez, évaluez et partagez vos jeux de société préférés</p>
+                        <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
+                            <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
+                            <?php if (check_role() >= 2): ?>
+                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                            <?php else: ?>
+                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
+
+                <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-2.jpg');">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content text-center text-white">
+                        <p class="hero-stat"><?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></p>
+                        <h2 class="fw-bold">jeux de société dans notre catalogue</h2>
+                        <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
+                            <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
+                            <?php if (check_role() >= 2): ?>
+                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                            <?php else: ?>
+                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-3.jpg');">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content text-center text-white">
+                        <p class="hero-stat"><?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></p>
+                        <h2 class="fw-bold">joueurs nous ont rejoints</h2>
+                        <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
+                            <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
+                            <?php if (check_role() >= 2): ?>
+                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                            <?php else: ?>
+                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-4.jpg');">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content text-center text-white">
+                        <p class="hero-stat"><?= htmlspecialchars($stats['nb_avis'] ?? 'N/A') ?></p>
+                        <h2 class="fw-bold">avis partagés par la communauté</h2>
+                        <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
+                            <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
+                            <?php if (check_role() >= 2): ?>
+                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                            <?php else: ?>
+                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-    </section>
-    <!-- Section statistiques du sites -->
-    <section>
-        <div>
-            <h2>Statistiques du site</h2>
-            <p>Nombre de jeux : <?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></p> <!-- Affiche le nombre de jeux ou 'N/A' si la variable n'est pas définie -->
-            <p>Nombre d'utilisateurs : <?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></p> <!-- Affiche le nombre d'utilisateurs ou 'N/A' si la variable n'est pas définie -->
-            <p>Nombre d'avis : <?= htmlspecialchars($stats['nb_avis'] ?? 'N/A') ?></p> <!-- Affiche le nombre d'avis ou 'N/A' si la variable n'est pas définie -->
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">Précédent</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">Suivant</span>
+            </button>
+
         </div>
     </section>
     <!-- Section derniers jeux ajoutés -->
-    <section>
+    <section class="orange-bg small-padding">
         <div>
             <h2>Derniers jeux ajoutés</h2>
             <?php if (!empty($jeux)): ?>
@@ -72,60 +125,64 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
     </section>
     <!-- Section catalogue -->
     <!-- TODO: ajouter pagination -->
-    <div class="mb-4">
-        <div class="input-group">
-            <input id="catalog-search" type="search" class="form-control" placeholder="Entrez le nom du jeu, un mot-clé..." aria-label="Recherche jeux">
-            <button id="catalog-search-btn" type="button" class="btn btn-primary">Rechercher</button>
+    <section id="catalogue" class="orange-bg small-padding">
+        <h2>Catalogue de jeux</h2>
+        <!-- Barre de recherche -->
+        <div class="mb-4">
+            <div class="input-group">
+                <input id="catalog-search" type="search" class="form-control" placeholder="Entrez le nom du jeu, un mot-clé..." aria-label="Recherche jeux">
+                <button id="catalog-search-btn" type="button" class="btn btn-primary">Rechercher</button>
+            </div>
         </div>
-    </div>
-    <div class="mb-4 p-3 border rounded bg-body-tertiary" id="catalog-filters">
-        <div class="row g-3 align-items-end">
-            <div class="col-12 col-md-3">
-                <label for="filter-players-min" class="form-label">Joueurs min</label>
-                <input type="number" id="filter-players-min" class="form-control" min="1" placeholder="Ex. 2">
-            </div>
-            <div class="col-12 col-md-3">
-                <label for="filter-players-max" class="form-label">Joueurs max</label>
-                <input type="number" id="filter-players-max" class="form-control" min="1" placeholder="Ex. 6">
-            </div>
-            <div class="col-12 col-md-3">
-                <label for="filter-duration" class="form-label">Durée</label>
-                <select id="filter-duration" class="form-select">
-                    <option value="">Toutes</option>
-                    <option value="quick">Rapide - moins de 30 min</option>
-                    <option value="medium">Moyen - 30 à 60 min</option>
-                    <option value="long">Long - plus de 60 min</option>
-                </select>
-            </div>
-            <div class="col-12 col-md-3">
-                <label for="filter-complexity" class="form-label">Complexité</label>
-                <select id="filter-complexity" class="form-select">
-                    <option value="">Toutes</option>
-                    <option value="facile">Facile</option>
-                    <option value="intermediaire">Intermédiaire</option>
-                    <option value="expert">Expert</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <span class="form-label d-block mb-2">Catégories</span>
-                <div class="d-flex flex-wrap gap-3">
-                    <?php foreach ($categories ?? [] as $categorie): ?>
-                        <?php $categorieId = 'cat-filter-' . slugify($categorie); ?>
-                        <div class="form-check form-check-inline m-0">
-                            <input class="form-check-input filter-category" type="checkbox" id="<?= htmlspecialchars($categorieId) ?>" value="<?= htmlspecialchars($categorie) ?>">
-                            <label class="form-check-label" for="<?= htmlspecialchars($categorieId) ?>"><?= htmlspecialchars($categorie) ?></label>
-                        </div>
-                    <?php endforeach; ?>
+        <!-- Filtres -->
+        <div class="mb-4 p-3 border rounded bg-body-tertiary" id="catalog-filters">
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-md-3">
+                    <label for="filter-players-min" class="form-label">Joueurs min</label>
+                    <input type="number" id="filter-players-min" class="form-control" min="1" placeholder="Ex. 2">
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="filter-players-max" class="form-label">Joueurs max</label>
+                    <input type="number" id="filter-players-max" class="form-control" min="1" placeholder="Ex. 6">
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="filter-duration" class="form-label">Durée</label>
+                    <select id="filter-duration" class="form-select">
+                        <option value="">Toutes</option>
+                        <option value="quick">Rapide - moins de 30 min</option>
+                        <option value="medium">Moyen - 30 à 60 min</option>
+                        <option value="long">Long - plus de 60 min</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="filter-complexity" class="form-label">Complexité</label>
+                    <select id="filter-complexity" class="form-select">
+                        <option value="">Toutes</option>
+                        <option value="facile">Facile</option>
+                        <option value="intermediaire">Intermédiaire</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <span class="form-label d-block mb-2">Catégories</span>
+                    <div class="d-flex flex-wrap gap-3">
+                        <?php foreach ($categories ?? [] as $categorie): ?>
+                            <?php $categorieId = 'cat-filter-' . slugify($categorie); ?>
+                            <div class="form-check form-check-inline m-0">
+                                <input class="form-check-input filter-category" type="checkbox" id="<?= htmlspecialchars($categorieId) ?>" value="<?= htmlspecialchars($categorie) ?>">
+                                <label class="form-check-label" for="<?= htmlspecialchars($categorieId) ?>"><?= htmlspecialchars($categorie) ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="col-12 d-flex flex-wrap gap-2 justify-content-end">
+                    <button id="apply-filters-btn" type="button" class="btn btn-primary">Appliquer les filtres</button>
+                    <button id="reset-filters-btn" type="button" class="btn btn-outline-secondary">Réinitialiser les filtres</button>
                 </div>
             </div>
-            <div class="col-12 d-flex flex-wrap gap-2 justify-content-end">
-                <button id="apply-filters-btn" type="button" class="btn btn-primary">Appliquer les filtres</button>
-                <button id="reset-filters-btn" type="button" class="btn btn-outline-secondary">Réinitialiser les filtres</button>
-            </div>
         </div>
-    </div>
-    <section id="catalogue">
-        <div id="catalogue-list" class="row row-cols-1 row-cols-md-3 g-4">
+        <!-- Grille des jeux -->
+        <div id="catalogue-list" class="custom-grid">
             <?php if (!empty($jeux)): ?>
             <?php foreach ($jeux as $jeu): ?>
                 <div class="col">

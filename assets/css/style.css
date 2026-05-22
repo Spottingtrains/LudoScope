@@ -1,24 +1,197 @@
+:root {
+
+    /* Dark Cyan */
+    --color-primary-100: #F1F9F8;
+    --color-primary-500: #3B9188;
+    --color-primary-700: #1F5552;
+
+    /* Cinnamon Wood */
+    --color-accent-100: #FBF3ED;
+    --color-accent-500: #C86C40;
+    --color-accent-700: #8B4A2A;
+
+    /* Neutres */
+    --color-white:     #ffffff;
+    --color-gray-50:   #F7FBFA;
+    --color-gray-100:  #EDF2F2;
+    --color-gray-200:  #C4CFCD;
+    --color-gray-600:  #616B69;
+    --color-gray-800:  #37403E;
+    --color-gray-900:  #1C2322;
+
+    /* Surcharge Bootstrap si besoin */
+    --bs-primary:     #3B9188;
+    --bs-primary-rgb: 59, 145, 136;
+
+    /* Espacements et border-radius */
+    --spacing-xs:  0.25rem;  /*  4px */
+    --spacing-sm:  0.5rem;   /*  8px */
+    --spacing-md:  0.75rem;  /* 12px */
+    --spacing-lg:  1rem;     /* 16px */
+    --spacing-xl:  1.5rem;   /* 24px */
+    --spacing-2xl: 2rem;     /* 32px */
+    --spacing-3xl: 3rem;     /* 48px */
+    --spacing-4xl: 4rem;     /* 64px */
+
+    --border-radius-xs:  0.25rem;
+    --border-radius-sm:  0.5rem;
+    --border-radius-md:  0.75rem;
+    --border-radius-lg:  1rem;
+    --border-radius-xl:  1.5rem;
+    --border-radius-2xl: 2rem;
+    --border-radius-3xl: 3rem;
+    --border-radius-4xl: 4rem;
+    
+}
+
+h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700 !important;
+    font-size: 32px;
+    color: var(--color-primary-500);
+    margin-bottom: var(--spacing-md) !important;
+}
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700 !important;
+    font-size: 24px;
+    color: var(--color-primary-500);
+    margin-bottom: var(--spacing-md) !important;
+}
+h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600 !important;
+    font-size: 20px;
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-md) !important;
+}
+h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500 !important;
+    font-size: 18px;
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-md) !important;
+}
+p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400 !important;
+    font-size: 16px;
+    color: var(--color-gray-600) !important;
+}
+small {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400 !important;
+    font-size: 12px;
+    color: var(--color-gray-600) !important;
+}
+button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500 !important;
+    font-size: 14px;
+}
+
+@media screen and (min-width: 800px) {
+    h1 {
+        font-size: 48px;
+    }
+    h2 {
+        font-size: 28px;
+    }
+    h3 {
+        font-size: 24px;
+    }
+}
+
+.btn-primary {
+    --bs-btn-bg:               var(--color-primary-500);
+    --bs-btn-border-color:     var(--color-primary-500);
+    --bs-btn-hover-bg:         var(--color-primary-700);
+    --bs-btn-hover-border-color: var(--color-primary-700);
+    --bs-btn-active-bg:        var(--color-primary-700);
+    --bs-btn-active-border-color: var(--color-primary-700);
+}
+
+.btn-secondary {
+    --bs-btn-bg:               var(--color-accent-500);
+    --bs-btn-border-color:     var(--color-accent-500);
+    --bs-btn-hover-bg:         var(--color-accent-700);
+    --bs-btn-hover-border-color: var(--color-accent-700);
+    --bs-btn-active-bg:        var(--color-accent-700);
+    --bs-btn-active-border-color: var(--color-accent-700);
+}
+
 html {
     scroll-behavior: smooth;
 }
-
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
 }
 
-
 .navbar.nav-custom {
     min-height: 80px;
 }
-
 header {
-    margin-bottom: 100px;
+    margin-bottom: 80px;
+}
+
+body {
+    background-color: var(--color-white);
+}
+
+main {
+    margin: 0 var(--spacing-lg) 0 var(--spacing-lg);
+}
+
+main section {
+    margin-bottom: var(--spacing-4xl) !important;
+}
+
+.orange-bg {
+    background-color: var(--color-accent-100) !important;
+    border-radius: var(--border-radius-xl) !important;
+}
+
+.small-padding {
+    padding: var(--spacing-md) !important;
+}
+
+.large-padding {
+    padding: var(--spacing-lg) !important;
+}
+
+@media screen and (min-width: 800px) {
+    main {
+        margin: 0 var(--spacing-2xl) 0 var(--spacing-2xl);
+    }
+    .small-padding {
+        padding: var(--spacing-lg) !important;
+    }
+    .large-padding {
+        padding: var(--spacing-2xl) !important;
+    }
+    
+}
+
+/** __________Spécifique__________*/
+
+#heroCarousel h1, #heroCarousel h2, #heroCarousel p {
+    color: var(--color-white) !important;
+}
+#heroCarousel, #heroCarousel .carousel-inner, #heroCarousel img {
+    border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl);
+}
+
+.custom-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
 }
 
 .custom-card {
-    background-color: #fff2dd;
-    border: 1px solid #686868;
-    border-radius: 0.5rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--border-radius-sm);
+    min-height:550px;
 }
 
 .card-body {
@@ -27,16 +200,51 @@ header {
 
 .custom-card img {
     width: 100%;
-    height: 250px;
-    border-radius: 0.5rem 0.5rem 0 0;
+    height: 200px;
+    border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
     object-fit: cover;
 }
 
 .custom-card a {
     text-decoration: none;
-    color: inherit;
 }
 
+/** Carrousel hero */
+.hero-slide {
+    position: relative;
+    min-height: 80vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* plus de display: flex ici */
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 90%;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.hero-stat {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    color: #3B9188;
+}
+
+/** Liste des avis dans fiche détaillée */
 .avis-list {
     display: flex;
     flex-direction: column;
@@ -55,7 +263,7 @@ header {
     height: 56px;
     border-radius: 100%;
     object-fit: cover;
-    border: 2px solid #686868;
+    border: 2px solid var(--color-gray-200);
     flex: 0 0 56px;
 }
 
