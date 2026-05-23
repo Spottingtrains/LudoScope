@@ -14,54 +14,56 @@ require __DIR__ . '/nav/header.php';
                 </div>
             </div>
             <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
-            <h2>Catégories</h2>
-            <?php if (!empty($categories)) : ?>
-                <div class="tags">
-                    <?php foreach ($categories as $cat) : ?>
-                        <span class="tag"><?= htmlspecialchars($cat['nom_categorie']) ?></span>
-                    <?php endforeach; ?>
-                </div>
-            <?php else : ?>
-                <p>Aucune catégorie associée.</p>
-            <?php endif; ?>
-            <table>
-                <tr>
-                    <th>Éditeur</th>
-                    <td><?= htmlspecialchars($jeu['nom_editeur'] ?? 'Non renseigné') ?></td>
-                </tr>
-                <tr>
-                    <th>Auteur</th>
-                    <td><?= htmlspecialchars($jeu['auteur'] ?? 'Non renseigné') ?></td>
-                </tr>
-                <tr>
-                    <th>Illustrateur</th>
-                    <td><?= htmlspecialchars($jeu['illustrateur'] ?? 'Non renseigné') ?></td>
-                </tr>
-                <tr>
-                    <th>Année d'édition</th>
-                    <td><?= htmlspecialchars($jeu['annee_edition'] ?? 'Non renseignée') ?></td>
-                </tr>
-                <tr>
-                    <th>Nombre de joueurs</th>
-                    <td><?= htmlspecialchars($jeu['nb_joueurs_min']) ?> - <?= htmlspecialchars($jeu['nb_joueurs_max']) ?></td>
-                </tr>
-                <tr>
-                    <th>À partir de</th>
-                    <td><?= htmlspecialchars($jeu['age_min'] ?? 'Non renseigné') ?> ans</td>
-                </tr>
-                <tr>
-                    <th>Durée</th>
-                    <td><?= htmlspecialchars($jeu['duree_partie']) ?> min</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td><?= htmlspecialchars($jeu['description']) ?></td>
-                </tr>
-                <tr>
-                    <th>Complexité</th>
-                    <td><?= htmlspecialchars($jeu['complexite']) ?></td>
-                </tr>
-            </table>
+            <div class="large-padding">
+                <h2>Description</h2>
+                <p><?= htmlspecialchars($jeu['description']) ?></p>
+            </div>
+            <div class="large-padding">
+                <h2>Catégories</h2>
+                <?php if (!empty($categories)) : ?>
+                    <div class="tags">
+                        <?php foreach ($categories as $cat) : ?>
+                            <span class="tag"><?= htmlspecialchars($cat['nom_categorie']) ?></span>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else : ?>
+                    <p>Aucune catégorie associée.</p>
+                <?php endif; ?>
+                <table class="jeu-details-table">
+                    <tr>
+                        <th>Éditeur</th>
+                        <td><?= htmlspecialchars($jeu['nom_editeur'] ?? 'Non renseigné') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Auteur</th>
+                        <td><?= htmlspecialchars($jeu['auteur'] ?? 'Non renseigné') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Illustrateur</th>
+                        <td><?= htmlspecialchars($jeu['illustrateur'] ?? 'Non renseigné') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Année d'édition</th>
+                        <td><?= htmlspecialchars($jeu['annee_edition'] ?? 'Non renseignée') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Nombre de joueurs</th>
+                        <td><?= htmlspecialchars($jeu['nb_joueurs_min']) ?> - <?= htmlspecialchars($jeu['nb_joueurs_max']) ?></td>
+                    </tr>
+                    <tr>
+                        <th>À partir de</th>
+                        <td><?= htmlspecialchars($jeu['age_min'] ?? 'Non renseigné') ?> ans</td>
+                    </tr>
+                    <tr>
+                        <th>Durée</th>
+                        <td><?= htmlspecialchars($jeu['duree_partie']) ?> min</td>
+                    </tr>
+                    <tr>
+                        <th>Complexité</th>
+                        <td><?= htmlspecialchars($jeu['complexite']) ?></td>
+                    </tr>
+                </table>
+            </div>
         <?php else : ?>
             <p>Jeu introuvable.</p>
         <?php endif; ?>

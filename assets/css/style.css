@@ -155,22 +155,22 @@ main section {
 }
 
 .small-padding {
-    padding: var(--spacing-md) !important;
+    padding: var(--spacing-lg) var(--spacing-md) 0 var(--spacing-md) !important;
 }
 
 .large-padding {
-    padding: var(--spacing-lg) !important;
+    padding:  var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg) !important;
 }
 
 @media screen and (min-width: 800px) {
     main {
-        margin: 0 var(--spacing-2xl) 0 var(--spacing-2xl);
+        margin: 0 var(--spacing-2xl);
     }
     .small-padding {
-        padding: var(--spacing-lg) !important;
+        padding: var(--spacing-2xl) var(--spacing-lg) 0 var(--spacing-lg) !important;
     }
     .large-padding {
-        padding: var(--spacing-2xl) !important;
+        padding: var(--spacing-2xl) calc(4 * var(--spacing-4xl)) 0 calc(4 * var(--spacing-4xl)) !important;
     }
     
 }
@@ -398,7 +398,31 @@ main section {
 .jeu-header {
     margin-top: calc(-1 * var(--spacing-lg));
 }
-
+.jeu-details-table {
+    width: 100%;
+    margin-top: var(--spacing-lg);
+    border: 1px solid var(--color-primary-500);
+    border-radius: var(--border-radius-sm);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+}
+.jeu-details-table th {
+    text-align: left;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
+    width: 200px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-gray-50);
+}
+.jeu-details-table tr:last-child th {
+    border-bottom: none;
+}
+.jeu-details-table td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-gray-50);
+}
 /* Section avis */
 .avis-list {
     display: flex;
