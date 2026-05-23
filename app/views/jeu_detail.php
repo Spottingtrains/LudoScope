@@ -14,7 +14,7 @@ require __DIR__ . '/nav/header.php';
                 </div>
             </div>
             <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
-            <div class="large-padding">
+            <div class="description large-padding">
                 <h2>Description</h2>
                 <p><?= htmlspecialchars($jeu['description']) ?></p>
             </div>
@@ -70,7 +70,7 @@ require __DIR__ . '/nav/header.php';
     </section>
 
     <?php if (isset($jeu)) : ?>
-    <section id="avisSection" class="small-padding">
+    <section id="avisSection" class="large-padding orange-bg">
         <h2>Avis</h2>
 
         <h2>Laisser un avis</h2>

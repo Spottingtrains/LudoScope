@@ -155,11 +155,11 @@ main section {
 }
 
 .small-padding {
-    padding: var(--spacing-lg) var(--spacing-md) 0 var(--spacing-md) !important;
+    padding: 0 var(--spacing-md) 0 var(--spacing-md) !important;
 }
 
 .large-padding {
-    padding:  var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg) !important;
+    padding:  0 var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg) !important;
 }
 
 @media screen and (min-width: 800px) {
@@ -167,10 +167,10 @@ main section {
         margin: 0 var(--spacing-2xl);
     }
     .small-padding {
-        padding: var(--spacing-2xl) var(--spacing-lg) 0 var(--spacing-lg) !important;
+        padding: 0 var(--spacing-lg) 0 var(--spacing-lg) !important;
     }
     .large-padding {
-        padding: var(--spacing-2xl) calc(4 * var(--spacing-4xl)) 0 calc(4 * var(--spacing-4xl)) !important;
+        padding: 0 calc(4 * var(--spacing-4xl)) 0 calc(4 * var(--spacing-4xl)) !important;
     }
     
 }
@@ -423,11 +423,20 @@ main section {
     padding: var(--spacing-xs) var(--spacing-sm);
     background-color: var(--color-gray-50);
 }
+.description p {
+    line-height: 1.8;
+}
 /* Section avis */
 .avis-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+.avis-card {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm);
 }
 .avis-header {
     display: flex;
