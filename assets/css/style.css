@@ -24,23 +24,23 @@
     --bs-primary-rgb: 59, 145, 136;
 
     /* Espacements et border-radius */
-    --spacing-xs:  0.25rem;  /*  4px */
-    --spacing-sm:  0.5rem;   /*  8px */
-    --spacing-md:  0.75rem;  /* 12px */
-    --spacing-lg:  1rem;     /* 16px */
-    --spacing-xl:  1.5rem;   /* 24px */
-    --spacing-2xl: 2rem;     /* 32px */
-    --spacing-3xl: 3rem;     /* 48px */
-    --spacing-4xl: 4rem;     /* 64px */
+    --spacing-4:  0.25rem;  /*  4px */
+    --spacing-8:  0.5rem;   /*  8px */
+    --spacing-12:  0.75rem;  /* 12px */
+    --spacing-16:  1rem;     /* 16px */
+    --spacing-24:  1.5rem;   /* 24px */
+    --spacing-32: 2rem;     /* 32px */
+    --spacing-48: 3rem;     /* 48px */
+    --spacing-64: 4rem;     /* 64px */
 
-    --border-radius-xs:  0.25rem;
-    --border-radius-sm:  0.5rem;
-    --border-radius-md:  0.75rem;
-    --border-radius-lg:  1rem;
-    --border-radius-xl:  1.5rem;
-    --border-radius-2xl: 2rem;
-    --border-radius-3xl: 3rem;
-    --border-radius-4xl: 4rem;
+    --border-radius-4:  0.25rem;
+    --border-radius-8:  0.5rem;
+    --border-radius-12:  0.75rem;
+    --border-radius-16:  1rem;
+    --border-radius-24:  1.5rem;
+    --border-radius-32: 2rem;
+    --border-radius-48: 3rem;
+    --border-radius-64: 4rem;
     
 }
 
@@ -49,14 +49,14 @@ h1 {
     font-weight: 700 !important;
     font-size: 32px;
     color: var(--color-primary-500);
-    margin-bottom: var(--spacing-md) !important;
+    margin-bottom: var(--spacing-12) !important;
 }
 h2 {
     font-family: 'Poppins', sans-serif;
     font-weight: 700 !important;
     font-size: 24px;
     color: var(--color-primary-500);
-    margin-bottom: var(--spacing-md) !important;
+    margin-bottom: var(--spacing-12) !important;
     text-align: center;
 }
 h3 {
@@ -64,14 +64,14 @@ h3 {
     font-weight: 600 !important;
     font-size: 20px;
     color: var(--color-gray-900);
-    margin-bottom: var(--spacing-md) !important;
+    margin-bottom: var(--spacing-12) !important;
 }
 h4 {
     font-family: 'Poppins', sans-serif;
     font-weight: 500 !important;
     font-size: 18px;
     color: var(--color-gray-900);
-    margin-bottom: var(--spacing-md) !important;
+    margin-bottom: var(--spacing-12) !important;
 }
 p {
     font-family: 'Poppins', sans-serif;
@@ -112,6 +112,16 @@ button {
     --bs-btn-active-border-color: var(--color-primary-700);
 }
 
+.btn-primary-empty {
+    --bs-btn-bg:               transparent;
+    --bs-btn-border-color:     var(--color-primary-500);
+    --bs-btn-hover-bg:         var(--color-primary-100);
+    --bs-btn-hover-border-color: var(--color-primary-500);
+    --bs-btn-active-bg:        var(--color-primary-100);
+    --bs-btn-active-border-color: var(--color-primary-500);
+    color: var(--color-primary-500) !important;
+}
+
 .btn-secondary {
     --bs-btn-bg:               var(--color-accent-500);
     --bs-btn-border-color:     var(--color-accent-500);
@@ -119,6 +129,16 @@ button {
     --bs-btn-hover-border-color: var(--color-accent-700);
     --bs-btn-active-bg:        var(--color-accent-700);
     --bs-btn-active-border-color: var(--color-accent-700);
+}
+
+.btn-secondary-empty {
+    --bs-btn-bg:               transparent;
+    --bs-btn-border-color:     var(--color-accent-500);
+    --bs-btn-hover-bg:         var(--color-accent-100);
+    --bs-btn-hover-border-color: var(--color-accent-500);
+    --bs-btn-active-bg:        var(--color-accent-100);
+    --bs-btn-active-border-color: var(--color-accent-500);
+    color: var(--color-accent-500) !important;
 }
 
 html {
@@ -142,35 +162,39 @@ body {
 }
 
 main {
-    margin: 0 var(--spacing-lg) 0 var(--spacing-lg);
+    margin: 0 var(--spacing-16) 0 var(--spacing-16);
 }
 
 main section {
-    margin-bottom: var(--spacing-4xl) !important;
+    margin-bottom: var(--spacing-64) !important;
 }
 
 .orange-bg {
     background-color: var(--color-accent-100) !important;
-    border-radius: var(--border-radius-xl) !important;
+    border-radius: var(--border-radius-24) !important;
 }
 
 .small-padding {
-    padding: 0 var(--spacing-md) 0 var(--spacing-md) !important;
+    padding: 0 var(--spacing-12) 0 var(--spacing-12);
 }
 
 .large-padding {
-    padding:  0 var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg) !important;
+    padding:  0 var(--spacing-16) 0 var(--spacing-16);
+}
+
+.up-down-padding {
+    padding: var(--spacing-32) 0 !important;
 }
 
 @media screen and (min-width: 800px) {
     main {
-        margin: 0 var(--spacing-2xl);
+        margin: 0 var(--spacing-32);
     }
     .small-padding {
-        padding: 0 var(--spacing-lg) 0 var(--spacing-lg) !important;
+        padding: 0 var(--spacing-16) 0 var(--spacing-16) !important;
     }
     .large-padding {
-        padding: 0 calc(4 * var(--spacing-4xl)) 0 calc(4 * var(--spacing-4xl)) !important;
+        padding: 0 calc(4 * var(--spacing-64)) 0 calc(4 * var(--spacing-64)) !important;
     }
     
 }
@@ -179,17 +203,17 @@ main section {
 /** Home */
 /* Carrousel hero */
 #heroSection {
-    margin: 0 calc(-1 * var(--spacing-2xl)) 0 calc(-1 * var(--spacing-2xl));
+    margin: 0 calc(-1 * var(--spacing-32)) 0 calc(-1 * var(--spacing-32));
 }
 #heroCarousel h1, #heroCarousel h2, #heroCarousel p {
     color: var(--color-white) !important;
 }
-#heroCarousel, #heroCarousel .carousel-inner, #heroCarousel img {
-    border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl);
-}
+/* #heroCarousel, #heroCarousel .carousel-inner, #heroCarousel img {
+    border-radius: 0 0 var(--border-radius-24) var(--border-radius-24);
+} */
 .hero-slide {
     position: relative;
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -225,11 +249,11 @@ main section {
     text-align: center;
 }
 .best-card h3 {
-    margin-top: var(--spacing-md) !important;
+    margin-top: var(--spacing-12) !important;
 }
 .img-wrapper {
     position: relative;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-8);
     height: 200px;
     width: 100%;
 }
@@ -239,7 +263,7 @@ main section {
     height: 200px;
     object-fit: cover;
     display: block;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-8);
 }
 
 .img-wrapper::before {
@@ -247,7 +271,7 @@ main section {
     position: absolute;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.606);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-8);
     z-index: 1;
 }
 
@@ -265,7 +289,7 @@ main section {
 
 .card-note p {
     color: var(--color-gray-200) !important;
-    margin-top: var(--spacing-sm);
+    margin-top: var(--spacing-8);
     text-transform: italic;
 }
 
@@ -276,7 +300,7 @@ main section {
     transform: translate(-50%, calc(-50% + 20px)); /* ← légèrement en bas */
     color: var(--color-gray-200) !important;
     z-index: 2;
-    padding: var(--spacing-xs);
+    padding: var(--spacing-4);
     text-align: center;
     font-size: 0.875rem;
     width: 100%;
@@ -296,13 +320,13 @@ main section {
 /* catalogue */
 .custom-grid {
     display: grid;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-16);
     grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
 }
 .custom-card {
     background-color: var(--color-white);
     border: 1px solid var(--color-gray-200);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-8);
     min-height: 420px;
     display: flex;
     flex-direction: column;
@@ -311,21 +335,21 @@ main section {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-8);
 }
 .card-header span {
     color: var(--color-accent-500);
     background-color: var(--color-accent-100);
     border: 1px solid var(--color-accent-500);
-    border-radius: var(--border-radius-sm);
-    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-8);
+    padding: var(--spacing-4) var(--spacing-8);
     font-weight: 600;
     min-width: 50px;
     height: fit-content;
     text-align: center;
 }
 .card-body {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-8);
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -339,39 +363,56 @@ main section {
 .custom-card img {
     width: 100%;
     height: 200px;
-    border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+    border-radius: var(--border-radius-8) var(--border-radius-8) 0 0;
     object-fit: cover;
 }
 .custom-card a {
     text-decoration: none;
 }
+#catalog-filters {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+}
 /** Fiche détaillée d'un jeu */
 /* Section jeu */
 #jeuDetail {
-    margin-top: calc(var(--border-radius-2xl) + 80px) !important;
+    margin-top: var(--border-radius-8) !important;
     overflow: hidden;
 }
 #jeuDetail img {
-    width: calc(100% + 2 * var(--spacing-lg)); /* ← compense gauche + droite */
+    width: calc(100% + 2 * var(--spacing-16)); /* ← compense gauche + droite */
     max-height: 200px;
-    height: auto;
-    border-radius: 0 0 var(--border-radius-2xl) var(--border-radius-2xl);
+    border-radius: 0 0 var(--border-radius-32) var(--border-radius-32);
     object-fit: cover;
+}
+@media screen and (min-width: 600px) {
+    #jeuDetail img {
+        max-height: 300px;
+    }
+}
+@media screen and (min-width: 800px) {
+    #jeuDetail img {
+        max-height: 400px;
+    }
+}
+@media screen and (min-width: 1000px) {
+    #jeuDetail img {
+        max-height: 500px;
+    }
 }
 .jeu-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-8);
     min-height: 90px;
-
 }
 .jeu-title {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: var(--spacing-xs);
-    margin: var(--spacing-sm) 0 0 var(--spacing-lg);
+    gap: var(--spacing-4);
+    margin: var(--spacing-8) 0 0 var(--spacing-16);
 }
 .jeu-title h1 {
     margin: 0 !important;
@@ -379,8 +420,8 @@ main section {
 .note-moyenne {
     background-color: var(--color-accent-500);
     color: var(--color-white);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: 0 var(--spacing-2xl) 0 0;
+    padding: var(--spacing-4) var(--spacing-8);
+    border-radius: 0 var(--spacing-32) 0 0;
     font-weight: 700;
     min-width: 100px;
     min-height: 100%;
@@ -392,24 +433,24 @@ main section {
     font-size: 1.25rem;
 }
 .jeu-header, #jeuDetail img {
-    margin-left: calc(-1 * var(--spacing-lg));
-    margin-right: calc(-1 * var(--spacing-lg));
+    margin-left: calc(-1 * var(--spacing-16));
+    margin-right: calc(-1 * var(--spacing-16));
 }
 .jeu-header {
-    margin-top: calc(-1 * var(--spacing-lg));
+    margin-top: calc(-1 * var(--spacing-16));
 }
 .jeu-details-table {
     width: 100%;
-    margin-top: var(--spacing-lg);
+    margin-top: var(--spacing-16);
     border: 1px solid var(--color-primary-500);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--border-radius-8);
     border-collapse: separate;
     border-spacing: 0;
     overflow: hidden;
 }
 .jeu-details-table th {
     text-align: left;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: var(--spacing-4) var(--spacing-8);
     background-color: var(--color-primary-500);
     color: var(--color-white);
     width: 200px;
@@ -420,7 +461,7 @@ main section {
     border-bottom: none;
 }
 .jeu-details-table td {
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: var(--spacing-4) var(--spacing-8);
     background-color: var(--color-gray-50);
 }
 .description p {
@@ -435,8 +476,8 @@ main section {
 .avis-card {
     background-color: var(--color-white);
     border: 1px solid var(--color-gray-200);
-    border-radius: var(--border-radius-sm);
-    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-8);
+    padding: var(--spacing-8);
 }
 .avis-header {
     display: flex;
@@ -467,4 +508,11 @@ main section {
 }
 .request-card-bar--suppression {
     background-color: var(--bs-danger);
+}
+
+.img-thumbnail {
+    border-radius: var(--border-radius-8);
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
 }

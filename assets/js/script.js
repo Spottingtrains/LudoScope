@@ -41,6 +41,50 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     })();
 
+    // Handler 2b: aperçu de l'image du formulaire d'ajout de jeu
+    (function jeuAddImagePreviewHandler(){
+        const input = document.getElementById('image');
+        if (!input) return;
+
+        const previewWrap = document.createElement('div');
+        previewWrap.id = 'image-preview-wrap';
+        previewWrap.className = 'mt-3 d-none';
+
+        const previewTitle = document.createElement('p');
+        previewTitle.className = 'mb-2';
+        previewTitle.textContent = 'Aperçu';
+
+        const preview = document.createElement('img');
+        preview.id = 'image-preview';
+        preview.className = 'img-thumbnail';
+        preview.alt = 'Aperçu de l\'image';
+
+        previewWrap.appendChild(previewTitle);
+        previewWrap.appendChild(preview);
+        input.insertAdjacentElement('afterend', previewWrap);
+
+        let currentUrl = null;
+
+        input.addEventListener('change', function () {
+            const file = input.files && input.files[0];
+
+            if (currentUrl) {
+                URL.revokeObjectURL(currentUrl);
+                currentUrl = null;
+            }
+
+            if (!file) {
+                preview.src = '';
+                previewWrap.classList.add('d-none');
+                return;
+            }
+
+            currentUrl = URL.createObjectURL(file);
+            preview.src = currentUrl;
+            previewWrap.classList.remove('d-none');
+        });
+    })();
+
     // Handler 6: admin deletion via Bootstrap modal (forms marked .admin-delete-form)
     (function adminDeleteHandler(){
         const modalEl = document.getElementById('adminConfirmModal');

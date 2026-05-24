@@ -2,6 +2,7 @@
 require __DIR__ . '/nav/header.php';
 ?>
 <main>
+    <a class="return-link" href="index.php">← Retour à la liste</a>
     <section id="jeuDetail" class="small-padding orange-bg">
         <?php if (isset($jeu)) : ?>
             <div class="jeu-header">
@@ -125,8 +126,6 @@ require __DIR__ . '/nav/header.php';
         <?php else : ?>
             <p>Aucun avis pour ce jeu.</p>
         <?php endif; ?>
-
-        <a href="index.php">← Retour à la liste</a>
 
         <!-- TODO: Implémenter la section "ces jeux pourraient vous plaire" -->
         <h2>Ces jeux pourraient vous plaire</h2>

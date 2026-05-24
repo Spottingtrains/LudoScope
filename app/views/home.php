@@ -149,7 +149,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             </div>
         </div>
         <!-- Filtres -->
-        <div class="mb-4 p-3 border rounded bg-body-tertiary" id="catalog-filters">
+        <div class="mb-4 p-3 border rounded" id="catalog-filters">
             <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-3">
                     <label for="filter-players-min" class="form-label">Joueurs min</label>
@@ -191,7 +191,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                 </div>
                 <div class="col-12 d-flex flex-wrap gap-2 justify-content-end">
                     <button id="apply-filters-btn" type="button" class="btn btn-primary">Appliquer les filtres</button>
-                    <button id="reset-filters-btn" type="button" class="btn btn-outline-secondary">Réinitialiser les filtres</button>
+                    <button id="reset-filters-btn" type="button" class="btn btn-secondary-empty">Réinitialiser les filtres</button>
                 </div>
             </div>
         </div>
