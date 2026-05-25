@@ -61,15 +61,17 @@ function getAllJeux($conn) {
     // Select jeu.* (includes auteur/illustrateur columns), plus editor name and aggregated stats/categories
     $stmt = $conn->prepare("SELECT jeu.*, 
             editeur.nom_editeur,
+            u.pseudo AS pseudo_createur,
             ROUND(AVG(avis.note), 1) AS note_moyenne,
             COUNT(DISTINCT avis.id_avis) AS nb_avis,
             GROUP_CONCAT(DISTINCT categorie.libelle_categorie SEPARATOR ', ') AS categories
         FROM jeu
         LEFT JOIN editeur ON jeu.id_editeur = editeur.id_editeur
+        LEFT JOIN utilisateur u ON jeu.id_utilisateur = u.id_utilisateur
         LEFT JOIN avis ON jeu.id_jeu = avis.id_jeu
         LEFT JOIN jeu_categorie ON jeu.id_jeu = jeu_categorie.id_jeu
         LEFT JOIN categorie ON jeu_categorie.id_categorie = categorie.id_categorie
-        GROUP BY jeu.id_jeu
+        GROUP BY jeu.id_jeu, u.pseudo
         ORDER BY jeu.date_ajout DESC");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);

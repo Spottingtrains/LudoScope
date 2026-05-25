@@ -21,7 +21,7 @@ $categories = $categories ?? [];
         <?php elseif (!empty($jeu)): ?>
             <form id="jeu-edit-form" method="POST" action="index.php?url=jeu/edit&id=<?= (int)$jeu['id_jeu'] ?>" class="row g-3" enctype="multipart/form-data">
                 <div class="col-12">
-                    <div class="alert alert-secondary mb-0">
+                    <div class="alert alert-light mb-0">
                         Vous modifiez un jeu que vous avez publié le <?= htmlspecialchars(date('d/m/Y', strtotime($jeu['date_ajout']))) ?>.
                     </div>
                 </div>
@@ -29,8 +29,8 @@ $categories = $categories ?? [];
                 <div class="col-12">
                     <label for="image" class="form-label">Image de couverture</label>
                     <?php if (!empty($jeu['image'])): ?>
-                        <div class="mb-3">
-                            <img class="img-thumbnail" src="/uploads/<?= htmlspecialchars($jeu['image']) ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                        <div class="img-border mb-3">
+                            <img class="img-forms" src="/uploads/<?= htmlspecialchars($jeu['image']) ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
                         </div>
                     <?php endif; ?>
                     <input type="file" id="image" name="image" accept="image/*" class="form-control">
@@ -120,7 +120,7 @@ $categories = $categories ?? [];
                 </div>
 
                 <div class="col-12 d-flex flex-wrap gap-2">
-                    <button type="submit" class="btn btn-dark">Soumettre les modifications</button>
+                    <button type="submit" class="btn btn-primary">Soumettre les modifications</button>
                     <a href="index.php?url=profile" class="btn btn-outline-secondary">Annuler</a>
                 </div>
             </form>

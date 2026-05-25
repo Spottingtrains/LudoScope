@@ -2,13 +2,13 @@
 require __DIR__ . '/nav/header.php';
 ?>
 
-<main class="container">
+<main class="small-padding">
         <h1>Back-Office</h1>
-        <nav class="nav nav-pills mb-4">
+        <nav class="tab-nav">
             <?php $cur = $_GET['url'] ?? ''; ?>
-            <a class="nav-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
-            <a class="nav-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
-            <a class="nav-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
+            <a class="tab-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
+            <a class="tab-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
+            <a class="tab-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
         </nav>
     <?php if (!empty($_SESSION['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
@@ -42,8 +42,8 @@ require __DIR__ . '/nav/header.php';
                             <p class="mb-2"><strong>Motif :</strong> <?= htmlspecialchars($payload['motif'] ?? $demande['message']) ?></p>
 
                             <?php if (!$isSuppression && !empty($payload['proposed_changes']) && is_array($payload['proposed_changes'])): ?>
-                                <div class="table-responsive mb-3">
-                                    <table class="table table-sm align-middle mb-0">
+                                <div class="table-wrapper">
+                                    <table class="table">
                                         <tbody>
                                             <?php foreach ($payload['proposed_changes'] as $key => $value): ?>
                                                 <?php if ($key === 'categories' && is_array($value)): ?>
@@ -93,66 +93,73 @@ require __DIR__ . '/nav/header.php';
             <div class="alert alert-secondary mb-0">Aucune demande en attente.</div>
         <?php endif; ?>
     </section>
+    <!-- TODO: refaire le style de cette section -->
     <section>
         <h2>Statistiques</h2>
-        <div class="row g-4">
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title
-                            mb-2"><?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></h3>
-                        <p class="card-text text-muted">Jeux ajoutés</p>
-                    </div>
+        <div class="stats-list">
+            <div class="stats-card">
+                <div class="stats-card-games stats-card-grey-overlay"></div>
+                <div class="stats-card-color-layer">
+                    <h3><?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></h3>
+                    <p>Jeux ajoutés</p>
                 </div>
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title
-                            mb-2"><?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></h3>
-                        <p class="card-text text-muted">Utilisateurs enregistrés</p>
-                    </div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-card-users stats-card-grey-overlay"></div>
+                <div class="stats-card-color-layer">
+                    <h3><?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></h3>
+                    <p>Utilisateurs enregistrés</p>
                 </div>
-                <div class="card text-center shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title
-                            mb-2"><?= htmlspecialchars($stats['nb_avis'] ?? 'N/A') ?></h3>
-                        <p class="card-text text-muted">Avis déposés</p>
-                    </div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-card-reviews stats-card-grey-overlay"></div>
+                <div class="stats-card-color-layer">
+                    <h3><?= htmlspecialchars($stats['nb_avis'] ?? 'N/A') ?></h3>
+                    <p>Avis déposés</p>
                 </div>
             </div>
         </div>
     </section>
-    <section>
-        <h2>Derniers jeux ajoutés</h2>
-        <?php if (!empty($derniers_jeux)): ?>
-            <div class="list-group">
-                <?php foreach ($derniers_jeux as $jeu): ?>
-                    <a href="index.php?url=jeu&id=<?= (int)$jeu['id_jeu'] ?>" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1"><?= htmlspecialchars($jeu['titre']) ?></h5>
-                            <small class="text-muted">Ajouté le <?= htmlspecialchars(date('d/m/Y', strtotime($jeu['date_ajout']))) ?></small>
-                        </div>
-                        <p class="mb-1"><?= htmlspecialchars($jeu['pseudo'] ?? 'Utilisateur supprimé') ?></p>
-                    </a>    
-                <?php endforeach; ?>
-            </div>
-            <?php else: ?>
-            <div class="alert alert-secondary mb-0">Aucun jeu à afficher.</div>
-        <?php endif; ?>
+    <section class="derniers-jeux">
+        <h2 class="text-center">Derniers jeux ajoutés</h2>
+        <div class="jeux-liste">
+            <?php foreach ($derniers_jeux as $jeu) : ?>
+            <a class="jeu-card text-decoration-none text-reset d-block" href="index.php?url=jeu&id=<?= (int)$jeu['id_jeu'] ?>">
+                <div class="jeu-info">
+                    <h4 class="jeu-nom"><?= htmlspecialchars($jeu['titre']) ?></h4>
+                    <p><?= htmlspecialchars($jeu['pseudo']) ?></p>
+                </div>
+                <div>
+                    <small><?= date('d/m/Y', strtotime($jeu['date_ajout'])) ?></small>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        </div>
+        <div class="btn-container">
+            <a href="index.php?route=catalogue" class="btn btn-secondary">Voir tous les jeux →</a>
+        </div>
     </section>
-    <section class="mt-5">
+    <section class="derniers-avis">
         <h2>Derniers avis déposés</h2>
         <?php if (!empty($derniers_avis)): ?>
-            <div class="list-group">
+            <div class="avis-liste">
                 <?php foreach ($derniers_avis as $avis): ?>
-                    <a href="index.php?url=jeu&id=<?= (int)$avis['id_jeu'] ?>" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1"><?= htmlspecialchars($avis['titre']) ?></h5>
-                            <small class="text-muted">Déposé le <?= htmlspecialchars(date('d/m/Y', strtotime($avis['date_avis']))) ?></small>
+                <div>
+                    <a class="avis-card" href="index.php?url=jeu&id=<?= (int)$avis['id_jeu'] ?>" class="list-group-item list-group-item-action">
+                        <div class="avis-info">
+                            <div class="avis-header">
+                                <h4 class="jeu-nom"><?= htmlspecialchars($avis['titre']) ?></h4>
+                                <p>Note : <?= htmlspecialchars($avis['note']) ?>/10</p>
+                            </div>
+                            <p><?= htmlspecialchars($avis['commentaire']) ?></p>
+                            <small><?= htmlspecialchars($avis['pseudo'] ?? 'Utilisateur supprimé') ?></small>
                         </div>
-                        <p class="mb-1">Note : <?= htmlspecialchars($avis['note']) ?>/10</p>
-                        <p class="mb-1"><?= htmlspecialchars($avis['commentaire']) ?></p>
-                        <small class="mb-1"><?= htmlspecialchars($avis['pseudo'] ?? 'Utilisateur supprimé') ?></small>
+                        <div>
+                            <small><?= htmlspecialchars(date('d/m/Y', strtotime($avis['date_avis']))) ?></small>
+                        </div>
                     </a>
+                </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>

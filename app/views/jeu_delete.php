@@ -18,7 +18,7 @@ require __DIR__ . '/nav/header.php';
             </div>
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Soumettre la demande</button>
-                <a href="index.php?url=profile" class="btn btn-secondary-empty">Annuler</a>
+                <a href="index.php?url=profile" class="btn btn-outline-secondary">Annuler</a>
             </div>
         </form>
     </section>

@@ -4,10 +4,8 @@ $editeurs   = $editeurs   ?? [];
 $categories = $categories ?? [];
 ?>
 <main class="container py-4">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-        <h1 class="mb-0">Modifier un jeu</h1>
-        <a href="index.php?url=admin_content" class="btn btn-outline-secondary">Retour au back-office</a>
-    </div>
+    <a href="index.php?url=admin_content" class="custom-link">← Retour au back-office</a>
+    <h1 class="centered">Modifier un jeu</h1>
 
     <?php if (!empty($error)): ?>
         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
@@ -16,7 +14,7 @@ $categories = $categories ?? [];
     <?php if (!empty($jeu)): ?>
         <form id="admin-jeu-edit-form" method="POST" action="index.php?url=admin_content/edit_game&id=<?= (int)$jeu['id_jeu'] ?>" class="row g-3" enctype="multipart/form-data">
             <div class="col-12">
-                <div class="alert alert-secondary mb-0">
+                <div class="alert alert-light mb-0">
                     Modification en tant qu'administrateur.
                 </div>
             </div>
@@ -25,7 +23,7 @@ $categories = $categories ?? [];
                 <label for="image" class="form-label">Image de couverture</label>
                 <?php if (!empty($jeu['image'])): ?>
                     <div class="mb-3">
-                        <img src="/uploads/<?= htmlspecialchars($jeu['image']) ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>" class="img-thumbnail" style="max-width: 220px;">
+                        <img src="/uploads/<?= htmlspecialchars($jeu['image']) ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>" class="img-forms">
                     </div>
                 <?php endif; ?>
                 <input type="file" id="image" name="image" accept="image/*" class="form-control">
@@ -110,8 +108,8 @@ $categories = $categories ?? [];
             </div>
             
             <div class="col-12 d-flex flex-wrap gap-2">
-                <button type="submit" class="btn btn-dark">Enregistrer les modifications</button>
-                <a href="index.php?url=admin_content" class="btn btn-outline-secondary">Annuler</a>
+                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                <a href="index.php?url=admin_content" class="btn btn-secondary">Annuler</a>
             </div>
         </form>
     <?php endif; ?>

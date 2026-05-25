@@ -1,42 +1,43 @@
 <?php 
 require __DIR__ . '/../views/nav/header.php';
+$activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
 ?>
 
-<main class="container py-5">
-    <h1>Mon profil</h1>
-    <p>Bienvenue <strong><?php echo htmlspecialchars($_SESSION['pseudo'] ?? ''); ?></strong> !</p>
-    <p>Vous n'êtes pas <?php echo htmlspecialchars($_SESSION['pseudo'] ?? ''); ?> ? <a href="index.php?url=logout">Me déconnecter</a></p>
-    <ul class="nav nav-tabs" id="authTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="#informations">Mes informations</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="#favoris">Mes jeux favoris</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="#historique">Mon historique</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" href="#avis">Mes avis</a>
-        </li>
-    </ul>
-    <!-- Section pour modifier les informations du profil -->
+<main class="small-padding">
+    <!-- navigation du profil -->
+    <section id="profile" class="up-padding">
+        <div class="text-center">
+            <h1>Mon profil</h1>
+            <p>Bienvenue <strong><?php echo htmlspecialchars($_SESSION['pseudo'] ?? ''); ?></strong> !</p>
+            <p>Vous n'êtes pas <?php echo htmlspecialchars($_SESSION['pseudo'] ?? ''); ?> ? <a class="custom-link" href="index.php?url=logout">Me déconnecter</a></p>
+        </div>
+        <nav class="tab-nav">
+            <?php $cur = $_GET['tab'] ?? 'informations'; ?>
+            <a class="tab-link <?= $cur === 'informations' ? 'active' : '' ?>" href="index.php?url=profile&tab=informations">Modifier votre profil</a>
+            <a class="tab-link <?= $cur === 'favoris'      ? 'active' : '' ?>" href="index.php?url=profile&tab=favoris">Vos favoris</a>
+            <a class="tab-link <?= $cur === 'mes-jeux'     ? 'active' : '' ?>" href="index.php?url=profile&tab=mes-jeux">Liste des jeux ajoutés</a>
+            <a class="tab-link <?= $cur === 'mes-avis'     ? 'active' : '' ?>" href="index.php?url=profile&tab=mes-avis">Liste des avis ajoutés</a>
+        </nav>
+    </section>
+
+    <?php if (!empty($_SESSION['success'])): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+    <?php if (!empty($_SESSION['error'])): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
+    <?php if ($activeTab === 'informations'): ?>
+    <!-- Section informations personnelles -->
     <section id="informations">
         <h2>Mes informations</h2>
         <form id="profile-form" action="" method="post" enctype="multipart/form-data" class="row g-3">
             <div>
-                <?php if (!empty($_SESSION['success'])): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
-                <?php unset($_SESSION['success']);
-                endif;
-                if (!empty($_SESSION['error'])): ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
-                <?php unset($_SESSION['error']);
-                endif; ?>
-                <!-- Conteneur pour erreurs côté client (JS) -->
                 <div id="client-error" class="alert alert-danger d-none" role="alert" style="display:none;"></div>
             </div>
-            <div>
+            <div class="centered">
                 <img src="<?php echo htmlspecialchars($user['photo_profil'] ?? '/uploads/default-profile.webp'); ?>" alt="image de profil" class="img-thumbnail mb-3" style="width: 150px; height: 150px; border-radius: 50%;"> <!-- TODO: retirer les styles inline et les mettre dans le CSS -->
             </div>
             <div class="col-12 mb-3">
@@ -69,58 +70,96 @@ require __DIR__ . '/../views/nav/header.php';
                 <label for="confirm_password" class="form-label">Confirmer le mot de passe :</label>
                 <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Laissez vide pour ne pas changer" aria-describedby="passwordHelp">
             </div>
-            <button type="submit" id="submitBtn" class="btn btn-primary" disabled>Modifier mes informations</button>
-            <button type="button" id="cancelBtn" class="btn btn-secondary" onclick="window.location.href='index.php?url=profile'" disabled>Annuler les modifications</button>
+            <div class="btn-container">
+                <button type="submit" id="submitBtn" class="btn btn-primary" disabled>Modifier mes informations</button>
+                <button type="button" id="cancelBtn" class="btn btn-secondary" onclick="window.location.href='index.php?url=profile'" disabled>Annuler les modifications</button>
+            </div>
         </form>
+
+        <div class="mt-4">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                Supprimer mon compte
+            </button>
+        </div>
+
+        <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteAccountModalLabel">Confirmer la suppression du compte</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        Cette action supprimera définitivement votre compte. Vos jeux seront réattribués à un administrateur.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Annuler</button>
+                        <form action="index.php?url=profile" method="post" class="m-0">
+                            <input type="hidden" name="action" value="delete_account">
+                            <input type="hidden" name="confirm_delete" value="1">
+                            <button type="submit" class="btn btn-danger btn-sm">Confirmer la suppression</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
+    <?php elseif ($activeTab === 'favoris'): ?>
     <!-- Section jeux favoris -->
+    <!-- TODO: Implémenter la section des jeux favoris -->
     <section id="favoris">
         <h2>Mes jeux favoris</h2>
         <p>Liste de vos jeux favoris - en construction</p>
     </section>
+
+    <?php elseif ($activeTab === 'mes-jeux'): ?>
     <!-- Section historique de jeux ajoutés -->
     <section id="historique">
         <h2>Mon historique de jeux ajoutés</h2>
         <p>Historique des jeux que vous avez ajoutés - en construction</p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Titre</th>
-                    <th>Date d'ajout</th>
-                    <th>Nombre de commentaires</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($addedGames)): ?>
-                    <?php foreach ($addedGames as $game): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($game['titre']); ?></td>
-                            <td><?php echo htmlspecialchars(date('d/m/Y', strtotime($game['date_ajout']))); ?></td>
-                            <td><?php echo (int)$game['nb_commentaires']; ?></td>
-                            <td>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($game['titre'])); ?>" class="btn btn-sm btn-outline-primary">Voir</a>
-                                    <a href="index.php?url=jeu/edit&id=<?php echo (int)$game['id_jeu']; ?>" class="btn btn-sm btn-outline-secondary">Modifier</a>
-                                    <a href="index.php?url=jeu/delete&id=<?php echo (int)$game['id_jeu']; ?>" class="btn btn-sm btn-outline-danger">Supprimer</a>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td colspan="4">Vous n'avez ajouté aucun jeu.</td>
+                        <th>Titre</th>
+                        <th>Date d'ajout</th>
+                        <th>Nombre de commentaires</th>
+                        <th>Actions</th>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($addedGames)): ?>
+                        <?php foreach ($addedGames as $game): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($game['titre']); ?></td>
+                                <td><?php echo htmlspecialchars(date('d/m/Y', strtotime($game['date_ajout']))); ?></td>
+                                <td><?php echo (int)$game['nb_commentaires']; ?></td>
+                                <td>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($game['titre'])); ?>" class="btn btn-sm btn-primary">Voir</a>
+                                        <a href="index.php?url=jeu/edit&id=<?php echo (int)$game['id_jeu']; ?>" class="btn btn-sm btn-secondary">Modifier</a>
+                                        <a href="index.php?url=jeu/delete&id=<?php echo (int)$game['id_jeu']; ?>" class="btn btn-sm btn-danger">Supprimer</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4">Vous n'avez ajouté aucun jeu.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </section>
+
+    <?php elseif ($activeTab === 'mes-avis'): ?>
     <!-- Section avis laissés -->
     <section id="avis">
         <h2>Mes avis laissés</h2>
         <p>Retrouvez ici vos derniers avis publiés sur les jeux du catalogue.</p>
-                <?php if (!empty($addedReviews)): ?>
+        <?php if (!empty($addedReviews)): ?>
             <div class="row row-cols-1 row-cols-lg-2 g-4">
                 <?php foreach ($addedReviews as $review): ?>
                     <div class="col">
@@ -148,12 +187,11 @@ require __DIR__ . '/../views/nav/header.php';
                                             <?php endfor; ?>
                                         </select>
                                         <div class="ms-auto d-flex gap-2">
-                                            <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($review['titre'])); ?>" class="btn btn-sm btn-outline-primary">Voir le jeu</a>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-edit-review">Modifier</button>
-                                            <button type="submit" class="btn btn-sm btn-primary btn-save-review d-none">Enregistrer</button>
-                                            <button type="button" class="btn btn-sm btn-secondary btn-cancel-edit d-none">Annuler</button>
-                                            <!-- Bouton ouverture modal suppression -->
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteReviewModal<?php echo (int)$review['id_avis']; ?>">Supprimer</button>
+                                            <a href="index.php?url=jeu&slug=<?php echo rawurlencode(slugify($review['titre'])); ?>" class="btn btn-sm btn-primary">Voir le jeu</a>
+                                            <button type="button" class="btn btn-sm btn-secondary btn-edit-review">Modifier</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary btn-save-review d-none">Enregistrer</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-cancel-edit d-none">Annuler</button>
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteReviewModal<?php echo (int)$review['id_avis']; ?>">Supprimer</button>
                                         </div>
                                     </div>
                                 </form>
@@ -192,39 +230,9 @@ require __DIR__ . '/../views/nav/header.php';
             </div>
         <?php endif; ?>
     </section>
+
+    <?php endif; ?>
+
 </main>
 
 <?php require_once __DIR__ . '/../views/nav/footer.php'; ?>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.review-card').forEach(card => {
-        const editBtn = card.querySelector('.btn-edit-review');
-        const saveBtn = card.querySelector('.btn-save-review');
-        const cancelBtn = card.querySelector('.btn-cancel-edit');
-        const textarea = card.querySelector('.review-textarea');
-        const noteSelect = card.querySelector('.review-note-select');
-
-        editBtn.addEventListener('click', function () {
-            textarea.disabled = false;
-            noteSelect.disabled = false;
-            editBtn.classList.add('d-none');
-            saveBtn.classList.remove('d-none');
-            cancelBtn.classList.remove('d-none');
-            textarea.focus();
-        });
-
-        cancelBtn.addEventListener('click', function () {
-            // revert values to original by reloading the page (simpler) or disable inputs
-            textarea.disabled = true;
-            noteSelect.disabled = true;
-            editBtn.classList.remove('d-none');
-            saveBtn.classList.add('d-none');
-            cancelBtn.classList.add('d-none');
-            // restore original values from dataset if available
-            // (we keep it simple and don't change textarea value here)
-        });
-        // saveBtn is a normal submit button inside the form; no JS required to submit
-    });
-});
-</script>

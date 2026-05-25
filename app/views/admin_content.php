@@ -1,12 +1,12 @@
 <?php require __DIR__ . '/nav/header.php'; ?>
-<main class="container my-5">
-    <nav class="nav nav-pills mb-4">
-        <?php $cur = $_GET['url'] ?? ''; ?>
-        <a class="nav-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
-        <a class="nav-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
-        <a class="nav-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
-    </nav>
+<main class="small-padding">
     <h1>Gestion du contenu</h1>
+    <nav class="tab-nav">
+        <?php $cur = $_GET['url'] ?? ''; ?>
+        <a class="tab-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
+        <a class="tab-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
+        <a class="tab-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
+    </nav>
 
         <!-- Modal de confirmation admin -->
         <div class="modal fade" id="adminConfirmModal" tabindex="-1" aria-labelledby="adminConfirmModalLabel" aria-hidden="true">
@@ -39,13 +39,13 @@
     <section class="mb-5">
         <h2>Tous les jeux</h2>
         <?php if (!empty($jeux)): ?>
-        <div class="table-responsive">
-            <table class="table table-sm align-middle">
+        <div class="table-wrapper">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Titre</th>
-                        <th>Auteur</th>
+                        <th>Ajouté par</th>
                         <th>Date ajout</th>
                         <th>Actions</th>
                     </tr>
@@ -55,7 +55,7 @@
                     <tr>
                         <td><?= (int)$jeu['id_jeu'] ?></td>
                         <td><?= htmlspecialchars($jeu['titre']) ?></td>
-                        <td><?= htmlspecialchars($jeu['auteur'] ?? '') ?></td>
+                        <td><?= htmlspecialchars($jeu['pseudo_createur'] ?? 'Anonyme') ?></td>
                         <td><?= htmlspecialchars(date('d/m/Y', strtotime($jeu['date_ajout'] ?? $jeu['date'] ?? 'now'))) ?></td>
                         <td>
                             <a href="index.php?url=admin_content/edit_game&id=<?= (int)$jeu['id_jeu'] ?>" class="btn btn-sm btn-primary">Modifier</a>
@@ -77,8 +77,8 @@
     <section>
         <h2>Tous les avis</h2>
         <?php if (!empty($avis)): ?>
-        <div class="table-responsive">
-            <table class="table table-sm align-middle">
+        <div class="table-wrapper">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -104,11 +104,11 @@
                             <?= htmlspecialchars((string)(int)($a['note'] ?? 0)) ?>
                         </td>
                         <td>
-                                <button type="submit" class="btn btn-sm btn-success">Enregistrer</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Enregistrer</button>
                             </form>
                             <form method="post" action="index.php?url=admin_content_delete_avis" class="d-inline ms-2 admin-delete-form" data-item-type="avis">
                                 <input type="hidden" name="id" value="<?= (int)$a['id_avis'] ?>">
-                                <button type="submit" class="btn btn-sm btn-danger ms-2">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                             </form>
                         </td>
                     </tr>

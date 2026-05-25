@@ -92,6 +92,41 @@ function profile() {
             exit();
         }
 
+        // Suppression du compte depuis le profil
+        if (isset($_POST['action']) && $_POST['action'] === 'delete_account') {
+            $confirm = isset($_POST['confirm_delete']) && $_POST['confirm_delete'] === '1';
+            $userId = (int)$_SESSION['id_utilisateur'];
+
+            if (!$confirm) {
+                $_SESSION['error'] = 'Suppression annulée ou non confirmée.';
+                header('Location: index.php?url=profile');
+                exit();
+            }
+
+            $currentUser = getUserById($conn, $userId);
+            $imagePath = $currentUser['photo_profil'] ?? '';
+
+            if (deleteUser($conn, $userId)) {
+                if (!empty($imagePath)) {
+                    $absolutePath = __DIR__ . '/../../' . ltrim($imagePath, '/');
+                    if (is_file($absolutePath) && basename($absolutePath) !== 'default-profile.webp') {
+                        @unlink($absolutePath);
+                    }
+                }
+
+                session_unset();
+                session_destroy();
+                session_start();
+                $_SESSION['success'] = 'Votre compte a été supprimé.';
+                header('Location: index.php?url=login');
+                exit();
+            }
+
+            $_SESSION['error'] = 'Impossible de supprimer votre compte.';
+            header('Location: index.php?url=profile');
+            exit();
+        }
+
         // Sinon, c'est le formulaire de mise à jour du profil existant
         updateProfile();
         return;
@@ -103,7 +138,8 @@ function profile() {
     $favoriteGames = getFavoriteGamesByUser($conn, $_SESSION['id_utilisateur']);
     $addedGames = getAddedGamesByUser($conn, $_SESSION['id_utilisateur']);
     $addedReviews = getAvisByUser($conn, $_SESSION['id_utilisateur']);
-
+    $activeTab = $_GET['tab'] ?? 'informations';
+    
     include __DIR__ . '/../../app/views/profile.php';
 }
 

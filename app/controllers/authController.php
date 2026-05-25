@@ -24,9 +24,11 @@ function login() {
         } else {
             // Authentification échouée
             $error = "Email ou mot de passe incorrect.";
+            $activeTab = 'login';
             include __DIR__ . '/../../app/views/login.php';
         }
     } else {
+        $activeTab = $_GET['tab'] ?? 'login';
         include __DIR__ . '/../../app/views/login.php';
     }
 }

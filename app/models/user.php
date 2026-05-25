@@ -33,7 +33,18 @@ function updateUser($conn, $id, $data) {
     return $stmt->execute([$data['nom'], $data['prenom'], $data['pseudo'], $data['email'], $id]);
 }
 
-function deleteUser($conn, $id, $adminId) {
+function deleteUser($conn, $id, $adminId = null) {
+    if ($adminId === null) {
+        $stmt = $conn->prepare("SELECT id_utilisateur FROM utilisateur WHERE id_role = 3 AND id_utilisateur <> ? ORDER BY id_utilisateur ASC LIMIT 1");
+        $stmt->execute([(int)$id]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        $adminId = $admin ? (int)$admin['id_utilisateur'] : null;
+    }
+
+    if ($adminId === null) {
+        return false;
+    }
+
     // 1. Réassigner les jeux de l'utilisateur supprimé à l'admin
     $stmt = $conn->prepare("UPDATE jeu SET id_utilisateur = ? WHERE id_utilisateur = ?");
     $stmt->execute([$adminId, $id]);

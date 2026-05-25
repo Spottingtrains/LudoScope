@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const preview = document.createElement('img');
         preview.id = 'image-preview';
-        preview.className = 'img-thumbnail';
+        preview.className = 'img-forms';
         preview.alt = 'Aperçu de l\'image';
 
         previewWrap.appendChild(previewTitle);
@@ -402,12 +402,46 @@ document.addEventListener('DOMContentLoaded', function () {
         checkChanged();
     })();
 
+    // Handler 2b: édition des avis depuis le profil
+    (function profileReviewsHandler(){
+        const reviewCards = document.querySelectorAll('.review-card');
+        if (!reviewCards.length) return;
+
+        reviewCards.forEach(card => {
+            const editBtn = card.querySelector('.btn-edit-review');
+            const saveBtn = card.querySelector('.btn-save-review');
+            const cancelBtn = card.querySelector('.btn-cancel-edit');
+            const textarea = card.querySelector('.review-textarea');
+            const noteSelect = card.querySelector('.review-note-select');
+
+            if (!editBtn || !saveBtn || !cancelBtn || !textarea || !noteSelect) return;
+
+            editBtn.addEventListener('click', function () {
+                textarea.disabled = false;
+                noteSelect.disabled = false;
+                editBtn.classList.add('d-none');
+                saveBtn.classList.remove('d-none');
+                cancelBtn.classList.remove('d-none');
+                textarea.focus();
+            });
+
+            cancelBtn.addEventListener('click', function () {
+                textarea.disabled = true;
+                noteSelect.disabled = true;
+                editBtn.classList.remove('d-none');
+                saveBtn.classList.add('d-none');
+                cancelBtn.classList.add('d-none');
+            });
+        });
+    })();
+
     // Handler 3: autosave du formulaire d'ajout de jeu (localStorage)
     (function jeuAutosaveHandler() {
         const form = document.getElementById('jeu-add-form'); // ← corrigé
         if (!form) return;
 
         const STORAGE_KEY = 'jeu_add_draft';
+        const cancelBtn = document.getElementById('jeu-add-cancel-btn');
         let debounceTimer;
 
         function getFormData() {
@@ -460,6 +494,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         form.addEventListener('submit', function () {
+            localStorage.removeItem(STORAGE_KEY);
+        });
+
+        cancelBtn?.addEventListener('click', function () {
             localStorage.removeItem(STORAGE_KEY);
         });
 

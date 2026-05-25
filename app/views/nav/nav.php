@@ -19,7 +19,7 @@
                 <?php if ($_SESSION['id_role'] >= 3): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Back-Office</a>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="adminDropdown">
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="adminDropdown">
                         <li><a class="dropdown-item" href="index.php?url=back-office">Dashboard</a></li>
                         <li><a class="dropdown-item" href="index.php?url=admin_users">Gestion utilisateurs</a></li>
                         <li><a class="dropdown-item" href="index.php?url=admin_content">Gestion contenu</a></li>

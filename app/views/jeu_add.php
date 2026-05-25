@@ -102,6 +102,7 @@ require __DIR__ . '/nav/header.php';
 
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Ajouter le jeu</button>
+                <button type="button" id="jeu-add-cancel-btn" class="btn btn-outline-secondary ms-2">Annuler</button>
             </div>
 
         </form>

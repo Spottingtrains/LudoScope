@@ -39,9 +39,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
                             <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
                             <?php if (check_role() >= 2): ?>
-                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                                <a href="index.php?url=jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
                             <?php else: ?>
-                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                                <a href="index.php?url=login&tab=signin" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -55,9 +55,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
                             <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
                             <?php if (check_role() >= 2): ?>
-                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                                <a href="index.php?url=jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
                             <?php else: ?>
-                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                                <a href="index.php?url=login&tab=signin" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -71,9 +71,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
                             <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
                             <?php if (check_role() >= 2): ?>
-                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                                <a href="index.php?url=jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
                             <?php else: ?>
-                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                                <a href="index.php?url=login&tab=signin" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -87,9 +87,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <div class="hstack gap-3 justify-content-center flex-wrap mt-4">
                             <a href="#catalogue" class="btn btn-primary btn-lg">Explorer les jeux</a>
                             <?php if (check_role() >= 2): ?>
-                                <a href="/jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
+                                <a href="index.php?url=jeu/add" class="btn btn-secondary btn-lg">Contribuer au catalogue</a>
                             <?php else: ?>
-                                <a href="/login" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
+                                <a href="index.php?url=login&tab=signin" class="btn btn-secondary btn-lg">Rejoindre la communauté</a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -189,9 +189,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <div class="col-12 d-flex flex-wrap gap-2 justify-content-end">
+                <div class="btn-container">
                     <button id="apply-filters-btn" type="button" class="btn btn-primary">Appliquer les filtres</button>
-                    <button id="reset-filters-btn" type="button" class="btn btn-secondary-empty">Réinitialiser les filtres</button>
+                    <button id="reset-filters-btn" type="button" class="btn btn-outline-secondary">Réinitialiser les filtres</button>
                 </div>
             </div>
         </div>
@@ -218,7 +218,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                                 <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
                                 <p><?= htmlspecialchars($jeu['nb_joueurs_min']) ?>–<?= htmlspecialchars($jeu['nb_joueurs_max']) ?> joueurs<?php if (!empty($jeu['age_min'])): ?> • <?= htmlspecialchars($jeu['age_min']) ?> ans+<?php endif; ?></p>
                                 <div class="btn-container">
-                                    <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>" class="btn btn-primary">Lire les avis</a>
+                                    <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>#avisSection" class="btn btn-primary">Lire les avis</a>
                                 </div>
                             </div>
                         </div>
