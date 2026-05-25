@@ -76,7 +76,7 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
             </div>
         </form>
 
-        <div class="mt-4">
+        <div class="btn-container">
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                 Supprimer mon compte
             </button>
@@ -117,7 +117,7 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
     <!-- Section historique de jeux ajoutés -->
     <section id="historique">
         <h2>Mon historique de jeux ajoutés</h2>
-        <p>Historique des jeux que vous avez ajoutés - en construction</p>
+        <p>Retrouvez ici les jeux que vous avez ajoutés dans le catalogue.</p>
         <div class="table-wrapper">
             <table class="table">
                 <thead>

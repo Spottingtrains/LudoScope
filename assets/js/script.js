@@ -443,6 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const STORAGE_KEY = 'jeu_add_draft';
         const cancelBtn = document.getElementById('jeu-add-cancel-btn');
         let debounceTimer;
+        let isCancelling = false;
 
         function getFormData() {
             return {
@@ -464,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function saveDraft() {
+            if (isCancelling) return;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
         }
 
@@ -497,8 +499,12 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.removeItem(STORAGE_KEY);
         });
 
-        cancelBtn?.addEventListener('click', function () {
+        cancelBtn?.addEventListener('pointerdown', function (e) {
+            e.preventDefault();
+            isCancelling = true;
+            clearTimeout(debounceTimer);
             localStorage.removeItem(STORAGE_KEY);
+            history.back();
         });
 
         restoreDraft();

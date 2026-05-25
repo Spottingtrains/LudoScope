@@ -52,7 +52,7 @@ require __DIR__ . '/nav/header.php';
             </div>
 
             <div class="col-md-4">
-                <label for="duree_partie" class="form-label">Durée d'une partie (minutes)</label>
+                <label for="duree_partie" class="form-label">Durée (en minutes)</label>
                 <input type="number" id="duree_partie" name="duree_partie" class="form-control" min="1" value="<?= htmlspecialchars($old['duree_partie'] ?? '') ?>">
             </div>
 

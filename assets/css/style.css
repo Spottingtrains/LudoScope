@@ -346,7 +346,7 @@ main section {
         padding: 0 var(--spacing-16) 0 var(--spacing-16) !important;
     }
     .large-padding {
-        padding: 0 calc(4 * var(--spacing-64)) 0 calc(4 * var(--spacing-64)) !important;
+        padding: 0 calc(3 * var(--spacing-64)) 0 calc(3 * var(--spacing-64)) !important;
     }
     
 }
