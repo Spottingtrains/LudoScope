@@ -3,7 +3,7 @@ require __DIR__ . '/nav/header.php';
 ?>
 <main class="large-padding">
     <section id="jeuEdit" class="up-down-padding">
-        <h1>Ajouter un jeu</h1>
+        <h1 class="text-center">Ajouter un jeu</h1>
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>

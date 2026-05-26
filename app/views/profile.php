@@ -78,7 +78,7 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
 
         <div class="btn-container">
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
-                Supprimer mon compte
+                Supprimer mon compte définitivement
             </button>
         </div>
 
@@ -90,10 +90,10 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                     </div>
                     <div class="modal-body">
-                        Cette action supprimera définitivement votre compte. Vos jeux seront réattribués à un administrateur.
+                        Cette action supprimera définitivement votre compte. Vos jeux seront réattribués à un administrateur et vos avis seront anonymisés, mais toutes vos autres données seront perdues. Êtes-vous sûr de vouloir continuer ?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Annuler</button>
                         <form action="index.php?url=profile" method="post" class="m-0">
                             <input type="hidden" name="action" value="delete_account">
                             <input type="hidden" name="confirm_delete" value="1">

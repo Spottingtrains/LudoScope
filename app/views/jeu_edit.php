@@ -27,7 +27,7 @@ $categories = $categories ?? [];
                 </div>
 
                 <div class="col-12">
-                    <label for="image" class="form-label">Image de couverture</label>
+                    <label for="image" class="form-label">Image de couverture actuelle</label>
                     <?php if (!empty($jeu['image'])): ?>
                         <div class="img-border mb-3">
                             <img class="img-forms" src="/uploads/<?= htmlspecialchars($jeu['image']) ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">

@@ -7,7 +7,7 @@ require __DIR__ . '/nav/header.php';
 require_once __DIR__ . '/../../app/middleware/auth.php';
 ?>
 
-<main>
+<main id="homePage">
     <!-- message de bienvenue après connexion -->
     <?php if (!empty($_SESSION['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
@@ -116,19 +116,21 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                 <div class="row g-4">
                     <?php foreach ($bestJeux as $jeu): ?>
                         <div class="col-12 col-md-6 col-lg-4 best-card">
-                            <div class="img-wrapper">
-                                <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
-                                <div class="card-note">
-                                    <span><?= htmlspecialchars((int)($jeu['note_moyenne'] ?? '0') . ' / 10') ?></span>
-                                    <p>
-                                        <?php if (!empty($jeu['commentaire_admin'])): ?>
-                                            <em>" <?= htmlspecialchars($jeu['commentaire_admin']) ?> "</em>
-                                        <?php endif; ?>
-                                    </p>
+                            <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>">
+                                <div class="img-wrapper">
+                                    <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                                    <div class="card-note">
+                                        <span><?= htmlspecialchars((int)($jeu['note_moyenne'] ?? '0') . ' / 10') ?></span>
+                                        <p>
+                                            <?php if (!empty($jeu['commentaire_admin'])): ?>
+                                                <em>" <?= htmlspecialchars($jeu['commentaire_admin']) ?> "</em>
+                                            <?php endif; ?>
+                                        </p>
+                                    </div>
+                                    <p class="card-desc"><?= htmlspecialchars(mb_substr($jeu['description'] ?? '', 0, 120)) ?>…</p>
                                 </div>
-                                <p class="card-desc"><?= htmlspecialchars(mb_substr($jeu['description'] ?? '', 0, 120)) ?>…</p>
-                            </div>
-                            <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
+                                <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
+                            </a>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -140,7 +142,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
     <!-- Section catalogue -->
     <!-- TODO: ajouter pagination -->
     <section id="catalogue" class="orange-bg small-padding">
-        <h2>Notre catalogue</h2>
+        <h2 class="up-padding">Notre catalogue</h2>
         <!-- Barre de recherche -->
         <div class="mb-4">
             <div class="input-group">
@@ -196,7 +198,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             </div>
         </div>
         <!-- Grille des jeux -->
-        <div id="catalogue-list" class="custom-grid">
+        <div id="catalogue-list" class="custom-grid down-padding">
             <?php if (!empty($jeux)): ?>
             <?php foreach ($jeux as $jeu): ?>
                 <div class="col">

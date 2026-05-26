@@ -8,7 +8,7 @@ require __DIR__ . '/nav/header.php';
             <?php if (isset($jeu)) : ?>
                 <div class="jeu-header">
                     <div class="jeu-title">
-                        <h1><?= htmlspecialchars($jeu['titre']) ?></h1>
+                        <h1 class="up-padding"><?= htmlspecialchars($jeu['titre']) ?></h1>
                         <small><?= htmlspecialchars($jeu['date_ajout'] ?? 'N/A') ?></small>
                     </div>
                     <div class="note-moyenne">
@@ -17,7 +17,7 @@ require __DIR__ . '/nav/header.php';
                 </div>
                 <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
                 <div class="description large-padding">
-                    <h2>Description</h2>
+                    <h2 class="up-padding">Description</h2>
                     <p><?= htmlspecialchars($jeu['description']) ?></p>
                 </div>
                 <div class="large-padding">
@@ -72,61 +72,64 @@ require __DIR__ . '/nav/header.php';
         </section>
         <hr>
         <?php if (isset($jeu)) : ?>
-        <section id="avisSection" class="large-padding orange-bg">
-            <h2>Avis</h2>
+        <section id="avisSection" class="large-padding orange-bg up-down-padding">
+            <div class="up-down-padding">
+                <h2>Avis</h2>
 
-            <h2>Laisser un avis</h2>
-
-            <?php if (isset($_SESSION['id_utilisateur'])) : ?>
-                <?php if (isset($avisError)) : ?>
-                    <div class="alert alert-danger"><?= htmlspecialchars($avisError) ?></div>
-                <?php endif; ?>
-                <form method="post">
-                    <div>
-                        <label for="note">Note (1 à 10)</label>
-                        <select name="note" id="note" required>
-                            <option value="">-- Choisir --</option>
-                            <?php for ($i = 1; $i <= 10; $i++) : ?>
-                                <option value="<?= $i ?>" <?= (isset($_POST['note']) && (int)$_POST['note'] === $i) ? 'selected' : '' ?>>
-                                    <?= $i ?>
-                                </option>
-                            <?php endfor; ?>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="commentaire">Commentaire</label>
-                        <textarea name="commentaire" id="commentaire" rows="4" required><?= htmlspecialchars($_POST['commentaire'] ?? '') ?></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Publier l'avis</button>
-                </form>
-            <?php else : ?>
-                <p><a href="index.php?url=login">Connectez-vous</a> pour laisser un avis.</p>
-            <?php endif; ?>
-
-            <?php if (!empty($avis)) : ?>
-                <div class="avis-list">
-                    <?php foreach ($avis as $a) : ?>
-                        <div class="avis-card">
-                            <div class="card-body">
-                                <div class="avis-header">
-                                    <img
-                                        class="avis-avatar"
-                                        src="<?= htmlspecialchars(!empty($a['photo_profil']) ? $a['photo_profil'] : '/uploads/default-profile.webp') ?>"
-                                        alt="Photo de profil de <?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?>"
-                                    >
-                                    <div>
-                                        <p><strong><?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?></strong> — <?= htmlspecialchars($a['date_avis']) ?></p>
-                                        <p>Note : <?= htmlspecialchars($a['note']) ?>/10</p>
-                                    </div>
-                                </div>
-                                <p><?= htmlspecialchars($a['commentaire']) ?></p>
-                            </div>
+                <?php if (isset($_SESSION['id_utilisateur'])) : ?>
+                    <?php if (isset($avisError)) : ?>
+                        <div class="alert alert-danger"><?= htmlspecialchars($avisError) ?></div>
+                    <?php endif; ?>
+                    <form method="post" class="avis-form">
+                        <h3 class="centered">Laisser un avis</h3>
+                        <div class="add-avis-card">
+                            <label for="note" class="form-label">Note (1 à 10)</label>
+                            <select name="note" id="note" class="form-select" required>
+                                <option value="">-- Choisir --</option>
+                                <?php for ($i = 1; $i <= 10; $i++) : ?>
+                                    <option value="<?= $i ?>" <?= (isset($_POST['note']) && (int)$_POST['note'] === $i) ? 'selected' : '' ?>>
+                                        <?= $i ?>
+                                    </option>
+                                <?php endfor; ?>
+                            </select>
                         </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php else : ?>
-                <p>Aucun avis pour ce jeu.</p>
-            <?php endif; ?>
+                        <div class="col-12">
+                            <label for="commentaire" class="form-label">Commentaire</label>
+                            <textarea name="commentaire" id="commentaire" class="form-control" rows="4" required><?= htmlspecialchars($_POST['commentaire'] ?? '') ?></textarea>
+                        </div>
+                        <div class="btn-container up-padding">
+                            <button type="submit" class="btn btn-primary">Publier l'avis</button>
+                        </div>
+                    </form>
+                <?php else : ?>
+                    <p><a href="index.php?url=login">Connectez-vous</a> pour laisser un avis.</p>
+                <?php endif; ?>
+
+                <?php if (!empty($avis)) : ?>
+                    <div class="avis-list up-padding">
+                        <?php foreach ($avis as $a) : ?>
+                            <div class="avis-card">
+                                <div class="card-body">
+                                    <div class="avis-header">
+                                        <img
+                                            class="avis-avatar"
+                                            src="<?= htmlspecialchars(!empty($a['photo_profil']) ? $a['photo_profil'] : '/uploads/default-profile.webp') ?>"
+                                            alt="Photo de profil de <?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?>"
+                                        >
+                                        <div>
+                                            <p><strong><?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?></strong> — <?= htmlspecialchars($a['date_avis']) ?></p>
+                                            <p>Note : <?= htmlspecialchars($a['note']) ?>/10</p>
+                                        </div>
+                                    </div>
+                                    <p><?= htmlspecialchars($a['commentaire']) ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else : ?>
+                    <p>Aucun avis pour ce jeu.</p>
+                <?php endif; ?>
+            </div>
         </section>
     </div>
     <?php endif; ?>

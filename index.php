@@ -41,6 +41,15 @@ switch($url) {
         require 'app/controllers/userController.php';
         profile();
         break;
+    case 'legal':
+        include 'app/views/legal.php';
+        break;
+    case 'privacy':
+        include 'app/views/privacy.php';
+        break;
+    case 'terms':
+        include 'app/views/terms.php';
+        break;
     case 'back-office':
         require 'app/controllers/adminController.php';
         dashboard();

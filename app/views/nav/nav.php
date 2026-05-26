@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm fixed-top navbar-dark nav-custom">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php?url=home"><img src="" alt="Logo"></a>
+        <a class="navbar-brand" href="index.php?url=home"><img src="uploads/ludoscope_logo.svg" alt="LudoScope"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>

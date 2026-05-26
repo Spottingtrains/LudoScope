@@ -1,0 +1,26 @@
+<svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg">
+
+  <line x1="152" y1="186" x2="182" y2="216" stroke="#C86C40" stroke-width="16" stroke-linecap="round"/>
+
+  <circle cx="108" cy="142" r="62" fill="white" opacity="0.12"/>
+  <circle cx="108" cy="142" r="62" fill="none" stroke="white" stroke-width="12"/>
+
+  <ellipse cx="84" cy="118" rx="12" ry="6.5" fill="white" opacity="0.35" transform="rotate(-35 84 118)"/>
+
+  <rect x="76" y="110" width="64" height="64" rx="10" fill="white"/>
+
+  <circle cx="92"  cy="126" r="5.5" fill="#C86C40"/>
+  <circle cx="124" cy="126" r="5.5" fill="#C86C40"/>
+  <circle cx="108" cy="142" r="5.5" fill="#C86C40"/>
+  <circle cx="92"  cy="158" r="5.5" fill="#C86C40"/>
+  <circle cx="124" cy="158" r="5.5" fill="#C86C40"/>
+
+  <text x="200" y="172"
+    font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+    font-size="86" font-weight="700" letter-spacing="-1.5" fill="white">LudoScope</text>
+
+  <text x="202" y="215"
+    font-family="system-ui,-apple-system,sans-serif"
+    font-size="17" letter-spacing="2" font-weight="500" fill="white" opacity="0.55">LUDOTHÈQUE COLLABORATIVE EN LIGNE</text>
+
+</svg>

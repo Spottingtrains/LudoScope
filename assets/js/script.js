@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const previewTitle = document.createElement('p');
         previewTitle.className = 'mb-2';
-        previewTitle.textContent = 'Aperçu';
+        previewTitle.textContent = 'Aperçu de la nouvelle image';
 
         const preview = document.createElement('img');
         preview.id = 'image-preview';
