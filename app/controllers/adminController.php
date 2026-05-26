@@ -103,6 +103,27 @@ function adminUsers() {
     
     $conn = connect();
     $users = getAllUsers($conn);
+    // Format dates for display (dd/mm/YYYY HH:ii:ss) while keeping raw values for JS
+    foreach ($users as $k => $u) {
+        $users[$k]['date_inscription_display'] = '';
+        $users[$k]['derniere_connexion_display'] = '';
+        if (!empty($u['date_inscription'])) {
+            try {
+                $dt = DateTime::createFromFormat('Y-m-d H:i:s', $u['date_inscription']) ?: DateTime::createFromFormat('Y-m-d', $u['date_inscription']) ?: new DateTime($u['date_inscription']);
+                if ($dt) $users[$k]['date_inscription_display'] = $dt->format('d/m/Y H:i:s');
+            } catch (Exception $e) {
+                $users[$k]['date_inscription_display'] = $u['date_inscription'];
+            }
+        }
+        if (!empty($u['derniere_connexion'])) {
+            try {
+                $dt2 = DateTime::createFromFormat('Y-m-d H:i:s', $u['derniere_connexion']) ?: DateTime::createFromFormat('Y-m-d', $u['derniere_connexion']) ?: new DateTime($u['derniere_connexion']);
+                if ($dt2) $users[$k]['derniere_connexion_display'] = $dt2->format('d/m/Y H:i:s');
+            } catch (Exception $e) {
+                $users[$k]['derniere_connexion_display'] = $u['derniere_connexion'];
+            }
+        }
+    }
     // Récupérer l'ID de l'utilisateur connecté pour la vue
     $currentId = isset($_SESSION['id_utilisateur']) ? (int)$_SESSION['id_utilisateur'] : null;
 
@@ -163,7 +184,7 @@ function adminUserCreate() {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $dateInscription = date('Y-m-d H:i:s');
 
-    if (createUser($conn, '', '', $pseudo, $email, $hashedPassword, $dateInscription, $role)) {
+    if (createUser($conn, '', '', $pseudo, $email, $hashedPassword, $dateInscription, '', '', $role)) {
         $_SESSION['success'] = 'Utilisateur créé avec succès.';
     } else {
         $_SESSION['error'] = 'Impossible de créer l\'utilisateur.';
@@ -471,10 +492,11 @@ function adminUserEdit() {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = [
-            'nom'    => trim($_POST['nom'] ?? $user['nom']),
-            'prenom' => trim($_POST['prenom'] ?? $user['prenom']),
-            'pseudo' => trim($_POST['pseudo'] ?? $user['pseudo']),
-            'email'  => trim($_POST['email'] ?? $user['email']),
+            'nom'             => trim($_POST['nom']    ?? $user['nom']),
+            'prenom'          => trim($_POST['prenom'] ?? $user['prenom']),
+            'pseudo'          => trim($_POST['pseudo'] ?? $user['pseudo']),
+            'email'           => trim($_POST['email']  ?? $user['email']),
+            'question_secrete' => $user['question_secrete'] ?? '',
         ];
 
         if (updateUser($conn, $id, $data)) {

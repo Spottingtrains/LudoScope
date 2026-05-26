@@ -95,12 +95,8 @@ switch($url) {
         adminUserDelete();
         break;
     case 'forgot-password':
-        require 'app/controllers/passwordController.php';
+        require 'app/controllers/authController.php';
         forgotPassword();
-        break;
-    case 'reset-password':
-        require 'app/controllers/passwordController.php';
-        resetPassword();
         break;
     case 'jeu/search':
         require 'app/controllers/jeuController.php';

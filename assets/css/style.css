@@ -232,6 +232,7 @@ body {
 
 main {
     margin: 0 var(--spacing-16) 0 var(--spacing-16);
+    min-height: calc(100vh - 80px - 200px); /* hauteur de la navbar + footer */
 }
 
 main section {
@@ -468,6 +469,11 @@ hr {
 }
 .best-card {
     text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+.best-card:hover {
+    transform: scale(1.02);
+    transition: all 0.3s ease-in-out;
 }
 .best-card h3 {
     margin-top: var(--spacing-12) !important;
@@ -479,7 +485,7 @@ hr {
     width: 100%;
     transition: all 0.3s ease-in-out;
 }
-.img-wrapper:hover::before {
+.best-card:hover .img-wrapper {
     box-shadow: var(--color-gray-900) 0px 2px 5px -1px, var(--color-gray-900) 0px 1px 3px -1px;
     transition: all 0.3s ease-in-out;
 }
@@ -558,7 +564,8 @@ hr {
     transition: all 0.15s ease-in-out;
 }
 .custom-card:hover {
-    border: 1px solid var(--color-accent-500);
+    scale: 1.02;
+    border: 1px solid var(--color-primary-500);
     box-shadow: var(--color-gray-200) 0px 2px 5px -1px, var(--color-gray-200) 0px 1px 3px -1px;
     transition: all 0.15s ease-in-out;
 }
@@ -993,4 +1000,9 @@ hr {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* login */
+#login-pane a {
+    padding-top: var(--spacing-12) !important;
 }

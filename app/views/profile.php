@@ -71,6 +71,25 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
                     <label for="confirm_password" class="form-label">Confirmer le mot de passe :</label>
                     <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Laissez vide pour ne pas changer" aria-describedby="passwordHelp">
                 </div>
+                <div class="col-12">
+                    <label for="question_secrete" class="form-label">Question secrète :</label>
+                    <select class="form-select" id="question_secrete" name="question_secrete">
+                        <option value="" disabled <?= empty($user['question_secrete']) ? 'selected' : '' ?>>-- Choisissez une question --</option>
+                        <option value="Quel est le prénom de votre mère ?" <?= ($user['question_secrete'] ?? '') === "Quel est le prénom de votre mère ?" ? 'selected' : '' ?>>Quel est le prénom de votre mère ?</option>
+                        <option value="Quel est le nom de votre premier animal ?" <?= ($user['question_secrete'] ?? '') === "Quel est le nom de votre premier animal ?" ? 'selected' : '' ?>>Quel est le nom de votre premier animal ?</option>
+                        <option value="Dans quelle ville êtes-vous né(e) ?" <?= ($user['question_secrete'] ?? '') === "Dans quelle ville êtes-vous né(e) ?" ? 'selected' : '' ?>>Dans quelle ville êtes-vous né(e) ?</option>
+                        <option value="Quel est le titre de votre film préféré ?" <?= ($user['question_secrete'] ?? '') === "Quel est le titre de votre film préféré ?" ? 'selected' : '' ?>>Quel est le titre de votre film préféré ?</option>
+                        <option value="Quel est le prénom de votre meilleur(e) ami(e) d'enfance ?" <?= ($user['question_secrete'] ?? '') === "Quel est le prénom de votre meilleur(e) ami(e) d'enfance ?" ? 'selected' : '' ?>>Quel est le prénom de votre meilleur(e) ami(e) d'enfance ?</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label for="reponse_secrete" class="form-label">Réponse secrète :</label>
+                    <div class="input-group">
+                        <input type="password" id="reponse_secrete" name="reponse_secrete" class="form-control" value="<?= htmlspecialchars($user['reponse_secrete'] ?? '') ?>" aria-describedby="reponseSecreteHelp">
+                        <button type="button" class="btn btn-outline-secondary" id="toggle-reponse">Afficher</button>
+                    </div>
+                    <div id="reponseSecreteHelp" class="form-text">Laissez vide pour conserver la réponse actuelle.</div>
+                </div>
                 <div class="btn-container">
                     <button type="submit" id="submitBtn" class="btn btn-primary" disabled>Modifier mes informations</button>
                     <button type="button" id="cancelBtn" class="btn btn-secondary" onclick="window.location.href='index.php?url=profile'" disabled>Annuler les modifications</button>

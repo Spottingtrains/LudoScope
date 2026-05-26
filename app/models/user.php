@@ -17,9 +17,9 @@ function getUserById($conn, $id) {
     return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 }
 
-function createUser($conn, $firstname, $lastname, $pseudo, $email, $hashedPassword, $date_inscription, $id_role = 2) {
-    $stmt = $conn->prepare("INSERT INTO utilisateur (prenom, nom, pseudo, email, mot_de_passe, id_role, date_inscription) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    return $stmt->execute([$firstname, $lastname, $pseudo, $email, $hashedPassword, $id_role, $date_inscription]);
+function createUser($conn, $firstname, $lastname, $pseudo, $email, $hashedPassword, $date_inscription, $question_secrete, $reponse_secrete, $id_role = 2) {
+    $stmt = $conn->prepare("INSERT INTO utilisateur (prenom, nom, pseudo, email, mot_de_passe, id_role, date_inscription, question_secrete, reponse_secrete) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    return $stmt->execute([$firstname, $lastname, $pseudo, $email, $hashedPassword, $id_role, $date_inscription, $question_secrete, $reponse_secrete]);
 }
 
 function getAllUsers($conn) {
@@ -29,8 +29,13 @@ function getAllUsers($conn) {
 }
 
 function updateUser($conn, $id, $data) {
-    $stmt = $conn->prepare("UPDATE utilisateur SET nom = ?, prenom = ?, pseudo = ?, email = ? WHERE id_utilisateur = ?");
-    return $stmt->execute([$data['nom'], $data['prenom'], $data['pseudo'], $data['email'], $id]);
+    if (!empty($data['reponse_secrete'])) {
+        $stmt = $conn->prepare("UPDATE utilisateur SET nom = ?, prenom = ?, pseudo = ?, email = ?, question_secrete = ?, reponse_secrete = ? WHERE id_utilisateur = ?");
+        return $stmt->execute([$data['nom'], $data['prenom'], $data['pseudo'], $data['email'], $data['question_secrete'], $data['reponse_secrete'], $id]);
+    } else {
+        $stmt = $conn->prepare("UPDATE utilisateur SET nom = ?, prenom = ?, pseudo = ?, email = ?, question_secrete = ? WHERE id_utilisateur = ?");
+        return $stmt->execute([$data['nom'], $data['prenom'], $data['pseudo'], $data['email'], $data['question_secrete'], $id]);
+    }
 }
 
 function deleteUser($conn, $id, $adminId = null) {

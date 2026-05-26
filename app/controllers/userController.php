@@ -150,23 +150,24 @@ function updateProfile() {
         $conn = connect();
         $userId = $_SESSION['id_utilisateur'];
         $currentUser = getUserById($conn, $userId);
+        $question_secrete = trim($_POST['question_secrete'] ?? '');
+        $reponse_secrete  = trim($_POST['reponse_secrete'] ?? '');
 
         $data = [
-            'prenom' => trim($_POST['prenom'] ?? ''),
-            'nom' => trim($_POST['nom'] ?? ''),
-            'pseudo' => trim($_POST['pseudo'] ?? ''),
-            'email' => trim($_POST['email'] ?? ''),
+            'prenom'          => trim($_POST['prenom'] ?? ''),
+            'nom'             => trim($_POST['nom'] ?? ''),
+            'pseudo'          => trim($_POST['pseudo'] ?? ''),
+            'email'           => trim($_POST['email'] ?? ''),
+            'question_secrete' => $question_secrete,
         ];
+
+        if ($reponse_secrete !== '') {
+            $data['reponse_secrete'] = $reponse_secrete;
+        }
 
         $newPassword = trim($_POST['new_password'] ?? '');
         $confirmPassword = trim($_POST['confirm_password'] ?? '');
 
-        // Validation basique
-        if (empty($data['prenom']) || empty($data['nom']) || empty($data['pseudo']) || empty($data['email'])) {
-            $_SESSION['error'] = "Tous les champs sont requis.";
-            header('Location: index.php?url=profile');
-            exit();
-        }
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = "Le format de l'adresse email n'est pas valide.";
             header('Location: index.php?url=profile');

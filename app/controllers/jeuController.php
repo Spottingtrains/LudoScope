@@ -55,6 +55,32 @@ function jeu() {
         'description'    => 'Aucune description disponible',
     ], $jeu);
 
+    // Format dates for display: jeu date_ajout and each avis date_avis
+    $jeu['date_ajout_display'] = '';
+    if (!empty($jeu['date_ajout'])) {
+        try {
+            $dta = DateTime::createFromFormat('Y-m-d H:i:s', $jeu['date_ajout']) ?: DateTime::createFromFormat('Y-m-d', $jeu['date_ajout']) ?: new DateTime($jeu['date_ajout']);
+            if ($dta) $jeu['date_ajout_display'] = $dta->format('d/m/Y H:i:s');
+        } catch (Exception $e) {
+            $jeu['date_ajout_display'] = $jeu['date_ajout'];
+        }
+    }
+
+    foreach ($avis as $ik => $a) {
+        $avis[$ik]['date_avis_display'] = '';
+        if (!empty($a['date_avis'])) {
+            try {
+                $dt = DateTime::createFromFormat('Y-m-d H:i:s', $a['date_avis']) ?: DateTime::createFromFormat('Y-m-d', $a['date_avis']) ?: new DateTime($a['date_avis']);
+                if ($dt) $avis[$ik]['date_avis_display'] = $dt->format('d/m/Y H:i:s');
+            } catch (Exception $e) {
+                $avis[$ik]['date_avis_display'] = $a['date_avis'];
+            }
+        }
+    }
+
+    // ensure $jeu['avis'] reflects formatted avis
+    $jeu['avis'] = $avis;
+
     include 'app/views/jeu_detail.php';
 }
 

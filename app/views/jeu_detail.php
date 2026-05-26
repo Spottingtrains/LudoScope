@@ -10,7 +10,7 @@ require __DIR__ . '/nav/header.php';
                     <div class="jeu-header">
                         <div class="jeu-title">
                             <h1 class="up-padding"><?= htmlspecialchars($jeu['titre']) ?></h1>
-                            <small><?= htmlspecialchars($jeu['date_ajout'] ?? 'N/A') ?></small>
+                            <small><?= htmlspecialchars($jeu['date_ajout_display'] ?? ($jeu['date_ajout'] ?? 'N/A')) ?></small>
                         </div>
                         <div class="note-moyenne">
                             <span><?= htmlspecialchars($jeu['note_moyenne'] ?? 'N/A') ?>/10</span>
@@ -118,7 +118,7 @@ require __DIR__ . '/nav/header.php';
                                                 alt="Photo de profil de <?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?>"
                                             >
                                             <div>
-                                                <p><strong><?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?></strong> — <?= htmlspecialchars($a['date_avis']) ?></p>
+                                                <p><strong><?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?></strong> — <?= htmlspecialchars($a['date_avis_display'] ?? ($a['date_avis'] ?? '')) ?></p>
                                                 <p>Note : <?= htmlspecialchars($a['note']) ?>/10</p>
                                             </div>
                                         </div>

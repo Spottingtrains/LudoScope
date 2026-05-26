@@ -295,112 +295,120 @@ document.addEventListener('DOMContentLoaded', function () {
     })();
 
     // Handler 2: profile form (détection de modification, validation mot de passe, affichage d'erreur inline)
-    (function profileHandler(){
-        const form = document.getElementById('profile-form'); // ← corrigé
-        if (!form) return;
+    // Handler 2: profile form (détection de modification, validation mot de passe, affichage d'erreur inline)
+(function profileHandler(){
+    const form = document.getElementById('profile-form');
+    if (!form) return;
 
-        const submitBtn = document.getElementById('submitBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const prenom = document.getElementById('prenom');
-        const nom = document.getElementById('nom');
-        const pseudo = document.getElementById('pseudo');
-        const email = document.getElementById('email');
-        const newPassword = document.getElementById('new_password');
-        const confirmPassword = document.getElementById('confirm_password');
-        const imageInput = document.getElementById('image_profil');
-        const clientErrorEl = document.getElementById('client-error');
+    const submitBtn       = document.getElementById('submitBtn');
+    const cancelBtn       = document.getElementById('cancelBtn');
+    const prenom          = document.getElementById('prenom');
+    const nom             = document.getElementById('nom');
+    const pseudo          = document.getElementById('pseudo');
+    const email           = document.getElementById('email');
+    const newPassword     = document.getElementById('new_password');
+    const confirmPassword = document.getElementById('confirm_password');
+    const imageInput      = document.getElementById('image_profil');
+    const questionSecrete = document.getElementById('question_secrete');
+    const reponseSecrete  = document.getElementById('reponse_secrete');
+    const clientErrorEl   = document.getElementById('client-error');
 
-        const initial = {
-            prenom: prenom?.value || '',
-            nom: nom?.value || '',
-            pseudo: pseudo?.value || '',
-            email: email?.value || ''
-        };
+    const initial = {
+        prenom:   prenom?.value   || '',
+        nom:      nom?.value      || '',
+        pseudo:   pseudo?.value   || '',
+        email:    email?.value    || '',
+        question: questionSecrete?.value || '',
+        reponse:  reponseSecrete?.value || '',
+    };
 
-        function checkChanged() {
-            const changed = (
-                (prenom?.value || '') !== initial.prenom ||
-                (nom?.value || '') !== initial.nom ||
-                (pseudo?.value || '') !== initial.pseudo ||
-                (email?.value || '') !== initial.email ||
-                (newPassword?.value || '') !== '' ||
-                (confirmPassword?.value || '') !== '' ||
-                (imageInput?.files.length || 0) > 0
-            );
-            if (submitBtn) submitBtn.disabled = !changed;
-            if (cancelBtn) cancelBtn.disabled = !changed;
+    function checkChanged() {
+        const changed = (
+            (prenom?.value          || '') !== initial.prenom   ||
+            (nom?.value             || '') !== initial.nom      ||
+            (pseudo?.value          || '') !== initial.pseudo   ||
+            (email?.value           || '') !== initial.email    ||
+            (questionSecrete?.value || '') !== initial.question ||
+            (reponseSecrete?.value  || '') !== initial.reponse  ||
+            (newPassword?.value     || '') !== ''               ||
+            (confirmPassword?.value || '') !== ''               ||
+            (imageInput?.files.length || 0) > 0
+        );
+        if (submitBtn) submitBtn.disabled = !changed;
+        if (cancelBtn) cancelBtn.disabled = !changed;
+    }
+
+    function showClientError(msg) {
+        if (clientErrorEl) {
+            clientErrorEl.textContent = msg;
+            clientErrorEl.classList.remove('d-none');
+            clientErrorEl.style.display = 'block';
+            try { clientErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+        } else {
+            alert(msg);
         }
+    }
+    function clearClientError() {
+        if (!clientErrorEl) return;
+        clientErrorEl.textContent = '';
+        clientErrorEl.classList.add('d-none');
+        clientErrorEl.style.display = 'none';
+    }
 
-        function showClientError(msg) {
-            if (clientErrorEl) {
-                clientErrorEl.textContent = msg;
-                clientErrorEl.classList.remove('d-none');
-                clientErrorEl.style.display = 'block';
-                try { clientErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+    function validatePasswords() {
+        if (!newPassword || !confirmPassword) return true;
+        const a = newPassword.value;
+        const b = confirmPassword.value;
+        if (a !== '' || b !== '') {
+            if (!isPasswordStrong(a)) {
+                setInvalid(newPassword);
+                if (submitBtn) submitBtn.disabled = true;
+                return false;
             } else {
-                alert(msg);
+                setValid(newPassword);
+            }
+            if (a !== b) {
+                setInvalid(confirmPassword);
+                if (submitBtn) submitBtn.disabled = true;
+                return false;
+            } else {
+                setValid(confirmPassword);
             }
         }
-        function clearClientError() {
-            if (!clientErrorEl) return;
-            clientErrorEl.textContent = '';
-            clientErrorEl.classList.add('d-none');
-            clientErrorEl.style.display = 'none';
-        }
+        return true;
+    }
 
-        function validatePasswords() {
-            if (!newPassword || !confirmPassword) return true;
-            const a = newPassword.value;
-            const b = confirmPassword.value;
-            if (a !== '' || b !== '') {
-                if (!isPasswordStrong(a)) {
-                    setInvalid(newPassword);
-                    if (submitBtn) submitBtn.disabled = true;
-                    return false;
-                } else {
-                    setValid(newPassword);
-                }
-                if (a !== b) {
-                    setInvalid(confirmPassword);
-                    if (submitBtn) submitBtn.disabled = true;
-                    return false;
-                } else {
-                    setValid(confirmPassword);
-                }
-            }
-            return true;
-        }
-
-        form.addEventListener('input', function () {
-            clearClientError();
-            checkChanged();
-            validatePasswords();
-            if (email) {
-                if (!isEmailValid(email.value)) {
-                    setInvalid(email);
-                    if (submitBtn) submitBtn.disabled = true;
-                } else {
-                    setValid(email);
-                }
-            }
-        });
-        imageInput?.addEventListener('change', function () { checkChanged(); });
-
-        form.addEventListener('submit', function (e) {
-            clearClientError();
-            if (email && !isEmailValid(email.value)) {
-                e.preventDefault();
-                showClientError("Le format de l'email est invalide.");
-                return;
-            }
-            if (!validatePasswords()) {
-                e.preventDefault();
-                showClientError('Les mots de passe doivent correspondre et respecter la complexité (8 caractères, une majuscule, un chiffre).');
-            }
-        });
-
+    form.addEventListener('input', function () {
+        clearClientError();
         checkChanged();
-    })();
+        validatePasswords();
+        if (email) {
+            if (!isEmailValid(email.value)) {
+                setInvalid(email);
+                if (submitBtn) submitBtn.disabled = true;
+            } else {
+                setValid(email);
+            }
+        }
+    });
+    imageInput?.addEventListener('change', function () { checkChanged(); });
+    questionSecrete?.addEventListener('change', function () { checkChanged(); });
+
+    form.addEventListener('submit', function (e) {
+        clearClientError();
+        if (email && !isEmailValid(email.value)) {
+            e.preventDefault();
+            showClientError("Le format de l'email est invalide.");
+            return;
+        }
+        if (!validatePasswords()) {
+            e.preventDefault();
+            showClientError('Les mots de passe doivent correspondre et respecter la complexité (8 caractères, une majuscule, un chiffre).');
+        }
+    });
+
+    checkChanged();
+})();
 
     // Handler 2b: édition des avis depuis le profil
     (function profileReviewsHandler(){
@@ -508,5 +516,122 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         restoreDraft();
+    })();
+
+    // Handler admin users: recherche, filtres, tri (client-side)
+    (function adminUsersHandler(){
+        const table = document.querySelector('#user-controls + .table-wrapper .table');
+        const tbody = table ? table.querySelector('tbody') : null;
+        if (!tbody) return;
+        let rows = Array.from(tbody.querySelectorAll('tr'));
+
+        const searchEl = document.getElementById('user-search');
+        const roleEl = document.getElementById('filter-role');
+        const lastLoginEl = document.getElementById('filter-lastlogin');
+        const registeredEl = document.getElementById('filter-registered');
+
+        const normalize = s => String(s || '').toLowerCase().trim();
+
+        function parseDateOnly(v){
+            if (!v) return null;
+            const d = new Date(v);
+            if (isNaN(d)) {
+                const y = String(v).substr(0,10);
+                const dd = new Date(y);
+                return isNaN(dd) ? null : dd;
+            }
+            return d;
+        }
+
+        function matchesRow(row, q, role, lastSince, regSince){
+            const searchable = normalize(row.dataset.search || '');
+            const id = String(row.dataset.id || '');
+
+            if (q){
+                const qn = q.toLowerCase();
+                if (!(searchable.includes(qn) || id.includes(qn))) return false;
+            }
+            if (role && String(row.dataset.role || '') !== String(role)) return false;
+            if (lastSince){
+                const d = parseDateOnly(row.dataset.lastlogin || row.dataset.lastLogin || '');
+                if (!d) return false;
+                if (d < lastSince) return false;
+            }
+            if (regSince){
+                const d2 = parseDateOnly(row.dataset.registered || row.dataset.dateInscription || '');
+                if (!d2) return false;
+                if (d2 < regSince) return false;
+            }
+            return true;
+        }
+
+        function applyFilters(sortField = 'id', sortDir = 'desc'){
+            const q = normalize(searchEl?.value || '');
+            const role = roleEl?.value || '';
+                const lastSince = lastLoginEl?.value ? parseDateOnly(lastLoginEl.value) : null;
+                const regSince = registeredEl?.value ? parseDateOnly(registeredEl.value) : null;
+
+                let visible = rows.filter(r => matchesRow(r, q, role, lastSince, regSince));
+
+            visible.sort((a,b) => {
+                let av = a.dataset[sortField] || '';
+                let bv = b.dataset[sortField] || '';
+                if (sortField === 'id'){ av = parseInt(av)||0; bv = parseInt(bv)||0; }
+                if (av < bv) return sortDir === 'asc' ? -1 : 1;
+                if (av > bv) return sortDir === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            tbody.innerHTML = '';
+            visible.forEach(r => tbody.appendChild(r));
+        }
+
+        searchEl?.addEventListener('input', () => applyFilters('id','desc'));
+        roleEl?.addEventListener('change', () => applyFilters('id','desc'));
+        // status filter removed
+        lastLoginEl?.addEventListener('change', () => applyFilters('id','desc'));
+        registeredEl?.addEventListener('change', () => applyFilters('id','desc'));
+
+        // enable header sorting by clicking th[data-sort]
+        document.querySelectorAll('.table thead th[data-sort]').forEach(th=>{
+            th.style.cursor = 'pointer';
+            th.dataset.dir = th.dataset.dir || 'desc';
+            th.addEventListener('click', () => {
+                const key = th.dataset.sort || 'id';
+                const dir = th.dataset.dir === 'asc' ? 'desc' : 'asc';
+                document.querySelectorAll('.table thead th[data-sort]').forEach(h=>h.dataset.dir='');
+                th.dataset.dir = dir;
+                applyFilters(key, dir);
+            });
+        });
+
+        // wire delete buttons to show confirmation modal (reuse adminDeleteHandler modal if exists)
+        document.querySelectorAll('.admin-delete-btn').forEach(btn=>{
+            btn.addEventListener('click', function () {
+                const form = btn.closest('form.admin-delete-form');
+                if (!form) return;
+                if (typeof bootstrap !== 'undefined' && document.getElementById('adminConfirmModal')) {
+                    form.submit();
+                } else {
+                    if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) form.submit();
+                }
+            }, {passive:true});
+        });
+
+        // initial
+        applyFilters('id','desc');
+    })();
+
+    // Handler: afficher/masquer la réponse secrète
+    (function toggleReponseSecreteHandler(){
+        const btn = document.getElementById('toggle-reponse');
+        const input = document.getElementById('reponse_secrete');
+        if (!btn || !input) return;
+
+        btn.addEventListener('click', function () {
+            const isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            btn.textContent = isHidden ? 'Masquer' : 'Afficher';
+        });
     })();
 });
