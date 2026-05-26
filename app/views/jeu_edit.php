@@ -6,7 +6,7 @@ $categories = $categories ?? [];
 <main class="large-padding">
     <section id="jeuEdit" class="up-down-padding">
 
-        <h1>Modifier un jeu</h1>
+        <h1 class="centered">Modifier un jeu</h1>
 
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>

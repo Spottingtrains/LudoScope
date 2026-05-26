@@ -2,7 +2,7 @@
 	<div class="container p-4 pb-0">
 		<section class="row">
 			<div class="col-md-6 col-lg-6 col-xl-6 mx-auto mt-3">
-				<h4>Ludothèque</h4>
+				<a class="footer-brand centered" href="index.php?url=home"><img src="uploads/ludoscope_logo.svg" alt="Logo du site LudoScope"></a>
 				<p>Ludothèque est une plateforme dédiée aux passionnés de jeux de société, offrant une collection exhaustive de jeux, des informations détaillées et un espace de discussion pour les joueurs.</p>
 			</div>
 

@@ -219,6 +219,12 @@ header {
 footer h4 {
     color: var(--color-gray-200) !important;
 }
+.footer-brand img {
+    height: 60px;
+    width: auto;
+    display: block;
+    margin-bottom: var(--spacing-12) !important;
+}
 
 body {
     background-color: var(--color-white);
