@@ -18,7 +18,6 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
         <div class="alert alert-success">Vous avez été déconnecté.</div>
     <?php endif; ?>
     <!-- Section hero et CTA -->
-    <!-- TODO: vérifier les classes Bootstrap et l'intérêt des div -->
     <section id="heroSection">
         <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
 

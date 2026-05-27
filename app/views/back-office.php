@@ -93,7 +93,6 @@ require __DIR__ . '/nav/header.php';
                 <div class="alert alert-secondary mb-0">Aucune demande en attente.</div>
             <?php endif; ?>
         </section>
-        <!-- TODO: refaire le style de cette section -->
         <section>
             <h2>Statistiques</h2>
             <div class="stats-list">
