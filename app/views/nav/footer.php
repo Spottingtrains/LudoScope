@@ -1,12 +1,12 @@
 <footer class="text-center text-lg-start text-white bg-dark nav-custom">
-	<div class="container p-4 pb-0">
-		<section class="row">
-			<div class="col-md-6 col-lg-6 col-xl-6 mx-auto mt-3">
-				<a class="footer-brand centered" href="index.php?url=home"><img src="uploads/ludoscope_logo.svg" alt="Logo du site LudoScope"></a>
+	<div class="container p-0 py-4">
+		<section class="footer-content">
+			<div class="col-md-4 col-lg-4 col-xl-4">
+				<a class="footer-brand" href="index.php?url=home"><img src="uploads/ludoscope_logo.svg" alt="Logo du site LudoScope"></a>
 				<p>Ludothèque est une plateforme dédiée aux passionnés de jeux de société, offrant une collection exhaustive de jeux, des informations détaillées et un espace de discussion pour les joueurs.</p>
 			</div>
 
-			<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+			<div>
 				<h4>Navigation principale</h4>
 				<nav>
 					<ul class="navbar-nav navbar-dark">
@@ -27,7 +27,7 @@
 					</ul>
 				</nav>
 			</div>
-			<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+			<div>
 				<h4>Navigation secondaire</h4>
 				<nav>
 					<ul class="navbar-nav navbar-dark">

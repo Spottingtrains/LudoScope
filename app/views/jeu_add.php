@@ -100,7 +100,7 @@ require __DIR__ . '/nav/header.php';
                 <input type="number" id="nb_joueurs_max" name="nb_joueurs_max" class="form-control" min="1" max="20" required value="<?= htmlspecialchars($old['nb_joueurs_max'] ?? 4) ?>" required>
             </div>
 
-            <div class="col-12">
+            <div class="centered mt-4">
                 <button type="submit" class="btn btn-primary">Ajouter le jeu</button>
                 <button type="button" id="jeu-add-cancel-btn" class="btn btn-outline-secondary ms-2">Annuler</button>
             </div>
