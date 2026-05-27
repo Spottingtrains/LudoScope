@@ -19,10 +19,6 @@
     --color-gray-800:  #37403E;
     --color-gray-900:  #1C2322;
 
-    /* Surcharge Bootstrap si besoin */
-    --bs-primary:     #3B9188;
-    --bs-primary-rgb: 59, 145, 136;
-
     /* Espacements et border-radius */
     --spacing-4:  0.25rem;  /*  4px */
     --spacing-8:  0.5rem;   /*  8px */
@@ -42,7 +38,7 @@
     --border-radius-48: 3rem;
     --border-radius-64: 4rem;
 
-    /* ── Catégories de jeux ───────────────────────────── */
+    /* Catégories de jeux */
 
     /* Plateau — Dark Cyan (couleur primaire) */
     --color-cat-plateau:           #3b9188;
@@ -69,7 +65,7 @@
     --color-cat-des-dark:          hsl(42, 55%, 62%);
     
 }
-
+/* TODO: ajouter fonts de secours */
 h1 {
     font-family: 'Fredoka', sans-serif;
     font-weight: 700 !important;
@@ -303,6 +299,19 @@ main section {
     padding:  0 var(--spacing-16) 0 var(--spacing-16);
 }
 
+@media screen and (min-width: 1000px) {
+    main {
+        margin: 0 var(--spacing-32);
+    }
+    .small-padding {
+        padding: 0 var(--spacing-16) 0 var(--spacing-16) !important;
+    }
+    .large-padding {
+        padding: 0 calc(3 * var(--spacing-64)) 0 calc(3 * var(--spacing-64)) !important;
+    }
+    
+}
+
 .up-padding {
     padding: var(--spacing-16) 0 0 !important;
 }
@@ -410,18 +419,6 @@ main section {
 }
 .table tbody tr:last-child td:last-child {
     border-bottom-right-radius: var(--border-radius-8);
-}
-@media screen and (min-width: 1000px) {
-    main {
-        margin: 0 var(--spacing-32);
-    }
-    .small-padding {
-        padding: 0 var(--spacing-16) 0 var(--spacing-16) !important;
-    }
-    .large-padding {
-        padding: 0 calc(3 * var(--spacing-64)) 0 calc(3 * var(--spacing-64)) !important;
-    }
-    
 }
 
 .img-border {
@@ -882,8 +879,7 @@ hr {
     }
 }
 
-/** back-office */
-
+/* Statistiques du site */
 .stats-list {
     display: flex;
     flex-direction: column;
@@ -1083,6 +1079,44 @@ hr {
 .bg-secondary {
     background-color: var(--color-accent-500) !important;
     color: var(--color-white) !important;
+}
+/* Tableau des utilisateurs */
+#users-table th:nth-child(3), #users-table td:nth-child(3) {
+    min-width: 200px !important;
+}
+#users-table th:nth-child(4), #users-table td:nth-child(4) {
+    min-width: 280px !important;
+}
+#users-table th:last-child, #users-table td:last-child {
+    min-width: 300px !important;
+}
+@media screen and (min-width: 800 px) {
+    #users-table th:last-child, #users-table td:last-child {
+        max-width: fit-content !important;
+    }
+    #games-table th:last-child, #games-table td:last-child {
+        max-width: fit-content !important;
+    }
+    #reviews-table th:last-child, #reviews-table td:last-child {
+        max-width: fit-content !important;;
+    }
+}
+/* Tableau des jeux */
+#games-table th:nth-child(2), #games-table td:nth-child(2) {
+    min-width: 250px !important;
+}
+/* Tableau des avis */
+#reviews-table th:nth-child(2), #reviews-table td:nth-child(2) {
+    min-width: 250px !important;
+}
+#reviews-table th:nth-child(4), #reviews-table td:nth-child(4) {
+    min-width: 250px !important;
+}
+#reviews-table th:last-child, #reviews-table td:last-child {
+    min-width: 220px !important;
+}
+.admin-delete-btn {
+    margin-left: var(--spacing-8) !important;
 }
 
 /** profil */

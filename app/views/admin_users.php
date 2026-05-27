@@ -53,7 +53,7 @@
             <!-- Les data-* sont lus par adminUsersHandler pour le filtrage et le tri client-side -->
             <div class="table-wrapper">
                 <?php if (!empty($users)): ?>
-                    <table class="table">
+                    <table class="table" id="users-table">
                         <thead>
                             <tr>
                                 <th data-sort="id">ID</th>
@@ -98,11 +98,11 @@
                                         </form>
                                         <?php if ($currentId !== null && $currentId === (int)$user['id_utilisateur']): ?>
                                             <!-- L'admin ne peut pas supprimer son propre compte -->
-                                            <button class="btn btn-danger" disabled title="Vous ne pouvez pas supprimer votre propre compte">Supprimer</button>
+                                            <button class="btn btn-danger admin-delete-btn" disabled title="Vous ne pouvez pas supprimer votre propre compte">Supprimer</button>
                                         <?php else: ?>
                                             <form method="post" action="index.php?url=admin/users/delete" class="d-inline ms-2 admin-delete-form" data-item-type="utilisateur" onsubmit="return false;">
                                                 <input type="hidden" name="id" value="<?= (int)$user['id_utilisateur'] ?>">
-                                                <button type="button" class="btn btn-danger admin-delete-btn">Supprimer</button>
+                                                <button type="button" class="btn btn-danger">Supprimer</button>
                                             </form>
                                         <?php endif; ?>
                                     </td>

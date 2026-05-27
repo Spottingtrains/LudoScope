@@ -46,7 +46,7 @@
             <h2>Tous les jeux</h2>
             <?php if (!empty($jeux)): ?>
                 <div class="table-wrapper">
-                    <table class="table">
+                    <table class="table" id="games-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -64,10 +64,10 @@
                                     <td><?= htmlspecialchars($jeu['pseudo_createur'] ?? 'Anonyme') ?></td>
                                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($jeu['date_ajout'] ?? $jeu['date'] ?? 'now'))) ?></td>
                                     <td>
-                                        <a href="index.php?url=admin_content/edit_game&id=<?= (int)$jeu['id_jeu'] ?>" class="btn btn-sm btn-primary">Modifier</a>
+                                        <a href="index.php?url=admin_content/edit_game&id=<?= (int)$jeu['id_jeu'] ?>" class="btn btn-primary">Modifier</a>
                                         <form method="post" action="index.php?url=admin_content_delete_game" class="d-inline ms-2 admin-delete-form" data-item-type="jeu">
                                             <input type="hidden" name="id" value="<?= (int)$jeu['id_jeu'] ?>">
-                                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -86,7 +86,7 @@
             <h2>Tous les avis</h2>
             <?php if (!empty($avis)): ?>
                 <div class="table-wrapper">
-                    <table class="table">
+                    <table class="table" id="reviews-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -103,7 +103,7 @@
                                     <td><?= (int)$a['id_avis'] ?></td>
                                     <td><?= htmlspecialchars($a['titre'] ?? '') ?></td>
                                     <td><?= htmlspecialchars($a['pseudo'] ?? 'Anonyme') ?></td>
-                                    <td style="width:40%">
+                                    <td>
                                         <!-- Formulaire d'édition inline du commentaire -->
                                         <form method="post" action="index.php?url=admin_content_update_avis">
                                             <input type="hidden" name="id_avis" value="<?= (int)$a['id_avis'] ?>">
@@ -111,11 +111,11 @@
                                     </td>
                                     <td><?= htmlspecialchars((string)(int)($a['note'] ?? 0)) ?></td>
                                     <td>
-                                            <button type="submit" class="btn btn-sm btn-primary">Enregistrer</button>
+                                            <button type="submit" class="btn btn-primary">Modifier</button>
                                         </form>
                                         <form method="post" action="index.php?url=admin_content_delete_avis" class="d-inline ms-2 admin-delete-form" data-item-type="avis">
                                             <input type="hidden" name="id" value="<?= (int)$a['id_avis'] ?>">
-                                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
                                         </form>
                                     </td>
                                 </tr>
