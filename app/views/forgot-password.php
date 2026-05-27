@@ -1,22 +1,20 @@
-<?php 
-require __DIR__ . '/nav/header.php'; 
-?>
+<?php require __DIR__ . '/nav/header.php'; ?>
 
 <main class="large-padding">
     <div class="up-down-padding">
         <h1 class="centered">Mot de passe oublié</h1>
 
+        <!-- Messages flash -->
         <?php if (!empty($success)): ?>
             <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
-
         <?php if (!empty($error)): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
         <?php $step = $step ?? 1; ?>
-
         <?php if ($step === 1): ?>
+        <!-- ===== Étape 1 : saisie de l'email ===== -->
         <form action="index.php?url=forgot-password" method="post" class="row g-3">
             <input type="hidden" name="step" value="1">
             <div class="col-12">
@@ -29,6 +27,7 @@ require __DIR__ . '/nav/header.php';
         </form>
 
         <?php elseif ($step === 2): ?>
+        <!-- ===== Étape 2 : vérification de la question secrète ===== -->
         <form action="index.php?url=forgot-password" method="post" class="row g-3">
             <input type="hidden" name="step" value="2">
             <input type="hidden" name="email" value="<?= htmlspecialchars($email ?? '') ?>">
@@ -53,6 +52,7 @@ require __DIR__ . '/nav/header.php';
         </form>
 
         <?php elseif ($step === 3): ?>
+        <!-- ===== Étape 3 : saisie du nouveau mot de passe ===== -->
         <form action="index.php?url=forgot-password" method="post" class="row g-3">
             <input type="hidden" name="step" value="3">
             <input type="hidden" name="email" value="<?= htmlspecialchars($email ?? '') ?>">

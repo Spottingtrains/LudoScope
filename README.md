@@ -1,66 +1,134 @@
 # Ludothèque
 
-Application web de gestion collaborative de jeux de société.
+Application web collaborative de gestion de jeux de société.  
+Les utilisateurs peuvent consulter le catalogue, ajouter des jeux et laisser des avis.  
+Les administrateurs gèrent le contenu et valident les demandes de modification/suppression des jeux.
 
-## Tests et développement
-Le mot de passe pour les utilisateurs tests est: `Azerty123`
+---
 
+## Liens
+
+- 🎨 [Maquettes Figma](#)
+- 📋 [Projet Trello](#)
+- 🗄️ Base de données : fichier `ludotheque.sql` à la racine du dépôt
+
+---
+
+## Comptes de test
+
+| Rôle        | Email             | Mot de passe |
+|-------------|-------------------|--------------|
+| Admin       | admin@example.com | `Azerty123`  |
+| Utilisateur | user@example.com  | `Azerty123`  |
+
+---
 
 ## Architecture MVC
 
 Ce projet suit le pattern MVC (Modèle - Vue - Contrôleur).
 
 ### Routeur (`index.php`)
-Point d'entrée unique de l'application. Lit le paramètre `?url=` dans l'URL et appelle la fonction du contrôleur correspondante.
 
-Exemple : `index.php?url=login` → appelle `login()` dans `authController.php`
+Point d'entrée unique de l'application.  
+Lit le paramètre `?url=` dans l'URL et appelle la fonction du contrôleur correspondante.
+
+Exemple : `index.php?url=login` → `login()` dans `authController.php`
 
 ### Contrôleurs (`app/controllers/`)
+
 Chaque contrôleur gère un domaine fonctionnel :
-- `authController.php` : connexion, déconnexion, inscription
-- `userController.php` : profil utilisateur
-- `jeuController.php` : catalogue et ajout de jeux
-- `adminController.php` : tableau de bord et gestion des utilisateurs
+
+| Fichier                  | Responsabilité                                                              |
+|--------------------------|-----------------------------------------------------------------------------|
+| `authController.php`     | Connexion, déconnexion, inscription, réinitialisation du mot de passe (question secrète) |
+| `userController.php`     | Profil : consultation, modification, gestion des avis, suppression de compte |
+| `jeuController.php`      | Catalogue, détail, recherche AJAX, ajout, demandes de modification/suppression |
+| `adminController.php`    | Tableau de bord, gestion des utilisateurs, gestion du contenu, traitement des demandes |
+| `homeController.php`     | Page d'accueil (statistiques, meilleures notes, catégories) |
+| `passwordController.php` | Réinitialisation du mot de passe par email (token, PHPMailer) — non actif par défaut |
 
 Chaque fonction de contrôleur suit le même schéma :
+
 1. Vérification des droits (`checkRole()`)
 2. Connexion BDD (`connect()`)
 3. Appel du modèle
 4. Inclusion de la vue
 
-Les formulaires sont détectés via `$_SERVER['REQUEST_METHOD'] === 'POST']` plutôt que par les noms de boutons (`$_POST['bValider']`), ce qui rend le code indépendant du HTML.
+Les formulaires sont détectés via `$_SERVER['REQUEST_METHOD'] === 'POST'` plutôt que par les noms de boutons (`$_POST['bValider']`), ce qui rend le code indépendant du HTML.
 
 ### Modèles (`app/models/`)
-Contiennent uniquement les requêtes SQL :
-- `database.php` : connexion à la base de données
-- `user.php` : opérations sur les utilisateurs
-- `jeu.php` : opérations sur les jeux
-- `avis.php` : opérations sur les avis
+
+Contiennent uniquement les requêtes SQL (aucune logique métier) :
+
+| Fichier        | Responsabilité                                       |
+|----------------|------------------------------------------------------|
+| `database.php` | Connexion PDO à la base de données                   |
+| `user.php`     | CRUD utilisateurs                                    |
+| `jeu.php`      | CRUD jeux, catégories, éditeurs                      |
+| `avis.php`     | CRUD avis                                            |
+| `demande.php`  | Demandes de modification/suppression de jeux         |
+| `stats.php`    | Statistiques globales (nb jeux, utilisateurs, avis)  |
+| `token.php`    | Tokens de réinitialisation de mot de passe par email |
 
 ### Vues (`app/views/`)
-Contiennent uniquement le HTML. Elles reçoivent les données du contrôleur sous forme de variables PHP.
+
+Contiennent uniquement le HTML.  
+Elles reçoivent les données du contrôleur sous forme de variables PHP.
 
 ### Middleware (`app/middleware/`)
-- `auth.php` : vérification des droits d'accès via `checkRole($roleMin)`
+
+- `auth.php` : contrôle d'accès via `checkRole(int $roleMin)`.  
+  Retourne une page 403 si le rôle de l'utilisateur est insuffisant.
+
+---
 
 ## Rôles utilisateurs
-| id_role | Libellé | Accès |
-|---------|---------|-------|
-| 1 | Visiteur | Pages publiques uniquement |
-| 2 | Compte | Pages utilisateur + publiques |
-| 3 | Admin | Toutes les pages |
 
-Si un utilisateur essaie d'accéder à une page à laquelle il n'est pas censé avoir accès, il est dirigé vers 404 - Page non trouvée
+| id_role | Libellé  | Accès                                       |
+|---------|----------|---------------------------------------------|
+| 1       | Visiteur | Pages publiques uniquement                  |
+| 2       | Compte   | Pages publiques + espace utilisateur        |
+| 3       | Admin    | Toutes les pages (y compris le back-office) |
+
+---
+
+## Routes disponibles
+
+| URL                    | Contrôleur           | Accès         |
+|------------------------|----------------------|---------------|
+| `?url=home`            | `home()`             | Tous          |
+| `?url=jeu&slug=…`      | `jeu()`              | Tous          |
+| `?url=jeu/search&q=…`  | `jeuSearch()`        | Tous (JSON)   |
+| `?url=jeu/add`         | `jeuAdd()`           | Rôle ≥ 2      |
+| `?url=jeu/edit&id=…`   | `jeuEditRequest()`   | Auteur du jeu |
+| `?url=jeu/delete&id=…` | `jeuDeleteRequest()` | Auteur du jeu |
+| `?url=login`           | `login()`            | Tous          |
+| `?url=register`        | `register()`         | Tous          |
+| `?url=logout`          | `logout()`           | Connectés     |
+| `?url=forgot-password` | `forgotPassword()`   | Tous          |
+| `?url=profile`         | `profile()`          | Rôle ≥ 2      |
+| `?url=back-office`     | `dashboard()`        | Rôle 3        |
+| `?url=admin_users`     | `adminUsers()`       | Rôle 3        |
+| `?url=admin_content`   | `adminContent()`     | Rôle 3        |
+
+---
 
 ## Stack technique
-- PHP (MVC)
-- MySQL
+
+- PHP 8+ (architecture MVC personnalisée, sans framework)
+- MySQL 8 — modélisation en 3FN
+- PDO avec requêtes préparées
 - Bootstrap 5
-- JavaScript
+- JavaScript (vanilla)
+
+---
 
 ## Sécurité
-- Mots de passe hashés avec `password_hash()` (bcrypt)
-- Requêtes SQL préparées avec PDO (`prepare()` + `execute()`) contre les injections SQL
-- Nécessite l'extension PHP `pdo` et `pdo_mysql` (activer dans `php.ini`)
-- Vérification des droits via session à chaque page protégée
-- Variables d'environnement dans `.env` (non versionné)
+
+- Mots de passe hachés avec `password_hash()` (bcrypt)
+- Requêtes SQL préparées via PDO (`prepare()` + `execute()`) — protection contre les injections SQL
+- Émulation des requêtes préparées désactivée (`ATTR_EMULATE_PREPARES = false`)
+- Vérification du rôle via session (`checkRole()`) à chaque page protégée
+- Validation du type MIME réel des images uploadées (`finfo`)
+- Variables d'environnement dans `.env` (non versionné — voir `.env.example`)
+- Nécessite l'extension PHP `pdo_mysql` (à activer dans `php.ini` si besoin)

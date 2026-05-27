@@ -1,15 +1,18 @@
-<?php
-require __DIR__ . '/nav/header.php';
-?>
+<?php require __DIR__ . '/nav/header.php'; ?>
+
 <main class="small-padding">
     <div class="up-down-padding">
         <h1 class="centered">Gestion des utilisateurs</h1>
+
+        <!-- Onglets de navigation back-office -->
         <nav class="tab-nav">
             <?php $cur = $_GET['url'] ?? ''; ?>
-            <a class="tab-link <?= $cur === 'back-office' ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
-            <a class="tab-link <?= $cur === 'admin_users' ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
+            <a class="tab-link <?= $cur === 'back-office'   ? 'active' : '' ?>" href="index.php?url=back-office">Dashboard</a>
+            <a class="tab-link <?= $cur === 'admin_users'   ? 'active' : '' ?>" href="index.php?url=admin_users">Gestion utilisateurs</a>
             <a class="tab-link <?= $cur === 'admin_content' ? 'active' : '' ?>" href="index.php?url=admin_content">Gestion contenu</a>
         </nav>
+
+        <!-- Messages flash -->
         <?php if (!empty($_SESSION['success'])): ?>
             <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
             <?php unset($_SESSION['success']); ?>
@@ -18,11 +21,14 @@ require __DIR__ . '/nav/header.php';
             <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
+
         <?php $currentId = $currentId ?? null; ?>
-        <!-- Barre de recherche, filtres et tri (côté client) -->
+
+        <!-- ===== Section liste des utilisateurs ===== -->
         <section class="mt-4">
             <h2>Liste des utilisateurs</h2>
 
+            <!-- Barre de recherche et filtres (traitement côté client par adminUsersHandler) -->
             <form id="user-controls" class="row g-2 mb-3" onsubmit="return false;">
                 <div class="col-md-6">
                     <input id="user-search" type="search" class="form-control" placeholder="Rechercher (ID, pseudo, email)">
@@ -43,6 +49,8 @@ require __DIR__ . '/nav/header.php';
                 </div>
             </form>
 
+            <!-- Tableau des utilisateurs -->
+            <!-- Les data-* sont lus par adminUsersHandler pour le filtrage et le tri client-side -->
             <div class="table-wrapper">
                 <?php if (!empty($users)): ?>
                     <table class="table">
@@ -71,6 +79,7 @@ require __DIR__ . '/nav/header.php';
                                     <td class="cell-role">
                                         <?= htmlspecialchars(($user['id_role'] ?? $user['role']) == 3 ? 'Administrateur' : (($user['id_role'] ?? $user['role']) == 2 ? 'Compte' : 'Visiteur')) ?>
                                     </td>
+                                    <!-- Formulaire d'édition inline (pseudo + email) -->
                                     <td class="cell-pseudo">
                                         <form method="post" action="index.php?url=admin/users/edit&id=<?= (int)$user['id_utilisateur'] ?>" class="m-0">
                                             <input type="text" name="pseudo" class="form-control form-control-sm" value="<?= htmlspecialchars($user['pseudo']) ?>">
@@ -88,6 +97,7 @@ require __DIR__ . '/nav/header.php';
                                             <button type="submit" class="btn btn-primary">Enregistrer</button>
                                         </form>
                                         <?php if ($currentId !== null && $currentId === (int)$user['id_utilisateur']): ?>
+                                            <!-- L'admin ne peut pas supprimer son propre compte -->
                                             <button class="btn btn-danger" disabled title="Vous ne pouvez pas supprimer votre propre compte">Supprimer</button>
                                         <?php else: ?>
                                             <form method="post" action="index.php?url=admin/users/delete" class="d-inline ms-2 admin-delete-form" data-item-type="utilisateur" onsubmit="return false;">
@@ -100,11 +110,14 @@ require __DIR__ . '/nav/header.php';
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-            </div>
-            <?php else: ?>
-                <div class="alert alert-secondary mb-0">Aucun utilisateur à afficher.</div>
-            <?php endif; ?>
+                </div>
+                <?php else: ?>
+                    <div class="alert alert-secondary mb-0">Aucun utilisateur à afficher.</div>
+                <?php endif; ?>
         </section>
+        <!-- ===== Fin section liste des utilisateurs ===== -->
+
+        <!-- ===== Section création d'un utilisateur ===== -->
         <section>
             <form method="post" action="index.php?url=admin/users/create" class="mt-4">
                 <h3>Ajouter un nouvel utilisateur</h3>
@@ -129,7 +142,8 @@ require __DIR__ . '/nav/header.php';
                 <button type="submit" class="btn btn-primary mt-3">Créer l'utilisateur</button>
             </form>
         </section>
+        <!-- ===== Fin section création d'un utilisateur ===== -->
     </div>
 </main>
 
-<?php require __DIR__ . '/nav/footer.php'; ?>   
+<?php require __DIR__ . '/nav/footer.php'; ?>

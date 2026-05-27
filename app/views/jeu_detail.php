@@ -2,50 +2,64 @@
 require __DIR__ . '/nav/header.php';
 // TODO: faire le style pour les catégories (tags)
 ?>
+
 <main>
     <div class="up-down-padding">
         <a class="custom-link" href="index.php">← Retour à la liste</a>
+
         <div class="orange-bg">
+
+            <!-- ===== Section détail du jeu ===== -->
             <section id="jeuDetail" class="small-padding orange-bg">
-                <?php if (isset($jeu)) : ?>
+                <?php if (isset($jeu)): ?>
+
+                    <!-- En-tête : titre, date d'ajout, note moyenne -->
                     <div class="jeu-header">
                         <div class="jeu-title">
-                            <h1 class="up-padding"><?= htmlspecialchars($jeu['titre']) ?></h1>
+                            <h1 class="up-padding capitalized"><?= htmlspecialchars($jeu['titre']) ?></h1>
                             <small><?= htmlspecialchars($jeu['date_ajout_display'] ?? ($jeu['date_ajout'] ?? 'N/A')) ?></small>
                         </div>
                         <div class="note-moyenne">
                             <span><?= htmlspecialchars($jeu['note_moyenne'] ?? 'N/A') ?>/10</span>
                         </div>
                     </div>
+
+                    <!-- Image de couverture -->
                     <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+
+                    <!-- Description -->
                     <div class="description large-padding">
                         <h2 class="up-padding">Description</h2>
                         <p><?= htmlspecialchars($jeu['description']) ?></p>
                     </div>
+
+                    <!-- Catégories et fiche technique -->
                     <div class="large-padding">
                         <h2>Catégories</h2>
-                        <?php if (!empty($categories)) : ?>
+                        <?php if (!empty($categories)): ?>
                             <div class="tags">
-                                <?php foreach ($categories as $cat) : ?>
+                                <?php foreach ($categories as $cat): ?>
                                     <?php $catSlug = normalizeJeuCategoryLabel($cat['nom_categorie'] ?? ''); ?>
                                     <span class="tag tag--<?= htmlspecialchars($catSlug) ?>"><?= htmlspecialchars($cat['nom_categorie']) ?></span>
                                 <?php endforeach; ?>
                             </div>
-                        <?php else : ?>
+                        <?php else: ?>
                             <p>Aucune catégorie associée.</p>
                         <?php endif; ?>
+
+                        <!-- Fiche technique -->
                         <table class="jeu-details-table">
                             <tr>
                                 <th>Éditeur</th>
-                                <td><?= htmlspecialchars($jeu['nom_editeur'] ?? 'Non renseigné') ?></td>
+                                <td><?= htmlspecialchars($jeu['nom_editeur']   ?? 'Non renseigné') ?></td>
                             </tr>
                             <tr>
                                 <th>Auteur</th>
-                                <td><?= htmlspecialchars($jeu['auteur'] ?? 'Non renseigné') ?></td>
+                                <td><?= htmlspecialchars($jeu['auteur']        ?? 'Non renseigné') ?></td>
                             </tr>
                             <tr>
                                 <th>Illustrateur</th>
-                                <td><?= htmlspecialchars($jeu['illustrateur'] ?? 'Non renseigné') ?></td>
+                                <td><?= htmlspecialchars($jeu['illustrateur']  ?? 'Non renseigné') ?></td>
                             </tr>
                             <tr>
                                 <th>Année d'édition</th>
@@ -69,18 +83,24 @@ require __DIR__ . '/nav/header.php';
                             </tr>
                         </table>
                     </div>
-                <?php else : ?>
+
+                <?php else: ?>
                     <p>Jeu introuvable.</p>
                 <?php endif; ?>
             </section>
+            <!-- ===== Fin section détail du jeu ===== -->
+
             <hr>
-            <?php if (isset($jeu)) : ?>
+
+            <!-- ===== Section avis ===== -->
+            <?php if (isset($jeu)): ?>
             <section id="avisSection" class="large-padding orange-bg up-down-padding">
                 <div class="up-down-padding">
                     <h2>Avis</h2>
 
-                    <?php if (isset($_SESSION['id_utilisateur'])) : ?>
-                        <?php if (isset($avisError)) : ?>
+                    <!-- Formulaire de dépôt d'avis (utilisateur connecté uniquement) -->
+                    <?php if (isset($_SESSION['id_utilisateur'])): ?>
+                        <?php if (isset($avisError)): ?>
                             <div class="alert alert-danger"><?= htmlspecialchars($avisError) ?></div>
                         <?php endif; ?>
                         <form method="post" class="avis-form">
@@ -89,7 +109,7 @@ require __DIR__ . '/nav/header.php';
                                 <label for="note" class="form-label">Note (1 à 10)</label>
                                 <select name="note" id="note" class="form-select" required>
                                     <option value="">-- Choisir --</option>
-                                    <?php for ($i = 1; $i <= 10; $i++) : ?>
+                                    <?php for ($i = 1; $i <= 10; $i++): ?>
                                         <option value="<?= $i ?>" <?= (isset($_POST['note']) && (int)$_POST['note'] === $i) ? 'selected' : '' ?>>
                                             <?= $i ?>
                                         </option>
@@ -104,13 +124,14 @@ require __DIR__ . '/nav/header.php';
                                 <button type="submit" class="btn btn-primary">Publier l'avis</button>
                             </div>
                         </form>
-                    <?php else : ?>
+                    <?php else: ?>
                         <p><a href="index.php?url=login">Connectez-vous</a> pour laisser un avis.</p>
                     <?php endif; ?>
 
-                    <?php if (!empty($avis)) : ?>
+                    <!-- Liste des avis existants -->
+                    <?php if (!empty($avis)): ?>
                         <div class="avis-list up-padding">
-                            <?php foreach ($avis as $a) : ?>
+                            <?php foreach ($avis as $a): ?>
                                 <div class="avis-card">
                                     <div class="card-body">
                                         <div class="avis-header">
@@ -129,18 +150,23 @@ require __DIR__ . '/nav/header.php';
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                    <?php else : ?>
+                    <?php else: ?>
                         <p>Aucun avis pour ce jeu.</p>
                     <?php endif; ?>
+
                 </div>
             </section>
+            <!-- ===== Fin section avis ===== -->
+
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
+
+        <!-- ===== Section recommandations (à implémenter) ===== -->
         <section>
             <!-- TODO: Implémenter la section "ces jeux pourraient vous plaire" -->
             <h2>Ces jeux pourraient vous plaire</h2>
         </section>
-    </div>                    
+    </div>
 </main>
-<?php
-require __DIR__ . '/nav/footer.php';
+
+<?php require __DIR__ . '/nav/footer.php'; ?>

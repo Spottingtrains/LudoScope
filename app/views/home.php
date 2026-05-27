@@ -1,23 +1,20 @@
 <?php
-// connexion à la base de données
-//* déjà dans index.php
-
-// inclusion de l'en-tête
 require __DIR__ . '/nav/header.php';
 require_once __DIR__ . '/../../app/middleware/auth.php';
 ?>
 
 <main id="homePage">
-    <!-- message de bienvenue après connexion -->
+
+    <!-- ===== Messages flash (connexion / déconnexion) ===== -->
     <?php if (!empty($_SESSION['success'])): ?>
         <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
-    <!-- message de déconnexion -->
     <?php if (isset($_GET['logout'])): ?>
         <div class="alert alert-success">Vous avez été déconnecté.</div>
     <?php endif; ?>
-    <!-- Section hero et CTA -->
+
+    <!-- ===== Section hero : carousel + CTA ===== -->
     <section id="heroSection">
         <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
 
@@ -30,6 +27,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
 
             <div class="carousel-inner">
 
+                <!-- Slide 1 : accroche principale -->
                 <div class="carousel-item active hero-slide" style="background-image: url('/uploads/hero-1.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
@@ -46,6 +44,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                     </div>
                 </div>
 
+                <!-- Slide 2 : statistique jeux -->
                 <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-2.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
@@ -62,6 +61,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                     </div>
                 </div>
 
+                <!-- Slide 3 : statistique utilisateurs -->
                 <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-3.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
@@ -78,6 +78,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                     </div>
                 </div>
 
+                <!-- Slide 4 : statistique avis -->
                 <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-4.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
@@ -107,7 +108,9 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
 
         </div>
     </section>
-    <!-- Section jeux les mieux notés -->
+    <!-- ===== Fin section hero ===== -->
+
+    <!-- ===== Section jeux les mieux notés ===== -->
     <section id="bestNote" class="small-padding">
         <div>
             <h2>Les mieux notés</h2>
@@ -138,18 +141,22 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             <?php endif; ?>
         </div>
     </section>
-    <!-- Section catalogue -->
+    <!-- ===== Fin section jeux les mieux notés ===== -->
+
+    <!-- ===== Section catalogue : recherche, filtres et grille de jeux ===== -->
     <!-- TODO: ajouter pagination -->
     <section id="catalogue" class="orange-bg small-padding">
         <h2 class="up-padding">Notre catalogue</h2>
-        <!-- Barre de recherche -->
+
+        <!-- Barre de recherche AJAX -->
         <div class="mb-4">
             <div class="input-group">
                 <input id="catalog-search" type="search" class="form-control" placeholder="Entrez le nom du jeu, un mot-clé..." aria-label="Recherche jeux">
                 <button id="catalog-search-btn" type="button" class="btn btn-primary">Rechercher</button>
             </div>
         </div>
-        <!-- Filtres -->
+
+        <!-- Filtres (joueurs, durée, complexité, catégories) -->
         <div class="mb-4 p-3 border rounded" id="catalog-filters">
             <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-3">
@@ -196,43 +203,45 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                 </div>
             </div>
         </div>
-        <!-- Grille des jeux -->
+
+        <!-- Grille des jeux (mise à jour dynamiquement par catalogueSearchHandler) -->
         <div id="catalogue-list" class="custom-grid down-padding">
             <?php if (!empty($jeux)): ?>
-            <?php foreach ($jeux as $jeu): ?>
-                <div class="col">
-                    <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>">
-                        <div class="custom-card"
-                            data-titre="<?= htmlspecialchars(mb_strtolower($jeu['titre'] ?? '')) ?>"
-                            data-description="<?= htmlspecialchars(mb_strtolower($jeu['description'] ?? '')) ?>"
-                            data-players-min="<?= htmlspecialchars((string)($jeu['nb_joueurs_min'] ?? '')) ?>"
-                            data-players-max="<?= htmlspecialchars((string)($jeu['nb_joueurs_max'] ?? '')) ?>"
-                            data-duration="<?= htmlspecialchars((string)($jeu['duree_partie'] ?? '')) ?>"
-                            data-complexity="<?= htmlspecialchars(mb_strtolower($jeu['complexite'] ?? '')) ?>"
-                            data-categories="<?= htmlspecialchars(mb_strtolower($jeu['categories'] ?? '')) ?>">
-                            <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
-                            <div class="card-body">
-                                <div class="card-header">
-                                    <h3><?= htmlspecialchars($jeu['titre']) ?></h3>
-                                    <span><?= htmlspecialchars($jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'N/A') ?></span>
-                                </div>
-                                <p><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
-                                <p><?= htmlspecialchars($jeu['nb_joueurs_min']) ?>–<?= htmlspecialchars($jeu['nb_joueurs_max']) ?> joueurs<?php if (!empty($jeu['age_min'])): ?> • <?= htmlspecialchars($jeu['age_min']) ?> ans+<?php endif; ?></p>
-                                <div class="btn-container">
-                                    <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>#avisSection" class="btn btn-primary">Lire les avis</a>
+                <?php foreach ($jeux as $jeu): ?>
+                    <div class="col">
+                        <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>">
+                            <div class="custom-card"
+                                data-titre="<?= htmlspecialchars(mb_strtolower($jeu['titre'] ?? '')) ?>"
+                                data-description="<?= htmlspecialchars(mb_strtolower($jeu['description'] ?? '')) ?>"
+                                data-players-min="<?= htmlspecialchars((string)($jeu['nb_joueurs_min'] ?? '')) ?>"
+                                data-players-max="<?= htmlspecialchars((string)($jeu['nb_joueurs_max'] ?? '')) ?>"
+                                data-duration="<?= htmlspecialchars((string)($jeu['duree_partie'] ?? '')) ?>"
+                                data-complexity="<?= htmlspecialchars(mb_strtolower($jeu['complexite'] ?? '')) ?>"
+                                data-categories="<?= htmlspecialchars(mb_strtolower($jeu['categories'] ?? '')) ?>">
+                                <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h3 class="capitalized"><?= htmlspecialchars($jeu['titre']) ?></h3>
+                                        <span><?= htmlspecialchars($jeu['note_moyenne'] ? $jeu['note_moyenne'] . '/10' : 'N/A') ?></span>
+                                    </div>
+                                    <p class="capitalized"><?= htmlspecialchars($jeu['complexite']) ?> • <?= $jeu['duree_partie'] ?> min</p>
+                                    <p><?= htmlspecialchars($jeu['nb_joueurs_min']) ?>–<?= htmlspecialchars($jeu['nb_joueurs_max']) ?> joueurs<?php if (!empty($jeu['age_min'])): ?> • <?= htmlspecialchars($jeu['age_min']) ?> ans+<?php endif; ?></p>
+                                    <div class="btn-container">
+                                        <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>#avisSection" class="btn btn-primary">Lire les avis</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>Aucun jeu à afficher.</p>
             <?php endif; ?>
         </div>
+
     </section>
+    <!-- ===== Fin section catalogue ===== -->
+
 </main>
 
-<?php
-require __DIR__ . '/nav/footer.php';
-?>
+<?php require __DIR__ . '/nav/footer.php'; ?>
