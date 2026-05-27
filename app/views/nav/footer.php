@@ -1,5 +1,5 @@
 <footer class="text-center text-lg-start text-white bg-dark nav-custom">
-	<div class="container p-0 py-4">
+	<div class="container">
 		<section class="footer-content">
 			<div class="col-md-4 col-lg-4 col-xl-4">
 				<a class="footer-brand" href="index.php?url=home"><img src="uploads/ludoscope_logo.svg" alt="Logo du site LudoScope"></a>

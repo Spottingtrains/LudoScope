@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/nav/header.php';
+// TODO: faire le style pour les catégories (tags)
 ?>
 <main>
     <div class="up-down-padding">

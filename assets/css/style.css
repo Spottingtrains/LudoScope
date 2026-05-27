@@ -219,15 +219,30 @@ header {
     height: 100%;
     width: auto;
 }
+footer {
+    padding: var(--spacing-32) 0 !important;
+}
 .footer-content {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    gap: var(--spacing-64);
+    gap: var(--spacing-32);
     width: 100%;
+    padding: 0 var(--spacing-16) !important;
 }
 footer h4 {
     color: var(--color-accent-100) !important;
+}
+.footer-brand {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+@media screen and (min-width: 600px) {
+    .footer-content {
+        flex-direction: row;
+        gap: var(--spacing-64) !important;
+    }
 }
 .footer-brand img {
     height: 60px;
@@ -241,7 +256,7 @@ body {
 }
 
 main {
-    margin: 0 var(--spacing-16) 0 var(--spacing-16);
+    padding: 0 var(--spacing-16) !important;
     min-height: calc(100vh - 80px - 200px); /* hauteur de la navbar + footer */
 }
 
@@ -421,9 +436,12 @@ hr {
 
 /** __________Spécifique__________*/
 /** Home */
+#homePage {
+    padding: 0 !important;
+}
 /* alertes */
 #homePage .alert {
-    margin: 0 calc(-1 * var(--spacing-16)) !important;
+    margin: 0 calc(-1 * var(--spacing-32)) !important;
     max-width: 100vw;
     border-radius: 0 !important;
 }

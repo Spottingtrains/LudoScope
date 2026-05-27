@@ -23,7 +23,7 @@ require __DIR__ . '/nav/header.php';
                 <?php endif; ?>
                 <div class="col-12">
                     <label for="login-email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="login-email" name="email" required>
+                    <input type="email" class="form-control" id="login-email" name="email" required autofocus>
                 </div>
                 <div class="col-12">
                     <label for="login-password" class="form-label">Mot de passe</label>
@@ -44,7 +44,7 @@ require __DIR__ . '/nav/header.php';
                 <?php endif; ?>
                 <div class="col-md-4">
                     <label for="signin-firstname" class="form-label">Prénom</label>
-                    <input type="text" class="form-control" id="signin-firstname" name="firstname" required>
+                    <input type="text" class="form-control" id="signin-firstname" name="firstname" required autofocus>
                 </div>
                 <div class="col-md-4">
                     <label for="signin-lastname" class="form-label">Nom</label>
