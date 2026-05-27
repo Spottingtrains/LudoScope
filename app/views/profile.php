@@ -39,7 +39,7 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
                     <div id="client-error" class="alert alert-danger d-none" role="alert" style="display:none;"></div>
                 </div>
                 <div class="centered">
-                    <img src="<?php echo htmlspecialchars($user['photo_profil'] ?? '/uploads/default-profile.webp'); ?>" alt="image de profil" class="img-thumbnail mb-3" style="width: 150px; height: 150px; border-radius: 50%;"> <!-- TODO: retirer les styles inline et les mettre dans le CSS -->
+                    <img src="<?php echo htmlspecialchars($user['photo_profil'] ?? '/uploads/default-profile.webp'); ?>" alt="image de profil" class="img-thumbnail mb-3">
                 </div>
                 <div class="col-12 mb-3">
                     <label for="image_profil" class="form-label">Modifier l'image de profil :</label>
@@ -86,7 +86,7 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
                     <label for="reponse_secrete" class="form-label">Réponse secrète :</label>
                     <div class="input-group">
                         <input type="password" id="reponse_secrete" name="reponse_secrete" class="form-control" value="<?= htmlspecialchars($user['reponse_secrete'] ?? '') ?>" aria-describedby="reponseSecreteHelp">
-                        <button type="button" class="btn btn-outline-secondary" id="toggle-reponse">Afficher</button>
+                        <button type="button" class="btn btn-outline-primary" id="toggle-reponse">Afficher</button>
                     </div>
                     <div id="reponseSecreteHelp" class="form-text">Laissez vide pour conserver la réponse actuelle.</div>
                 </div>

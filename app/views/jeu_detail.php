@@ -27,7 +27,8 @@ require __DIR__ . '/nav/header.php';
                         <?php if (!empty($categories)) : ?>
                             <div class="tags">
                                 <?php foreach ($categories as $cat) : ?>
-                                    <span class="tag"><?= htmlspecialchars($cat['nom_categorie']) ?></span>
+                                    <?php $catSlug = normalizeJeuCategoryLabel($cat['nom_categorie'] ?? ''); ?>
+                                    <span class="tag tag--<?= htmlspecialchars($catSlug) ?>"><?= htmlspecialchars($cat['nom_categorie']) ?></span>
                                 <?php endforeach; ?>
                             </div>
                         <?php else : ?>

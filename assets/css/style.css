@@ -41,6 +41,32 @@
     --border-radius-32: 2rem;
     --border-radius-48: 3rem;
     --border-radius-64: 4rem;
+
+    /* ── Catégories de jeux ───────────────────────────── */
+
+    /* Plateau — Dark Cyan (couleur primaire) */
+    --color-cat-plateau:           #3b9188;
+    --color-cat-plateau-dark:      hsl(174, 42%, 60%);
+
+    /* Ambiance — Cinnamon Wood (couleur accent) */
+    --color-cat-ambiance:          #C86C40;
+    --color-cat-ambiance-dark:     hsl(19, 55%, 62%);
+
+    /* Cartes — Violet doux (harmonieux avec le cyan) */
+    --color-cat-cartes:            #7B5EA7;
+    --color-cat-cartes-dark:       hsl(264, 29%, 61%);
+
+    /* Coopératif — Vert forêt (complémentaire du cyan) */
+    --color-cat-cooperatif:        #4A8B5F;
+    --color-cat-cooperatif-dark:   hsl(139, 31%, 52%);
+
+    /* Rôle — Rose framboise */
+    --color-cat-role:         #C0587A;
+    --color-cat-role-dark:    hsl(340, 45%, 65%);
+
+    /* Dés — Ambre doré (chaud, accord avec le cinnamon) */
+    --color-cat-des:               #C8A040;
+    --color-cat-des-dark:          hsl(42, 55%, 62%);
     
 }
 
@@ -430,6 +456,46 @@ hr {
 
 .avis-form .btn-container {
     margin-top: 0;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-8);
+    margin-bottom: var(--spacing-24);
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-4) var(--spacing-12);
+    border-radius: 999px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-white);
+    border: 1px solid transparent;
+    box-shadow: 0 2px 6px rgba(28, 35, 34, 0.08);
+}
+
+.tag--plateau    { 
+    background: linear-gradient(135deg, var(--color-cat-plateau), var(--color-cat-plateau-dark)) !important; 
+}
+.tag--ambiance   { 
+    background: linear-gradient(135deg, var(--color-cat-ambiance), var(--color-cat-ambiance-dark)) !important; 
+}
+.tag--cartes     { 
+    background: linear-gradient(135deg, var(--color-cat-cartes), var(--color-cat-cartes-dark)) !important; 
+}
+.tag--cooperatif { 
+    background: linear-gradient(135deg, var(--color-cat-cooperatif), var(--color-cat-cooperatif-dark)) !important; 
+}
+.tag--role       { 
+    background: linear-gradient(135deg, var(--color-cat-role), var(--color-cat-role-dark)) !important; 
+}
+.tag--des        { 
+    background: linear-gradient(135deg, var(--color-cat-des), var(--color-cat-des-dark)) !important; 
 }
 
 
@@ -1016,6 +1082,15 @@ hr {
 }
 
 /** profil */
+/* photo de profil */
+.img-thumbnail {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 3px solid var(--color-accent-500);
+    padding: 0 !important;
+}
 /* avis */
 .review-note {
     background-color: var(--color-accent-500) !important;
