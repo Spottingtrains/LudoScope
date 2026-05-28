@@ -8,6 +8,7 @@
  *
  * Exemple : index.php?url=login → login() dans authController.php
  */
+session_start();
 
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/app/models/database.php';

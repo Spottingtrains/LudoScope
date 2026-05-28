@@ -33,7 +33,6 @@ function connect(): PDO
         return $pdo;
 
     } catch (Exception $e) {
-        echo "✗ Erreur : " . $e->getMessage();
-        exit();
+        die("Erreur de connexion à la base de données.");
     }
 }

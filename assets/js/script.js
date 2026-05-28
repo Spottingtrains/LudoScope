@@ -15,6 +15,7 @@
  *   - jeuAutosaveHandler     : sauvegarde automatique du brouillon d'ajout de jeu
  *   - adminUsersHandler      : recherche, filtres et tri client-side du tableau utilisateurs
  *   - toggleReponseSecreteHandler : afficher/masquer la réponse secrète
+ *   - flashAlertHandler       : disparition automatique des alertes flash (succès, erreur, warning)
  */
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -762,6 +763,26 @@ document.addEventListener('DOMContentLoaded', function () {
             const isHidden  = input.type === 'password';
             input.type      = isHidden ? 'text' : 'password';
             btn.textContent = isHidden ? 'Masquer' : 'Afficher';
+        });
+    })();
+
+    // =========================================================================
+    // Handler 11 : disparition automatique des alertes flash
+    // Cible toutes les alertes Bootstrap sauf alert-light.
+    // Fondu en 50ms après 4 secondes d'affichage.
+    // =========================================================================
+    (function flashAlertHandler() {
+        const flashAlerts = document.querySelectorAll('.alert:not(.alert-light)');
+
+        flashAlerts.forEach(function (alert) {
+            setTimeout(function () {
+                alert.style.transition = 'opacity 0.15s ease-in-out';
+                alert.style.opacity = '0';
+
+                setTimeout(function () {
+                    alert.remove();
+                }, 50);
+            }, 4000);
         });
     })();
 

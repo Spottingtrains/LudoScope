@@ -8,9 +8,52 @@ Les administrateurs gèrent le contenu et valident les demandes de modification/
 
 ## Liens
 
-- 🎨 [Maquettes Figma](#)
-- 📋 [Projet Trello](#)
-- 🗄️ Base de données : fichier `ludotheque.sql` à la racine du dépôt
+- [Maquettes Figma](#)
+- [Projet Trello](#)
+- Base de données : fichier `ludoscope.sql` à la racine du dépôt
+
+---
+
+## Schémas
+
+- Impact mapping : Ludoscope-Impact Mapping.pdf
+- Arborescence : Ludoscope-Arborescence.pdf
+- Zoning : LudoScope-Zoning.pdf
+- Wireframe : Ludoscope-Wireframe.pdf
+
+---
+
+## Installation
+
+### Prérequis
+
+- PHP 8+
+- MySQL 8
+- [WampServer](https://www.wampserver.com/)
+- L'extension PHP `pdo_mysql` activée dans `php.ini`
+
+### Étapes
+
+1. **Télécharger le projet**  
+   Téléchargez le dépôt depuis GitHub (**Code → Download ZIP**), extrayez le dossier et placez-le dans `C:/wamp64/www/`.
+
+2. **Créer la base de données**  
+   Ouvrez phpMyAdmin (`http://localhost/phpmyadmin`) et importez le fichier `ludoscope.sql` via l'onglet **Importer**. La base de données est créée automatiquement.
+
+3. **Configurer l'environnement**  
+   Renommez le fichier `.env.example` en `.env`, puis renseignez vos identifiants :
+```dotenv
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=
+   DB_NAME=ludotheque
+```
+
+4. **Lancer le projet**  
+   Accédez à :
+```
+   http://localhost/votre-dossier/
+```
 
 ---
 
@@ -78,7 +121,7 @@ Elles reçoivent les données du contrôleur sous forme de variables PHP.
 ### Middleware (`app/middleware/`)
 
 - `auth.php` : contrôle d'accès via `checkRole(int $roleMin)`.  
-  Retourne une page 403 si le rôle de l'utilisateur est insuffisant.
+  Retourne une page 404 (erreur 403 dans la console) si le rôle de l'utilisateur est insuffisant.
 
 ---
 
@@ -116,7 +159,7 @@ Elles reçoivent les données du contrôleur sous forme de variables PHP.
 ## Stack technique
 
 - PHP 8+ (architecture MVC personnalisée, sans framework)
-- MySQL 8 — modélisation en 3FN
+- MySQL 8
 - PDO avec requêtes préparées
 - Bootstrap 5
 - JavaScript (vanilla)
