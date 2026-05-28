@@ -16,4 +16,6 @@ if ($dotenv === false) {
 
 // Stocke les variables d'environnement dans $GLOBALS pour y accéder depuis n'importe quel fichier
 $GLOBALS['dotenv'] = $dotenv;
+
+define('BASE_URL', str_replace('index.php', '', $_SERVER['SCRIPT_NAME']));
 ?>
