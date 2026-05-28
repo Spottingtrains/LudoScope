@@ -259,6 +259,7 @@ footer {
 }
 footer h4 {
     color: var(--color-accent-100) !important;
+    margin-top: var(--spacing-64) !important;
 }
 .footer-brand {
     display: flex;
