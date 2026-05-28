@@ -8,8 +8,8 @@ Les administrateurs gèrent le contenu et valident les demandes de modification/
 
 ## Liens
 
-- [Maquettes Figma]([#](https://www.figma.com/design/epi9jLn3spOwR9qQqboreD/Ludoth%C3%A8que?node-id=0-1&t=ojBUcDbS8acbfQvz-1))
-- [Projet Trello]([#](https://trello.com/invite/b/69ebd9cb1c9a02be863871f0/ATTIe67560b0222ccaeadba9bf33f28e651204FEFE9B/ludotheque))
+- [Maquettes Figma](https://www.figma.com/design/epi9jLn3spOwR9qQqboreD/Ludoth%C3%A8que?node-id=0-1&t=ojBUcDbS8acbfQvz-1)
+- [Projet Trello](https://trello.com/invite/b/69ebd9cb1c9a02be863871f0/ATTIe67560b0222ccaeadba9bf33f28e651204FEFE9B/ludotheque)
 - Base de données : fichier `ludoscope.sql` à la racine du dépôt
 
 ---
