@@ -1,0 +1,28 @@
+<svg viewBox="0 0 156 156" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Fond carré arrondi -->
+  <rect width="156" height="156" rx="32" fill="#3B9188"/>
+
+  <!-- Handle -->
+  <line x1="116" y1="112" x2="140" y2="136" stroke="#C86C40" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- Lens fill -->
+  <circle cx="72" cy="72" r="50" fill="white" opacity="0.12"/>
+
+  <!-- Lens ring -->
+  <circle cx="72" cy="72" r="50" fill="none" stroke="white" stroke-width="10"/>
+
+  <!-- Reflection -->
+  <ellipse cx="52" cy="52" rx="10" ry="5.5" fill="white" opacity="0.35" transform="rotate(-35 52 52)"/>
+
+  <!-- Die -->
+  <rect x="44" y="44" width="56" height="56" rx="9" fill="white"/>
+
+  <!-- Die dots — face 5 -->
+  <circle cx="57"  cy="57"  r="5" fill="#C86C40"/>
+  <circle cx="87"  cy="57"  r="5" fill="#C86C40"/>
+  <circle cx="72"  cy="72"  r="5" fill="#C86C40"/>
+  <circle cx="57"  cy="87"  r="5" fill="#C86C40"/>
+  <circle cx="87"  cy="87"  r="5" fill="#C86C40"/>
+
+</svg>
