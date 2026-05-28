@@ -205,7 +205,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
         </div>
 
         <!-- Grille des jeux (mise à jour dynamiquement par catalogueSearchHandler) -->
-        <div id="catalogue-list" class="custom-grid down-padding">
+        <div id="catalogue-list" class="row row-cols-1 row-cols-md-3 g-4 down-padding">
             <?php if (!empty($jeux)): ?>
                 <?php foreach ($jeux as $jeu): ?>
                     <div class="col">

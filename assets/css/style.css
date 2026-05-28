@@ -694,6 +694,9 @@ hr {
     flex-direction: column;
     flex: 1;
 }
+#catalogue-list .btn-container {
+    margin-top: auto;
+}
 .btn-container {
     margin-top: var(--spacing-16);
     display: flex;
