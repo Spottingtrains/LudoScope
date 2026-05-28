@@ -14,12 +14,13 @@ Les administrateurs gèrent le contenu et valident les demandes de modification/
 
 ---
 
-## Schémas
+## Schémas et analyse
 
 - Impact mapping : Ludoscope-Impact Mapping.pdf
 - Arborescence : Ludoscope-Arborescence.pdf
 - Zoning : LudoScope-Zoning.pdf
 - Wireframe : Ludoscope-Wireframe.pdf
+- Analyse business : LudoScope-Analyse business.pdf
 
 ---
 
@@ -52,7 +53,7 @@ Les administrateurs gèrent le contenu et valident les demandes de modification/
 4. **Lancer le projet**  
    Accédez à :
 ```
-   http://localhost/votre-dossier/
+   http://localhost/LudoScope/LudoScope-main/
 ```
 
 ---
