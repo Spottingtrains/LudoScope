@@ -4,7 +4,7 @@
 
         <!-- Logo -->
         <a class="navbar-brand" href="index.php?url=home">
-            <img src="../../../uploads/ludoscope_logo.svg" alt="Logo du site LudoScope">
+            <img src="<?= BASE_URL ?>uploads/ludoscope_logo.svg" alt="Logo du site LudoScope">
         </a>
 
         <!-- Bouton hamburger (mobile) -->

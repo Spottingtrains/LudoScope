@@ -904,15 +904,9 @@ hr {
     height: 200px;
     border-radius: var(--border-radius-8);
 }
-.stats-card-games {
-    background-image: url('/uploads/stats-games.jpg');
-}
-.stats-card-users {
-    background-image: url('/uploads/stats-users.jpg');
-}
-.stats-card-reviews {
-    background-image: url('/uploads/stats-reviews.jpg');
-}
+.stats-card-games  { background-image: url('../../uploads/stats-games.jpg'); }
+.stats-card-users  { background-image: url('../../uploads/stats-users.jpg'); }
+.stats-card-reviews { background-image: url('../../uploads/stats-reviews.jpg'); }
 .stats-card-grey-overlay {
     background-repeat:no-repeat;
     -webkit-filter: grayscale(100%);

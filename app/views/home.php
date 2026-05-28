@@ -28,7 +28,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
             <div class="carousel-inner">
 
                 <!-- Slide 1 : accroche principale -->
-                <div class="carousel-item active hero-slide" style="background-image: url('/uploads/hero-1.jpg');">
+                <div class="carousel-item active hero-slide" style="background-image: url('<?= BASE_URL ?>uploads/hero-1.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
                         <h1 class="display-4 fw-bold">Votre prochaine partie commence ici !</h1>
@@ -45,7 +45,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                 </div>
 
                 <!-- Slide 2 : statistique jeux -->
-                <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-2.jpg');">
+                <div class="carousel-item hero-slide" style="background-image: url('<?= BASE_URL ?>uploads/hero-2.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
                         <p class="hero-stat"><?= htmlspecialchars($stats['nb_jeux'] ?? 'N/A') ?></p>
@@ -62,7 +62,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                 </div>
 
                 <!-- Slide 3 : statistique utilisateurs -->
-                <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-3.jpg');">
+                <div class="carousel-item hero-slide" style="background-image: url('<?= BASE_URL ?>uploads/hero-3.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
                         <p class="hero-stat"><?= htmlspecialchars($stats['nb_utilisateurs'] ?? 'N/A') ?></p>
@@ -79,7 +79,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                 </div>
 
                 <!-- Slide 4 : statistique avis -->
-                <div class="carousel-item hero-slide" style="background-image: url('/uploads/hero-4.jpg');">
+                <div class="carousel-item hero-slide" style="background-image: url('<?= BASE_URL ?>uploads/hero-4.jpg');">
                     <div class="hero-overlay"></div>
                     <div class="hero-content text-center text-white">
                         <p class="hero-stat"><?= htmlspecialchars($stats['nb_avis'] ?? 'N/A') ?></p>
