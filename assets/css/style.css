@@ -99,7 +99,7 @@ p {
     font-family: 'Poppins', sans-serif;
     font-weight: 400 !important;
     font-size: 16px;
-    color: var(--color-gray-600) !important;
+    color: var(--color-gray-800) !important;
 }
 small {
     font-family: 'Poppins', sans-serif;
@@ -111,6 +111,8 @@ small {
     font-family: 'Poppins', sans-serif !important;
     font-weight: 600 !important;
     font-size: 16px !important;
+    color: var(--color-white) !important;
+    border-width: 2px !important;
 }
 
 @media screen and (min-width: 800px) {
@@ -189,21 +191,24 @@ small {
     --bs-btn-active-border-color: var(--color-accent-500);
     color: var(--color-accent-500) !important;
 }
-
+.alert {
+    border-radius: var(--border-radius-8) !important;
+    border-width: 2px !important;
+}
 .alert-primary {
     background-color: var(--color-primary-100) !important;
     color: var(--color-primary-500) !important;
-    border: 1px solid var(--color-primary-500) !important;
+    border: 2px solid var(--color-primary-500) !important;
 }
 .alert-secondary {
     background-color: var(--color-accent-100) !important;
     color: var(--color-accent-500) !important;
-    border: 1px solid var(--color-accent-500) !important;
+    border: 2px solid var(--color-accent-500) !important;
 }
 .alert-light {
     background-color: var(--color-gray-50) !important;
     color: var(--color-gray-800) !important;
-    border: 1px solid var(--color-gray-200) !important;
+    border: 2px solid var(--color-gray-200) !important;
 }
 
 html {
@@ -504,9 +509,15 @@ hr {
 }
 /* alertes */
 #homePage .alert {
-    margin: 0 calc(-1 * var(--spacing-32)) !important;
+    margin: 0 !important;
     max-width: 100vw;
     border-radius: 0 !important;
+}
+@media screen and (min-width: 1000px) {
+    #homePage .alert {
+        margin: 0 calc(-1 * var(--spacing-32)) !important;
+    }
+    
 }
 /* Carrousel hero */
 #heroSection {
@@ -592,7 +603,7 @@ hr {
     content: '';
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.606);
+    background-color: rgba(0, 0, 0, 0.75);
     border-radius: var(--border-radius-8);
     z-index: 1;
 }

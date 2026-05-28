@@ -772,8 +772,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fondu en 50ms après 4 secondes d'affichage.
     // =========================================================================
     (function flashAlertHandler() {
-        const flashAlerts = document.querySelectorAll('.alert:not(.alert-light)');
-
+        const flashAlerts = document.querySelectorAll('.alert:not(.alert-light):not(.alert-secondary)');
         flashAlerts.forEach(function (alert) {
             setTimeout(function () {
                 alert.style.transition = 'opacity 0.15s ease-in-out';
