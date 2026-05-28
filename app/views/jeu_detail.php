@@ -24,7 +24,7 @@ require __DIR__ . '/nav/header.php';
                     </div>
 
                     <!-- Image de couverture -->
-                    <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                    <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
 
                     <!-- Description -->
                     <div class="description large-padding">
@@ -136,7 +136,7 @@ require __DIR__ . '/nav/header.php';
                                         <div class="avis-header">
                                             <img
                                                 class="avis-avatar"
-                                                src="<?= htmlspecialchars(!empty($a['photo_profil']) ? $a['photo_profil'] : '/uploads/default-profile.webp') ?>"
+                                                src="<?= htmlspecialchars(!empty($a['photo_profil']) ? BASE_URL . ltrim($a['photo_profil'], '/') : BASE_URL . 'uploads/default-profile.webp') ?>"
                                                 alt="Photo de profil de <?= htmlspecialchars($a['pseudo'] ?? 'Utilisateur supprimé') ?>"
                                             >
                                             <div>

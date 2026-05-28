@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             data-duration="${escapeHtml(j.duree_partie || '')}"
                             data-complexity="${escapeHtml((j.complexite || '').toLowerCase())}"
                             data-categories="${escapeHtml((j.categories || '').toLowerCase())}">
-                            <img src="/uploads/${escapeHtml(j.image || 'default.jpg')}" alt="${escapeHtml(j.titre)}">
+                            <img src="${BASE_URL}uploads/${escapeHtml(j.image || 'default.jpg')}" alt="${escapeHtml(j.titre)}">
                             <div class="card-body">
                                 <div>
                                     <h3>${escapeHtml(j.titre)}</h3>

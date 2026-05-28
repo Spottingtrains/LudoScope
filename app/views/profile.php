@@ -48,7 +48,7 @@ $activeTab = $activeTab ?? ($_GET['tab'] ?? 'informations');
 
                 <!-- Photo de profil -->
                 <div class="centered">
-                    <img src="<?= htmlspecialchars($user['photo_profil'] ?? '/uploads/default-profile.webp') ?>" alt="image de profil" class="img-thumbnail mb-3">
+                    <img src="<?= htmlspecialchars(BASE_URL . ltrim($user['photo_profil'] ?? '/uploads/default-profile.webp', '/')) ?>" alt="image de profil" class="img-thumbnail mb-3">
                 </div>
                 <div class="col-12 mb-3">
                     <label for="image_profil" class="form-label">Modifier l'image de profil :</label>

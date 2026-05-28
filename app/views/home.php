@@ -120,7 +120,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                         <div class="col-12 col-md-6 col-lg-4 best-card">
                             <a href="index.php?url=jeu&slug=<?= rawurlencode(slugify($jeu['titre'])) ?>">
                                 <div class="img-wrapper">
-                                    <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                                    <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
                                     <div class="card-note">
                                         <span><?= htmlspecialchars((int)($jeu['note_moyenne'] ?? '0') . ' / 10') ?></span>
                                         <p>
@@ -218,7 +218,7 @@ require_once __DIR__ . '/../../app/middleware/auth.php';
                                 data-duration="<?= htmlspecialchars((string)($jeu['duree_partie'] ?? '')) ?>"
                                 data-complexity="<?= htmlspecialchars(mb_strtolower($jeu['complexite'] ?? '')) ?>"
                                 data-categories="<?= htmlspecialchars(mb_strtolower($jeu['categories'] ?? '')) ?>">
-                                <img src="/uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
+                                <img src="<?= BASE_URL ?>uploads/<?= htmlspecialchars(!empty($jeu['image']) ? $jeu['image'] : 'default.jpg') ?>" alt="<?= htmlspecialchars($jeu['titre']) ?>">
                                 <div class="card-body">
                                     <div class="card-header">
                                         <h3 class="capitalized"><?= htmlspecialchars($jeu['titre']) ?></h3>
