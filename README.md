@@ -49,7 +49,7 @@ Les administrateurs gèrent le contenu et valident les demandes de modification/
    DB_HOST=localhost
    DB_USER=root
    DB_PASSWORD=
-   DB_NAME=ludotheque
+   DB_NAME=ludoscope
 ```
 
 4. **Lancer le projet**  
