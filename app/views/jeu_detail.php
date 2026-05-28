@@ -1,6 +1,5 @@
 <?php
 require __DIR__ . '/nav/header.php';
-// TODO: faire le style pour les catégories (tags)
 ?>
 
 <main>
@@ -160,12 +159,6 @@ require __DIR__ . '/nav/header.php';
 
             <?php endif; ?>
         </div>
-
-        <!-- ===== Section recommandations (à implémenter) ===== -->
-        <section>
-            <!-- TODO: Implémenter la section "ces jeux pourraient vous plaire" -->
-            <h2>Ces jeux pourraient vous plaire</h2>
-        </section>
     </div>
 </main>
 
