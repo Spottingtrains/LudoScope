@@ -60,10 +60,11 @@ Les administrateurs gèrent le contenu et valident les demandes de modification/
 
 ## Comptes de test
 
-| Rôle        | Email             | Mot de passe |
-|-------------|-------------------|--------------|
-| Admin       | admin@example.com | `Azerty123`  |
-| Utilisateur | user@example.com  | `Azerty123`  |
+| Rôle        | Email               | Mot de passe |
+|-------------|---------------------|--------------|
+| Admin       | admin@example.com   | `Azerty123`  |
+| Utilisateur | jean@example.com    | `Azerty123`  |
+| Utilisateur | sophie@example.com  | `Azerty123`  |
 
 ---
 

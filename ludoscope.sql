@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `avis` (
   PRIMARY KEY (`id_avis`),
   KEY `id_utilisateur` (`id_utilisateur`),
   KEY `id_jeu` (`id_jeu`)
-) ;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -56,18 +56,6 @@ CREATE TABLE IF NOT EXISTS `categorie` (
   PRIMARY KEY (`id_categorie`),
   UNIQUE KEY `libelle_categorie` (`libelle_categorie`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `categorie`
---
-
-INSERT INTO `categorie` (`id_categorie`, `libelle_categorie`) VALUES
-(1, 'plateau'),
-(2, 'ambiance'),
-(3, 'cartes'),
-(4, 'coopératif'),
-(5, 'rôle'),
-(6, 'dés');
 
 -- --------------------------------------------------------
 
@@ -88,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `demande` (
   PRIMARY KEY (`id_demande`),
   KEY `id_jeu` (`id_jeu`),
   KEY `id_utilisateur` (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -101,18 +89,7 @@ CREATE TABLE IF NOT EXISTS `editeur` (
   `id_editeur` int NOT NULL AUTO_INCREMENT,
   `nom_editeur` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id_editeur`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `editeur`
---
-
-INSERT INTO `editeur` (`id_editeur`, `nom_editeur`) VALUES
-(1, 'Repos Production'),
-(2, 'Space Cowboys'),
-(3, 'Iello'),
-(4, 'Asmodee'),
-(5, 'Hasbro');
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -155,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `jeu` (
   PRIMARY KEY (`id_jeu`),
   KEY `id_utilisateur` (`id_utilisateur`),
   KEY `id_editeur` (`id_editeur`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -184,15 +161,6 @@ CREATE TABLE IF NOT EXISTS `role` (
   PRIMARY KEY (`id_role`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `role`
---
-
-INSERT INTO `role` (`id_role`, `libelle_role`) VALUES
-(1, 'visiteur'),
-(2, 'compte'),
-(3, 'admin');
-
 -- --------------------------------------------------------
 
 --
@@ -208,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `token_reset` (
   PRIMARY KEY (`id_token`),
   UNIQUE KEY `token` (`token`),
   KEY `id_utilisateur` (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -234,7 +202,73 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   UNIQUE KEY `pseudo` (`pseudo`),
   UNIQUE KEY `email` (`email`),
   KEY `id_role` (`id_role`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ========================================
+-- DONNÉES DE DÉMONSTRATION
+-- ========================================
+
+-- Rôles
+INSERT INTO `role` (`id_role`, `libelle_role`) VALUES
+(1, 'visiteur'),
+(2, 'compte'),
+(3, 'admin');
+
+-- Catégories
+INSERT INTO `categorie` (`id_categorie`, `libelle_categorie`) VALUES
+(1, 'plateau'),
+(2, 'ambiance'),
+(3, 'cartes'),
+(4, 'coopératif'),
+(5, 'rôle'),
+(6, 'dés');
+
+-- Éditeurs
+INSERT INTO `editeur` (`id_editeur`, `nom_editeur`) VALUES
+(1, 'Repos Production'),
+(2, 'Space Cowboys'),
+(3, 'Iello'),
+(4, 'Asmodee'),
+(5, 'Hasbro');
+
+-- Utilisateurs (mot de passe : Azerty123)
+INSERT INTO `utilisateur` (`id_utilisateur`, `nom`, `prenom`, `pseudo`, `email`, `mot_de_passe`, `photo_profil`, `date_inscription`, `derniere_connexion`, `id_role`, `question_secrete`, `reponse_secrete`) VALUES
+(1, 'Admin', 'Site', 'admin', 'admin@ludoscope.com', '$2y$10$Pw0QHfKYyuJN8dsAp.OhJ./V4zS50N4vNjawWYGBFYZM9yKj0scv.', NULL, '2026-05-11 18:22:17', NULL, 3, 'Quel est le prénom de votre mère ?', 'Marie'),
+(2, 'Dupont', 'Jean', 'jeanjeu', 'jean@example.com', '$2y$10$Pw0QHfKYyuJN8dsAp.OhJ./V4zS50N4vNjawWYGBFYZM9yKj0scv.', NULL, '2026-05-11 18:22:17', NULL, 2, 'Quel est le prénom de votre mère ?', 'Marie'),
+(3, 'Martin', 'Sophie', 'sophiegames', 'sophie@example.com', '$2y$10$Pw0QHfKYyuJN8dsAp.OhJ./V4zS50N4vNjawWYGBFYZM9yKj0scv.', NULL, '2026-05-11 18:22:17', NULL, 2, 'Quel est le prénom de votre mère ?', 'Marie');
+
+-- Jeux
+INSERT INTO `jeu` (`id_jeu`, `titre`, `description`, `nb_joueurs_min`, `nb_joueurs_max`, `age_min`, `duree_partie`, `complexite`, `image`, `date_ajout`, `auteur`, `illustrateur`, `annee_edition`, `id_utilisateur`, `id_editeur`) VALUES
+(1, 'Catan', 'Jeu de stratégie et de commerce sur une île aux ressources limitées. Collectez des matériaux, construisez des routes et des villes, et échangez avec vos adversaires pour dominer l\'île.', 3, 4, 10, 90, 'intermédiaire', NULL, '2026-05-11 18:22:17', 'Klaus Teuber', NULL, '1995', 1, NULL),
+(2, 'Splendor', 'Jeu de collection de gemmes et de cartes. Incarnez un marchand de la Renaissance et développez votre empire en achetant des mines, des moyens de transport et des artisans.', 2, 4, 10, 30, 'facile', NULL, '2026-05-11 18:22:17', 'Marc André', NULL, '2014', 1, 2),
+(3, '7 Wonders', 'Jeu de draft de cartes et de construction de civilisation. Guidez une cité antique à travers trois âges en développant son commerce, son armée et ses merveilles architecturales.', 2, 7, 10, 30, 'intermédiaire', NULL, '2026-05-11 18:22:17', 'Antoine Bauza', NULL, '2010', 1, 4),
+(4, 'Monopoly', 'Jeu de gestion immobilière où les joueurs achètent, vendent et échangent des propriétés pour ruiner leurs adversaires. Un classique familial aux parties parfois interminables.', 2, 6, 8, 120, 'facile', NULL, '2026-05-11 18:22:17', 'Charles Darrow', NULL, '1935', 1, 5),
+(5, 'Pandemic', 'Jeu coopératif où les joueurs collaborent pour enrayer quatre épidémies mondiales. Chaque joueur dispose d\'un rôle unique et doit coordonner ses actions avec l\'équipe pour sauver l\'humanité.', 2, 4, 8, 45, 'intermédiaire', NULL, '2026-05-11 18:22:17', 'Matt Leacock', NULL, '2008', 1, NULL),
+(6, 'Ticket to Ride', 'Jeu de pose de wagons sur un réseau ferroviaire européen. Reliez les villes indiquées sur vos cartes destination avant vos adversaires, tout en les empêchant de prendre vos routes.', 2, 5, 8, 60, 'facile', NULL, '2026-05-11 18:22:17', 'Alan R. Moon', NULL, '2004', 2, NULL),
+(7, 'Dixit', 'Jeu d\'ambiance où les joueurs devinent des cartes illustrées à partir d\'indices poétiques. Le conteur doit être suffisamment vague pour ne pas être deviné par tout le monde.', 3, 6, 8, 30, 'facile', NULL, '2026-05-11 18:22:17', 'Jean-Louis Roubira', NULL, '2008', 2, 4),
+(8, 'Codenames', 'Jeu d\'association de mots en équipe. Les chefs d\'équipe donnent des indices en un seul mot pour faire deviner plusieurs cartes à leurs coéquipiers, sans toucher les cartes adverses.', 4, 8, 10, 20, 'facile', NULL, '2026-05-11 18:22:17', 'Vlaada Chvátil', NULL, '2015', 3, NULL),
+(9, 'King of Tokyo', 'Jeu de dés où des monstres géants s\'affrontent pour dominer Tokyo. Lancez les dés, accumulez de l\'énergie, infligez des dégâts et survivez pour être le dernier monstre debout.', 2, 6, 8, 30, 'facile', NULL, '2026-05-11 18:22:17', 'Richard Garfield', NULL, '2011', 3, 3);
+
+-- Catégories des jeux
+INSERT INTO `jeu_categorie` (`id_jeu`, `id_categorie`) VALUES
+(1, 1),
+(2, 3),
+(3, 3),
+(4, 1),
+(4, 6),
+(5, 4),
+(6, 1),
+(7, 2),
+(8, 3),
+(9, 6);
+
+-- Avis
+INSERT INTO `avis` (`id_avis`, `commentaire`, `note`, `date_avis`, `date_modification`, `id_utilisateur`, `id_jeu`) VALUES
+(1, 'Un classique incontournable ! Les échanges entre joueurs rendent chaque partie unique.', 5, '2026-05-11 18:22:17', NULL, 2, 1),
+(2, 'Facile à apprendre, difficile à maîtriser. Parfait pour débuter dans les jeux modernes.', 4, '2026-05-11 18:22:17', NULL, 3, 2),
+(3, 'Le meilleur jeu de draft du marché. Fonctionne aussi bien à 2 qu\'à 7 joueurs.', 5, '2026-05-11 18:22:17', NULL, 2, 3),
+(4, 'Coopératif et stressant à souhait. On se croirait vraiment en train de sauver le monde.', 5, '2026-05-11 18:22:17', NULL, 3, 5),
+(5, 'Idéal pour les soirées en famille. Simple mais jamais ennuyeux.', 4, '2026-05-11 18:22:17', NULL, 2, 7);
 
 --
 -- Contraintes pour les tables déchargées
