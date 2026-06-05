@@ -264,11 +264,11 @@ INSERT INTO `jeu_categorie` (`id_jeu`, `id_categorie`) VALUES
 
 -- Avis
 INSERT INTO `avis` (`id_avis`, `commentaire`, `note`, `date_avis`, `date_modification`, `id_utilisateur`, `id_jeu`) VALUES
-(1, 'Un classique incontournable ! Les échanges entre joueurs rendent chaque partie unique.', 5, '2026-05-11 18:22:17', NULL, 2, 1),
-(2, 'Facile à apprendre, difficile à maîtriser. Parfait pour débuter dans les jeux modernes.', 4, '2026-05-11 18:22:17', NULL, 3, 2),
-(3, 'Le meilleur jeu de draft du marché. Fonctionne aussi bien à 2 qu\'à 7 joueurs.', 5, '2026-05-11 18:22:17', NULL, 2, 3),
-(4, 'Coopératif et stressant à souhait. On se croirait vraiment en train de sauver le monde.', 5, '2026-05-11 18:22:17', NULL, 3, 5),
-(5, 'Idéal pour les soirées en famille. Simple mais jamais ennuyeux.', 4, '2026-05-11 18:22:17', NULL, 2, 7);
+(1, 'Un classique incontournable ! Les échanges entre joueurs rendent chaque partie unique.', 10, '2026-05-11 18:22:17', NULL, 2, 1),
+(2, 'Facile à apprendre, difficile à maîtriser. Parfait pour débuter dans les jeux modernes.', 8, '2026-05-11 18:22:17', NULL, 3, 2),
+(3, 'Le meilleur jeu de draft du marché. Fonctionne aussi bien à 2 qu\'à 7 joueurs.', 10, '2026-05-11 18:22:17', NULL, 2, 3),
+(4, 'Coopératif et stressant à souhait. On se croirait vraiment en train de sauver le monde.', 9, '2026-05-11 18:22:17', NULL, 3, 5),
+(5, 'Idéal pour les soirées en famille. Simple mais jamais ennuyeux.', 8, '2026-05-11 18:22:17', NULL, 2, 7);
 
 --
 -- Contraintes pour les tables déchargées
